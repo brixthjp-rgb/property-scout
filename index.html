@@ -207,13 +207,26 @@
       </div>
 
       <div class="card">
-        <div class="card-title">現在地</div>
+        <div class="card-title">場所</div>
         <button class="loc-btn" id="loc-btn" onclick="getLocation()">
           <span id="loc-icon">📍</span>
-          <span id="loc-text">現在地を取得してマップリンクを生成</span>
+          <span id="loc-text">現在地を自動取得</span>
         </button>
-        <div id="map-link">
-          <a id="map-a" href="#" target="_blank">🗺 Googleマップで確認 →</a>
+        <div style="display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--muted);font-size:12px">
+          <div style="flex:1;height:1px;background:var(--border)"></div>
+          または住所を手入力
+          <div style="flex:1;height:1px;background:var(--border)"></div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="address-input" placeholder="例：Sukhumvit Soi 11, Bangkok"
+            style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:14px;padding:11px 13px;outline:none;font-family:inherit"/>
+          <button onclick="generateMapFromAddress()"
+            style="padding:11px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-size:13px;cursor:pointer;white-space:nowrap">
+            🗺 生成
+          </button>
+        </div>
+        <div id="map-link" style="display:none;margin-top:8px">
+          <a id="map-a" href="#" target="_blank" style="font-size:12px;color:var(--accent);text-decoration:none;word-break:break-all;display:flex;align-items:center;gap:4px">🗺 Googleマップで確認 →</a>
         </div>
       </div>
 
@@ -378,6 +391,20 @@ function getLocation() {
   }, { enableHighAccuracy: true, timeout: 10000 });
 }
 
+
+function generateMapFromAddress() {
+  const addr = document.getElementById("address-input").value.trim();
+  if (!addr) { showToast("住所を入力してください", "error"); return; }
+  state.mapUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(addr);
+  state.lat = null;
+  state.lng = null;
+  document.getElementById("map-link").style.display = "block";
+  document.getElementById("map-a").href = state.mapUrl;
+  document.getElementById("loc-btn").classList.remove("got");
+  document.getElementById("loc-icon").textContent = "📍";
+  document.getElementById("loc-text").textContent = "現在地を自動取得";
+  showToast("マップリンクを生成しました", "success");
+}
 function collectField() {
   state.phone = document.getElementById('phone').value;
   state.timestamp = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Bangkok' });
@@ -469,7 +496,8 @@ function resetForm() {
   document.getElementById('photo-preview').innerHTML = '';
   document.getElementById('loc-btn').classList.remove('got');
   document.getElementById('loc-icon').textContent = '📍';
-  document.getElementById('loc-text').textContent = '現在地を取得してマップリンクを生成';
+  document.getElementById('loc-text').textContent = '現在地を自動取得';
+  document.getElementById('address-input').value = '';
   document.getElementById('map-link').style.display = 'none';
   switchTab(0);
 }
