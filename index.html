@@ -360,16 +360,31 @@ function collectAll() {
 
 function submitField() {
   state.phone = document.getElementById('phone').value;
+  state.timestamp = new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'});
   showToast('現地情報を保存しました','success');
   switchTab(1);
 }
 
 function saveNow() {
-  collectAll();
+  const phone = document.getElementById('phone').value;
+  if(phone) state.phone = phone;
+  const rent = document.getElementById('rent').value;
+  const deposit = document.getElementById('deposit').value;
+  const size = document.getElementById('size').value;
+  const conditions = document.getElementById('conditions').value;
+  const notes = document.getElementById('notes').value;
+  const propName = document.getElementById('prop-name').value;
+  if(rent) state.rent = rent;
+  if(deposit) state.deposit = deposit;
+  if(size) state.size = size;
+  if(conditions) state.conditions = conditions;
+  if(notes) state.notes = notes;
+  if(propName) state.propName = propName;
+
   const list = getList();
   const entry = {
     id: Date.now(),
-    timestamp: new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'}),
+    timestamp: state.timestamp || new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'}),
     type: state.type,
     status: state.status || '未交渉',
     propName: state.propName || '物件 '+(list.length+1),
