@@ -8,181 +8,112 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>物件スカウト</title>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-  :root{
-    --bg:#0f0f1a;
-    --surface:#1a1a2e;
-    --surface2:#252540;
-    --border:#2e2e50;
-    --accent:#6c63ff;
-    --accent2:#ff6584;
-    --text:#f0f0ff;
-    --muted:#8888aa;
-    --green:#22c55e;
-    --amber:#f59e0b;
-    --radius:14px;
-    --radius-sm:8px;
-  }
-  html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Noto Sans JP',sans-serif;font-size:16px;overflow:hidden}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0f0f1a;--surface:#1a1a2e;--surface2:#252540;--border:#2e2e50;
+  --accent:#6c63ff;--accent2:#ff6584;--text:#f0f0ff;--muted:#8888aa;
+  --green:#22c55e;--amber:#f59e0b;--radius:14px;--radius-sm:8px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Noto Sans JP',sans-serif;font-size:16px;overflow:hidden}
+#app{display:flex;flex-direction:column;height:100vh;max-width:430px;margin:0 auto}
+header{padding:14px 20px 10px;display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-bottom:1px solid var(--border)}
+.logo{font-size:17px;font-weight:700;color:var(--text)}.logo span{color:var(--accent)}
+.tabs{display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--surface);border-bottom:1px solid var(--border)}
+.tab{padding:10px 4px;text-align:center;font-size:11px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;user-select:none}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-icon{font-size:16px;margin-bottom:2px}
+.pages{flex:1;overflow:hidden;position:relative}
+.page{position:absolute;inset:0;overflow-y:auto;padding:16px;transition:transform .25s ease,opacity .25s ease}
+.page.hidden{pointer-events:none;opacity:0;transform:translateX(30px)}
+#page-field.hidden{transform:translateX(-30px)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px}
+.card-title{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.type-btn{padding:14px 8px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);text-align:center;cursor:pointer;transition:all .15s;user-select:none}
+.type-btn .ti{font-size:26px;margin-bottom:5px}
+.type-btn .type-label{font-size:13px;font-weight:500}
+.type-btn.active{border-color:var(--accent);background:rgba(108,99,255,.12);color:var(--text)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500}
+.field input,.field textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:15px;padding:11px 13px;outline:none;transition:border .15s;font-family:inherit}
+.field input:focus,.field textarea:focus{border-color:var(--accent)}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted);opacity:.6}
+.field textarea{resize:none;line-height:1.5}
+.photo-area{border:1.5px dashed var(--border);border-radius:var(--radius-sm);padding:20px;text-align:center;cursor:pointer;position:relative;overflow:hidden}
+.photo-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
+.photo-placeholder{color:var(--muted);font-size:13px;pointer-events:none}
+.photo-placeholder .ph-icon{font-size:32px;margin-bottom:6px}
+#photo-preview{display:none;flex-wrap:wrap;gap:8px;margin-top:12px}
+#photo-preview img{width:72px;height:72px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
+.loc-btn{width:100%;padding:13px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
+.loc-btn.got{border-color:var(--green);color:var(--green)}
+.divider{display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--muted);font-size:12px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.addr-row{display:flex;gap:8px}
+.addr-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:14px;padding:11px 13px;outline:none;font-family:inherit}
+.addr-input:focus{border-color:var(--accent)}
+.addr-btn{padding:11px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-size:13px;cursor:pointer;white-space:nowrap}
+#map-link{display:none;margin-top:8px}
+#map-link a{font-size:12px;color:var(--accent);text-decoration:none;word-break:break-all}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.submit-btn{width:100%;padding:16px;border-radius:var(--radius);border:none;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s;margin-top:4px}
+.submit-btn.primary{background:var(--accent);color:#fff}
+.submit-btn.primary:active{background:#5a52e0;transform:scale(.98)}
+.submit-btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border);margin-top:8px}
 
-  /* SHELL */
-  #app{display:flex;flex-direction:column;height:100vh;max-width:430px;margin:0 auto;position:relative}
+/* LIST */
+.list-empty{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;line-height:2}
+.list-empty .empty-icon{font-size:40px;margin-bottom:8px}
+.prop-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;cursor:pointer;transition:border .15s}
+.prop-card:active{border-color:var(--accent)}
+.prop-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.prop-name{font-size:15px;font-weight:600;color:var(--text)}
+.prop-type{font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(108,99,255,.15);color:var(--accent)}
+.prop-meta{font-size:12px;color:var(--muted);line-height:1.8}
+.prop-meta a{color:var(--accent);text-decoration:none}
+.prop-delete{font-size:11px;color:var(--accent2);cursor:pointer;margin-top:8px;display:inline-block}
 
-  /* HEADER */
-  header{padding:16px 20px 12px;display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-bottom:1px solid var(--border)}
-  .logo{font-size:17px;font-weight:700;letter-spacing:-.3px;color:var(--text)}
-  .logo span{color:var(--accent)}
-  .save-status{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px}
-  .dot{width:6px;height:6px;border-radius:50%;background:var(--muted)}
-  .dot.saved{background:var(--green)}
-  .dot.saving{background:var(--amber);animation:pulse .8s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+/* DETAIL MODAL */
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:none;align-items:flex-end}
+#modal.open{display:flex}
+.modal-sheet{background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;width:100%;max-width:430px;margin:0 auto;max-height:85vh;overflow-y:auto;padding:20px}
+.modal-title{font-size:17px;font-weight:700;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.modal-close{font-size:20px;cursor:pointer;color:var(--muted)}
+.modal-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.modal-row:last-child{border-bottom:none}
+.modal-label{color:var(--muted)}
+.modal-value{color:var(--text);text-align:right;max-width:60%;word-break:break-all}
+.modal-value a{color:var(--accent);text-decoration:none}
 
-  /* TAB BAR */
-  .tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border-bottom:1px solid var(--border)}
-  .tab{padding:12px;text-align:center;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;user-select:none}
-  .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
-  .tab-icon{font-size:18px;margin-bottom:2px}
-
-  /* PAGES */
-  .pages{flex:1;overflow:hidden;position:relative}
-  .page{position:absolute;inset:0;overflow-y:auto;padding:16px;transition:transform .3s ease,opacity .3s ease}
-  .page.hidden{pointer-events:none;opacity:0}
-  #page-field{transform:translateX(0)}
-  #page-field.hidden{transform:translateX(-40px)}
-  #page-detail{transform:translateX(0)}
-  #page-detail.hidden{transform:translateX(40px)}
-
-  /* CARDS */
-  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px}
-  .card-title{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
-
-  /* TYPE SELECTOR */
-  .type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .type-btn{padding:14px 8px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);text-align:center;cursor:pointer;transition:all .15s;user-select:none}
-  .type-btn .type-icon{font-size:26px;margin-bottom:5px}
-  .type-btn .type-label{font-size:13px;font-weight:500}
-  .type-btn.active{border-color:var(--accent);background:rgba(108,99,255,.12);color:var(--text)}
-
-  /* INPUTS */
-  .field{margin-bottom:14px}
-  .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500}
-  .field input,.field textarea,.field select{
-    width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);
-    color:var(--text);font-size:15px;padding:11px 13px;outline:none;transition:border .15s;
-    font-family:inherit;
-  }
-  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent)}
-  .field input::placeholder,.field textarea::placeholder{color:var(--muted);opacity:.6}
-  .field textarea{resize:none;line-height:1.5}
-  .field select option{background:var(--surface2)}
-
-  /* PHOTO */
-  .photo-area{border:1.5px dashed var(--border);border-radius:var(--radius-sm);padding:20px;text-align:center;cursor:pointer;transition:border .15s;position:relative;overflow:hidden}
-  .photo-area:active{border-color:var(--accent)}
-  .photo-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
-  .photo-placeholder{color:var(--muted);font-size:13px;pointer-events:none}
-  .photo-placeholder .ph-icon{font-size:32px;margin-bottom:6px}
-  #photo-preview{display:none;flex-wrap:wrap;gap:8px;margin-top:12px}
-  #photo-preview img{width:72px;height:72px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
-
-  /* LOCATION BTN */
-  .loc-btn{width:100%;padding:13px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
-  .loc-btn:active{background:rgba(108,99,255,.15);border-color:var(--accent)}
-  .loc-btn.got{border-color:var(--green);color:var(--green)}
-  #map-link{display:none;margin-top:8px}
-  #map-link a{font-size:12px;color:var(--accent);text-decoration:none;word-break:break-all;display:flex;align-items:center;gap:4px}
-
-  /* TWO COL */
-  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-
-  /* SUBMIT */
-  .submit-btn{
-    width:100%;padding:16px;border-radius:var(--radius);border:none;
-    font-size:15px;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:.02em;
-    margin-top:4px;
-  }
-  .submit-btn.primary{background:var(--accent);color:#fff}
-  .submit-btn.primary:active{background:#5a52e0;transform:scale(.98)}
-  .submit-btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
-  .submit-btn.secondary:active{background:var(--border)}
-
-  /* TOAST */
-  #toast{
-    position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
-    background:var(--surface);border:1px solid var(--border);border-radius:100px;
-    padding:10px 20px;font-size:13px;white-space:nowrap;opacity:0;transition:all .3s;
-    pointer-events:none;z-index:100;max-width:320px;text-align:center;
-  }
-  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-  #toast.success{border-color:var(--green);color:var(--green)}
-  #toast.error{border-color:var(--accent2);color:var(--accent2)}
-
-  /* SETUP */
-  #setup-overlay{
-    position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;padding:32px;
-  }
-  .setup-logo{font-size:32px;font-weight:800;color:var(--text);margin-bottom:8px}
-  .setup-logo span{color:var(--accent)}
-  .setup-sub{font-size:14px;color:var(--muted);margin-bottom:32px;text-align:center;line-height:1.6}
-  .setup-label{font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500;align-self:flex-start;width:100%}
-  .setup-input{
-    width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);
-    color:var(--text);font-size:14px;padding:12px 14px;outline:none;margin-bottom:16px;font-family:inherit;
-  }
-  .setup-input:focus{border-color:var(--accent)}
-  .setup-help{font-size:11px;color:var(--muted);margin-top:-10px;margin-bottom:16px;line-height:1.6;width:100%}
-  .setup-btn{width:100%;padding:15px;border-radius:var(--radius);border:none;background:var(--accent);color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px}
-  .setup-skip{font-size:12px;color:var(--muted);cursor:pointer;margin-top:12px;text-decoration:underline}
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:10px 20px;font-size:13px;white-space:nowrap;opacity:0;transition:all .3s;pointer-events:none;z-index:400;max-width:300px;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.success{border-color:var(--green);color:var(--green)}
+#toast.error{border-color:var(--accent2);color:var(--accent2)}
 </style>
 </head>
 <body>
-
-<!-- SETUP OVERLAY -->
-<div id="setup-overlay">
-  <div class="setup-logo">物件<span>スカウト</span></div>
-  <div class="setup-sub">Google Sheetsに自動送信するため<br>WebhookのURLを設定してください</div>
-  <div class="setup-label">Google Apps Script Web App URL</div>
-  <input class="setup-input" id="setup-url" placeholder="https://script.google.com/macros/s/..." />
-  <div class="setup-help">※ 設定方法は下部の「使い方」ボタンで確認できます。後で設定する場合はスキップ可。</div>
-  <button class="setup-btn" onclick="saveSetup()">設定して開始</button>
-  <div class="setup-skip" onclick="skipSetup()">今はスキップ（手動コピーモードで使う）</div>
-</div>
-
-<!-- MAIN APP -->
-<div id="app" style="display:none">
+<div id="app">
   <header>
     <div class="logo">物件<span>スカウト</span></div>
-    <div class="save-status"><div class="dot" id="dot"></div><span id="status-text">待機中</span></div>
+    <div style="font-size:12px;color:var(--muted)" id="count-label">0件保存</div>
   </header>
-
   <div class="tabs">
-    <div class="tab active" onclick="switchTab(0)" id="tab0">
-      <div class="tab-icon">📍</div>
-      現地入力
-    </div>
-    <div class="tab" onclick="switchTab(1)" id="tab1">
-      <div class="tab-icon">📋</div>
-      物件詳細
-    </div>
+    <div class="tab active" onclick="switchTab(0)" id="tab0"><div class="tab-icon">📍</div>現地入力</div>
+    <div class="tab" onclick="switchTab(1)" id="tab1"><div class="tab-icon">📋</div>物件詳細</div>
+    <div class="tab" onclick="switchTab(2)" id="tab2"><div class="tab-icon">🏠</div>保存リスト</div>
   </div>
-
   <div class="pages">
 
-    <!-- PAGE 1: 現地入力 -->
+    <!-- PAGE 1 現地入力 -->
     <div class="page" id="page-field">
-
       <div class="card">
         <div class="card-title">物件の種類</div>
         <div class="type-grid">
           <div class="type-btn active" id="type-tenant" onclick="setType('テナント')">
-            <div class="type-icon">🏪</div>
-            <div class="type-label">テナント</div>
+            <div class="ti">🏪</div><div class="type-label">テナント</div>
           </div>
           <div class="type-btn" id="type-residence" onclick="setType('住居')">
-            <div class="type-icon">🏠</div>
-            <div class="type-label">住居</div>
+            <div class="ti">🏠</div><div class="type-label">住居</div>
           </div>
         </div>
       </div>
@@ -190,228 +121,147 @@
       <div class="card">
         <div class="card-title">写真</div>
         <div class="photo-area">
-          <input type="file" accept="image/*" multiple onchange="handlePhotos(this)" id="photo-input">
-          <div class="photo-placeholder">
-            <div class="ph-icon">📷</div>
-            タップして撮影 または ライブラリから選択
-          </div>
+          <input type="file" accept="image/*" multiple onchange="handlePhotos(this)">
+          <div class="photo-placeholder"><div class="ph-icon">📷</div>タップして撮影 または ライブラリから選択</div>
         </div>
         <div id="photo-preview"></div>
       </div>
 
       <div class="card">
         <div class="card-title">電話番号</div>
-        <div class="field">
-          <input type="tel" id="phone" placeholder="例：081-234-5678" />
-        </div>
+        <div class="field"><input type="tel" id="phone" placeholder="例：081-234-5678"/></div>
       </div>
 
       <div class="card">
         <div class="card-title">場所</div>
         <button class="loc-btn" id="loc-btn" onclick="getLocation()">
-          <span id="loc-icon">📍</span>
-          <span id="loc-text">現在地を自動取得</span>
+          <span id="loc-icon">📍</span><span id="loc-text">現在地を自動取得</span>
         </button>
-        <div style="display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--muted);font-size:12px">
-          <div style="flex:1;height:1px;background:var(--border)"></div>
-          または住所を手入力
-          <div style="flex:1;height:1px;background:var(--border)"></div>
+        <div class="divider">または住所を手入力</div>
+        <div class="addr-row">
+          <input class="addr-input" id="address-input" placeholder="例：Sukhumvit Soi 11, Bangkok"/>
+          <button class="addr-btn" onclick="generateMapFromAddress()">🗺 生成</button>
         </div>
-        <div style="display:flex;gap:8px">
-          <input type="text" id="address-input" placeholder="例：Sukhumvit Soi 11, Bangkok"
-            style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:14px;padding:11px 13px;outline:none;font-family:inherit"/>
-          <button onclick="generateMapFromAddress()"
-            style="padding:11px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-size:13px;cursor:pointer;white-space:nowrap">
-            🗺 生成
-          </button>
-        </div>
-        <div id="map-link" style="display:none;margin-top:8px">
-          <a id="map-a" href="#" target="_blank" style="font-size:12px;color:var(--accent);text-decoration:none;word-break:break-all;display:flex;align-items:center;gap:4px">🗺 Googleマップで確認 →</a>
-        </div>
+        <div id="map-link"><a id="map-a" href="#" target="_blank">🗺 Googleマップで確認 →</a></div>
       </div>
 
-      <button class="submit-btn primary" onclick="submitField()">
-        保存して詳細へ →
-      </button>
-      <button class="submit-btn secondary" style="margin-top:8px" onclick="submitFieldOnly()">
-        現地情報だけ保存
-      </button>
-
+      <button class="submit-btn primary" onclick="submitField()">保存して詳細へ →</button>
+      <button class="submit-btn secondary" onclick="saveNow()">現地情報だけ保存</button>
     </div>
 
-    <!-- PAGE 2: 物件詳細 -->
+    <!-- PAGE 2 物件詳細 -->
     <div class="page hidden" id="page-detail">
-
+      <div class="card">
+        <div class="card-title">物件名 / 識別メモ</div>
+        <div class="field"><input type="text" id="prop-name" placeholder="例：Soi 11 角地テナント"/></div>
+      </div>
       <div class="card">
         <div class="card-title">家賃 / 費用</div>
         <div class="two-col">
-          <div class="field">
-            <label>月額家賃（฿）</label>
-            <input type="number" id="rent" placeholder="例：25000" />
-          </div>
-          <div class="field">
-            <label>敷金 / 保証金</label>
-            <input type="text" id="deposit" placeholder="例：2ヶ月" />
-          </div>
+          <div class="field"><label>月額家賃（฿）</label><input type="number" id="rent" placeholder="例：25000"/></div>
+          <div class="field"><label>敷金 / 保証金</label><input type="text" id="deposit" placeholder="例：2ヶ月"/></div>
         </div>
-        <div class="field">
-          <label>広さ（㎡）</label>
-          <input type="number" id="size" placeholder="例：45" />
-        </div>
+        <div class="field"><label>広さ（㎡）</label><input type="number" id="size" placeholder="例：45"/></div>
       </div>
-
       <div class="card">
-        <div class="card-title">賃貸条件</div>
-        <div class="field">
-          <label>契約条件</label>
-          <input type="text" id="conditions" placeholder="例：最低1年、ペット不可" />
-        </div>
-        <div class="field" style="margin-bottom:0">
-          <label>その他メモ</label>
-          <textarea id="notes" rows="4" placeholder="例：駐車場あり、改装交渉可、すぐ入居可"></textarea>
-        </div>
+        <div class="card-title">賃貸条件・メモ</div>
+        <div class="field"><label>契約条件</label><input type="text" id="conditions" placeholder="例：最低1年、ペット不可"/></div>
+        <div class="field" style="margin-bottom:0"><label>その他メモ</label><textarea id="notes" rows="4" placeholder="例：駐車場あり、改装交渉可"></textarea></div>
       </div>
-
-      <div class="card">
-        <div class="card-title">物件名 / 識別メモ</div>
-        <div class="field" style="margin-bottom:0">
-          <input type="text" id="prop-name" placeholder="例：Soi 11 角地テナント" />
-        </div>
-      </div>
-
-      <button class="submit-btn primary" onclick="submitDetail()">
-        シートに送信 ✓
-      </button>
-      <button class="submit-btn secondary" style="margin-top:8px" onclick="copyData()">
-        データをコピー（手動用）
-      </button>
-
+      <button class="submit-btn primary" onclick="saveNow()">💾 保存する</button>
+      <button class="submit-btn secondary" onclick="switchTab(0)">← 現地入力に戻る</button>
     </div>
+
+    <!-- PAGE 3 保存リスト -->
+    <div class="page hidden" id="page-list">
+      <div id="list-container"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div id="modal" onclick="closeModal(event)">
+  <div class="modal-sheet" id="modal-sheet">
+    <div class="modal-title"><span id="modal-title-text">物件詳細</span><span class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">✕</span></div>
+    <div id="modal-body"></div>
   </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-const GAS_URL_KEY = 'property_scout_gas_url';
-const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbx__UhrYePhbSiD95LA9hOcmoI89gkkGSY-_nWE8dHP9gjKR0jSMeUuEZfcfXz_vtOK/exec';
+const STORAGE_KEY = 'property_scout_list';
+
 let state = {
-  type: 'テナント',
-  photos: [],
-  phone: '',
-  lat: null,
-  lng: null,
-  mapUrl: '',
-  rent: '',
-  deposit: '',
-  size: '',
-  conditions: '',
-  notes: '',
-  propName: '',
-  timestamp: ''
+  type:'テナント', photos:[], phone:'', lat:null, lng:null, mapUrl:'',
+  rent:'', deposit:'', size:'', conditions:'', notes:'', propName:''
 };
 
-function saveSetup() {
-  const url = document.getElementById('setup-url').value.trim();
-  if (url) localStorage.setItem(GAS_URL_KEY, url);
-  document.getElementById('setup-overlay').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-}
-function skipSetup() {
-  document.getElementById('setup-overlay').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-}
-
-window.addEventListener('load', () => {
-  const saved = localStorage.getItem(GAS_URL_KEY) || DEFAULT_GAS_URL;
-  if (saved) {
-    document.getElementById('setup-overlay').style.display = 'none';
-    document.getElementById('app').style.display = 'flex';
-  }
-});
-
 function switchTab(idx) {
-  document.getElementById('tab0').classList.toggle('active', idx === 0);
-  document.getElementById('tab1').classList.toggle('active', idx === 1);
-  document.getElementById('page-field').classList.toggle('hidden', idx !== 0);
-  document.getElementById('page-detail').classList.toggle('hidden', idx !== 1);
+  [0,1,2].forEach(i => {
+    document.getElementById('tab'+i).classList.toggle('active', i===idx);
+  });
+  document.getElementById('page-field').classList.toggle('hidden', idx!==0);
+  document.getElementById('page-detail').classList.toggle('hidden', idx!==1);
+  document.getElementById('page-list').classList.toggle('hidden', idx!==2);
+  if(idx===2) renderList();
 }
 
 function setType(t) {
   state.type = t;
-  document.getElementById('type-tenant').classList.toggle('active', t === 'テナント');
-  document.getElementById('type-residence').classList.toggle('active', t === '住居');
+  document.getElementById('type-tenant').classList.toggle('active', t==='テナント');
+  document.getElementById('type-residence').classList.toggle('active', t==='住居');
 }
 
 function handlePhotos(input) {
   state.photos = Array.from(input.files);
   const preview = document.getElementById('photo-preview');
   preview.innerHTML = '';
-  if (state.photos.length > 0) {
+  if(state.photos.length > 0) {
     preview.style.display = 'flex';
     state.photos.forEach(file => {
       const img = document.createElement('img');
       img.src = URL.createObjectURL(file);
       preview.appendChild(img);
     });
-    showToast(`${state.photos.length}枚の写真を追加`, 'success');
+    showToast(state.photos.length+'枚の写真を追加', 'success');
   }
 }
 
 function getLocation() {
-  const btn = document.getElementById('loc-btn');
   const txt = document.getElementById('loc-text');
   const icon = document.getElementById('loc-icon');
-  txt.textContent = '取得中...';
-  icon.textContent = '⏳';
-
-  if (!navigator.geolocation) {
-    showToast('このブラウザは位置情報に対応していません', 'error');
-    txt.textContent = '位置情報が使えません';
-    return;
-  }
-
+  txt.textContent = '取得中...'; icon.textContent = '⏳';
+  if(!navigator.geolocation) { showToast('位置情報が使えません','error'); return; }
   navigator.geolocation.getCurrentPosition(pos => {
     state.lat = pos.coords.latitude.toFixed(6);
     state.lng = pos.coords.longitude.toFixed(6);
-    state.mapUrl = `https://www.google.com/maps?q=${state.lat},${state.lng}`;
-
-    btn.classList.add('got');
+    state.mapUrl = 'https://www.google.com/maps?q='+state.lat+','+state.lng;
+    document.getElementById('loc-btn').classList.add('got');
     icon.textContent = '✅';
-    txt.textContent = `取得完了 (${state.lat}, ${state.lng})`;
-
-    const mapLink = document.getElementById('map-link');
-    const mapA = document.getElementById('map-a');
-    mapLink.style.display = 'block';
-    mapA.href = state.mapUrl;
-    showToast('現在地を取得しました', 'success');
-  }, err => {
-    icon.textContent = '❌';
-    txt.textContent = '位置情報を取得できませんでした';
-    showToast('位置情報の取得に失敗しました', 'error');
-  }, { enableHighAccuracy: true, timeout: 10000 });
+    txt.textContent = '取得完了 ('+state.lat+', '+state.lng+')';
+    document.getElementById('map-link').style.display = 'block';
+    document.getElementById('map-a').href = state.mapUrl;
+    showToast('現在地を取得しました','success');
+  }, () => {
+    icon.textContent = '❌'; txt.textContent = '取得できませんでした';
+    showToast('位置情報の取得に失敗しました','error');
+  }, {enableHighAccuracy:true, timeout:10000});
 }
-
 
 function generateMapFromAddress() {
-  const addr = document.getElementById("address-input").value.trim();
-  if (!addr) { showToast("住所を入力してください", "error"); return; }
-  state.mapUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(addr);
-  state.lat = null;
-  state.lng = null;
-  document.getElementById("map-link").style.display = "block";
-  document.getElementById("map-a").href = state.mapUrl;
-  document.getElementById("loc-btn").classList.remove("got");
-  document.getElementById("loc-icon").textContent = "📍";
-  document.getElementById("loc-text").textContent = "現在地を自動取得";
-  showToast("マップリンクを生成しました", "success");
-}
-function collectField() {
-  state.phone = document.getElementById('phone').value;
-  state.timestamp = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Bangkok' });
+  const addr = document.getElementById('address-input').value.trim();
+  if(!addr) { showToast('住所を入力してください','error'); return; }
+  state.mapUrl = 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr);
+  state.lat = null; state.lng = null;
+  document.getElementById('map-link').style.display = 'block';
+  document.getElementById('map-a').href = state.mapUrl;
+  showToast('マップリンクを生成しました','success');
 }
 
-function collectDetail() {
+function collectAll() {
+  state.phone = document.getElementById('phone').value;
   state.rent = document.getElementById('rent').value;
   state.deposit = document.getElementById('deposit').value;
   state.size = document.getElementById('size').value;
@@ -421,123 +271,127 @@ function collectDetail() {
 }
 
 function submitField() {
-  collectField();
-  showToast('現地情報を保存しました', 'success');
+  state.phone = document.getElementById('phone').value;
+  showToast('現地情報を保存しました','success');
   switchTab(1);
 }
 
-function submitFieldOnly() {
-  collectField();
-  sendToSheet();
-}
-
-function submitDetail() {
-  collectDetail();
-  sendToSheet();
-}
-
-function setStatus(s) {
-  const dot = document.getElementById('dot');
-  const txt = document.getElementById('status-text');
-  if (s === 'saving') { dot.className = 'dot saving'; txt.textContent = '送信中...'; }
-  else if (s === 'saved') { dot.className = 'dot saved'; txt.textContent = '送信済み'; }
-  else { dot.className = 'dot'; txt.textContent = '待機中'; }
-}
-
-function sendToSheet() {
-  const gasUrl = localStorage.getItem(GAS_URL_KEY) || DEFAULT_GAS_URL;
-  if (!gasUrl) {
-    showToast('GAS URLが未設定です。コピーで代用します', 'error');
-    copyData();
-    return;
-  }
-
-  setStatus('saving');
-  const payload = {
-    timestamp: state.timestamp || new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Bangkok' }),
+function saveNow() {
+  collectAll();
+  const list = getList();
+  const entry = {
+    id: Date.now(),
+    timestamp: new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'}),
     type: state.type,
+    propName: state.propName || '物件 '+(list.length+1),
     phone: state.phone,
+    mapUrl: state.mapUrl,
     lat: state.lat,
     lng: state.lng,
-    mapUrl: state.mapUrl,
     rent: state.rent,
     deposit: state.deposit,
     size: state.size,
     conditions: state.conditions,
-    notes: state.notes,
-    propName: state.propName
+    notes: state.notes
   };
+  list.push(entry);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  updateCount();
+  showToast('保存しました！','success');
+  resetForm();
+  setTimeout(() => switchTab(2), 800);
+}
 
-  fetch(gasUrl, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  }).then(() => {
-    setStatus('saved');
-    showToast('Googleシートに送信しました ✓', 'success');
-    resetForm();
-  }).catch(() => {
-    setStatus('idle');
-    showToast('送信エラー。コピーボタンで保存してください', 'error');
-  });
+function getList() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch(e) { return []; }
+}
+
+function updateCount() {
+  const n = getList().length;
+  document.getElementById('count-label').textContent = n+'件保存';
+}
+
+function renderList() {
+  const list = getList();
+  const container = document.getElementById('list-container');
+  if(list.length === 0) {
+    container.innerHTML = '<div class="list-empty"><div class="empty-icon">🏠</div>まだ物件が保存されていません<br>現地入力から追加してください</div>';
+    return;
+  }
+  container.innerHTML = list.slice().reverse().map(p => `
+    <div class="prop-card" onclick="openModal(${p.id})">
+      <div class="prop-card-header">
+        <div class="prop-name">${p.propName}</div>
+        <div class="prop-type">${p.type}</div>
+      </div>
+      <div class="prop-meta">
+        ${p.rent ? '฿'+Number(p.rent).toLocaleString()+'/月　' : ''}
+        ${p.size ? p.size+'㎡　' : ''}
+        ${p.phone ? '📞 '+p.phone+'　' : ''}
+        ${p.mapUrl ? '<a href="'+p.mapUrl+'" target="_blank" onclick="event.stopPropagation()">🗺 地図</a>' : ''}
+        <br><span style="font-size:11px;color:var(--muted)">${p.timestamp}</span>
+      </div>
+      <span class="prop-delete" onclick="event.stopPropagation();deleteEntry(${p.id})">🗑 削除</span>
+    </div>
+  `).join('');
+}
+
+function openModal(id) {
+  const list = getList();
+  const p = list.find(x => x.id === id);
+  if(!p) return;
+  document.getElementById('modal-title-text').textContent = p.propName;
+  const rows = [
+    ['種類', p.type],
+    ['日時', p.timestamp],
+    ['電話', p.phone || '未入力'],
+    ['場所', p.mapUrl ? '<a href="'+p.mapUrl+'" target="_blank">🗺 Googleマップで開く</a>' : '未入力'],
+    ['家賃', p.rent ? '฿'+Number(p.rent).toLocaleString()+'/月' : '未入力'],
+    ['敷金', p.deposit || '未入力'],
+    ['広さ', p.size ? p.size+'㎡' : '未入力'],
+    ['条件', p.conditions || '未入力'],
+    ['メモ', p.notes || '未入力'],
+  ];
+  document.getElementById('modal-body').innerHTML = rows.map(([l,v]) =>
+    '<div class="modal-row"><span class="modal-label">'+l+'</span><span class="modal-value">'+v+'</span></div>'
+  ).join('');
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(e) {
+  if(e.target === document.getElementById('modal')) document.getElementById('modal').classList.remove('open');
+}
+
+function deleteEntry(id) {
+  if(!confirm('この物件を削除しますか？')) return;
+  const list = getList().filter(x => x.id !== id);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  updateCount();
+  renderList();
+  showToast('削除しました','success');
 }
 
 function resetForm() {
-  state = { type: state.type, photos: [], phone: '', lat: null, lng: null, mapUrl: '',
-    rent: '', deposit: '', size: '', conditions: '', notes: '', propName: '', timestamp: '' };
-  document.getElementById('phone').value = '';
-  document.getElementById('rent').value = '';
-  document.getElementById('deposit').value = '';
-  document.getElementById('size').value = '';
-  document.getElementById('conditions').value = '';
-  document.getElementById('notes').value = '';
-  document.getElementById('prop-name').value = '';
-  document.getElementById('photo-preview').style.display = 'none';
-  document.getElementById('photo-preview').innerHTML = '';
+  state = {type:state.type,photos:[],phone:'',lat:null,lng:null,mapUrl:'',rent:'',deposit:'',size:'',conditions:'',notes:'',propName:''};
+  ['phone','rent','deposit','size','conditions','notes','prop-name','address-input'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('photo-preview').style.display='none';
+  document.getElementById('photo-preview').innerHTML='';
   document.getElementById('loc-btn').classList.remove('got');
-  document.getElementById('loc-icon').textContent = '📍';
-  document.getElementById('loc-text').textContent = '現在地を自動取得';
-  document.getElementById('address-input').value = '';
-  document.getElementById('map-link').style.display = 'none';
-  switchTab(0);
+  document.getElementById('loc-icon').textContent='📍';
+  document.getElementById('loc-text').textContent='現在地を自動取得';
+  document.getElementById('map-link').style.display='none';
 }
 
-function copyData() {
-  collectField();
-  collectDetail();
-  const txt = [
-    `【物件スカウト】${state.timestamp || new Date().toLocaleString('ja-JP')}`,
-    `種類: ${state.type}`,
-    `電話: ${state.phone}`,
-    `場所: ${state.mapUrl || '未取得'}`,
-    `家賃: ${state.rent ? '฿'+state.rent+'/月' : '未入力'}`,
-    `敷金: ${state.deposit}`,
-    `広さ: ${state.size ? state.size+'㎡' : '未入力'}`,
-    `条件: ${state.conditions}`,
-    `メモ: ${state.notes}`,
-    `物件名: ${state.propName}`
-  ].join('\n');
-
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(txt).then(() => showToast('クリップボードにコピーしました', 'success'));
-  } else {
-    const ta = document.createElement('textarea');
-    ta.value = txt;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    showToast('コピーしました', 'success');
-  }
-}
-
-function showToast(msg, type = '') {
+function showToast(msg, type='') {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'show ' + type;
-  setTimeout(() => { t.className = ''; }, 2800);
+  t.textContent = msg; t.className = 'show '+type;
+  setTimeout(() => { t.className=''; }, 2800);
 }
+
+updateCount();
 </script>
 </body>
 </html>
