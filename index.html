@@ -302,22 +302,15 @@ function setStatus(s) {
 function handlePhotos(input, previewId) {
   const files = Array.from(input.files);
   if(!files.length) return;
-  newPhotoDataUrls = [];
   const preview = document.getElementById(previewId);
   preview.innerHTML = ''; preview.style.display = 'flex';
-  let loaded = 0;
+  state.photoCount = (state.photoCount || 0) + files.length;
   files.forEach(file => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      newPhotoDataUrls.push(e.target.result);
-      const img = document.createElement('img');
-      img.src = e.target.result;
-      preview.appendChild(img);
-      loaded++;
-      if(loaded === files.length) { state.photoDataUrls = [...state.photoDataUrls, ...newPhotoDataUrls]; showToast(files.length+'枚追加','success'); }
-    };
-    reader.readAsDataURL(file);
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(file);
+    preview.appendChild(img);
   });
+  showToast(files.length+'枚追加（カメラロールに保存済み）','success');
 }
 
 // ---- LOCATION ----
@@ -393,7 +386,7 @@ function saveNow() {
     lat: state.lat, lng: state.lng,
     rent: state.rent, deposit: state.deposit, size: state.size,
     conditions: state.conditions, notes: state.notes,
-    photoDataUrls: state.photoDataUrls,
+    photoCount: state.photoCount || 0,
     appendedNotes: []
   };
   list.push(entry);
@@ -458,9 +451,8 @@ function openModal(id) {
   ).join('');
   // photos
   const mp = document.getElementById('modal-photos');
-  if(p.photoDataUrls && p.photoDataUrls.length){
-    mp.innerHTML='<div style="display:flex;flex-wrap:wrap;gap:8px">'+p.photoDataUrls.map(src=>'<img src="'+src+'" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border)">').join('')+'</div>';
-  } else { mp.innerHTML=''; }
+  const photoCount = p.photoCount || 0;
+  mp.innerHTML = photoCount > 0 ? '<div style="font-size:13px;color:var(--muted);padding:8px 0">📷 写真 '+photoCount+'枚（カメラロールに保存済み）</div>' : '';
   // edit fields
   document.getElementById('edit-name').value = p.propName||'';
   document.getElementById('edit-phone').value = p.phone||'';
@@ -519,21 +511,10 @@ function appendPhotos(input){
   const list = getList();
   const p = list.find(x=>x.id===currentId);
   if(!p) return;
-  if(!p.photoDataUrls) p.photoDataUrls=[];
-  let loaded=0;
-  files.forEach(file=>{
-    const reader = new FileReader();
-    reader.onload = e=>{
-      p.photoDataUrls.push(e.target.result);
-      loaded++;
-      if(loaded===files.length){
-        saveList(list);
-        showToast(files.length+'枚追加しました','success');
-        openModal(currentId);
-      }
-    };
-    reader.readAsDataURL(file);
-  });
+  p.photoCount = (p.photoCount || 0) + files.length;
+  saveList(list);
+  showToast(files.length+'枚追加しました（カメラロールに保存済み）','success');
+  openModal(currentId);
 }
 
 function saveEdit(){
