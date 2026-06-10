@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#1a1a2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>物件スカウト</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  :root{
+    --bg:#0f0f1a;
+    --surface:#1a1a2e;
+    --surface2:#252540;
+    --border:#2e2e50;
+    --accent:#6c63ff;
+    --accent2:#ff6584;
+    --text:#f0f0ff;
+    --muted:#8888aa;
+    --green:#22c55e;
+    --amber:#f59e0b;
+    --radius:14px;
+    --radius-sm:8px;
+  }
+  html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Noto Sans JP',sans-serif;font-size:16px;overflow:hidden}
+
+  /* SHELL */
+  #app{display:flex;flex-direction:column;height:100vh;max-width:430px;margin:0 auto;position:relative}
+
+  /* HEADER */
+  header{padding:16px 20px 12px;display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-bottom:1px solid var(--border)}
+  .logo{font-size:17px;font-weight:700;letter-spacing:-.3px;color:var(--text)}
+  .logo span{color:var(--accent)}
+  .save-status{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--muted)}
+  .dot.saved{background:var(--green)}
+  .dot.saving{background:var(--amber);animation:pulse .8s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  /* TAB BAR */
+  .tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border-bottom:1px solid var(--border)}
+  .tab{padding:12px;text-align:center;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;user-select:none}
+  .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+  .tab-icon{font-size:18px;margin-bottom:2px}
+
+  /* PAGES */
+  .pages{flex:1;overflow:hidden;position:relative}
+  .page{position:absolute;inset:0;overflow-y:auto;padding:16px;transition:transform .3s ease,opacity .3s ease}
+  .page.hidden{pointer-events:none;opacity:0}
+  #page-field{transform:translateX(0)}
+  #page-field.hidden{transform:translateX(-40px)}
+  #page-detail{transform:translateX(0)}
+  #page-detail.hidden{transform:translateX(40px)}
+
+  /* CARDS */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px}
+  .card-title{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+
+  /* TYPE SELECTOR */
+  .type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .type-btn{padding:14px 8px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);text-align:center;cursor:pointer;transition:all .15s;user-select:none}
+  .type-btn .type-icon{font-size:26px;margin-bottom:5px}
+  .type-btn .type-label{font-size:13px;font-weight:500}
+  .type-btn.active{border-color:var(--accent);background:rgba(108,99,255,.12);color:var(--text)}
+
+  /* INPUTS */
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500}
+  .field input,.field textarea,.field select{
+    width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);
+    color:var(--text);font-size:15px;padding:11px 13px;outline:none;transition:border .15s;
+    font-family:inherit;
+  }
+  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent)}
+  .field input::placeholder,.field textarea::placeholder{color:var(--muted);opacity:.6}
+  .field textarea{resize:none;line-height:1.5}
+  .field select option{background:var(--surface2)}
+
+  /* PHOTO */
+  .photo-area{border:1.5px dashed var(--border);border-radius:var(--radius-sm);padding:20px;text-align:center;cursor:pointer;transition:border .15s;position:relative;overflow:hidden}
+  .photo-area:active{border-color:var(--accent)}
+  .photo-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
+  .photo-placeholder{color:var(--muted);font-size:13px;pointer-events:none}
+  .photo-placeholder .ph-icon{font-size:32px;margin-bottom:6px}
+  #photo-preview{display:none;flex-wrap:wrap;gap:8px;margin-top:12px}
+  #photo-preview img{width:72px;height:72px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
+
+  /* LOCATION BTN */
+  .loc-btn{width:100%;padding:13px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
+  .loc-btn:active{background:rgba(108,99,255,.15);border-color:var(--accent)}
+  .loc-btn.got{border-color:var(--green);color:var(--green)}
+  #map-link{display:none;margin-top:8px}
+  #map-link a{font-size:12px;color:var(--accent);text-decoration:none;word-break:break-all;display:flex;align-items:center;gap:4px}
+
+  /* TWO COL */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+  /* SUBMIT */
+  .submit-btn{
+    width:100%;padding:16px;border-radius:var(--radius);border:none;
+    font-size:15px;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:.02em;
+    margin-top:4px;
+  }
+  .submit-btn.primary{background:var(--accent);color:#fff}
+  .submit-btn.primary:active{background:#5a52e0;transform:scale(.98)}
+  .submit-btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+  .submit-btn.secondary:active{background:var(--border)}
+
+  /* TOAST */
+  #toast{
+    position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--surface);border:1px solid var(--border);border-radius:100px;
+    padding:10px 20px;font-size:13px;white-space:nowrap;opacity:0;transition:all .3s;
+    pointer-events:none;z-index:100;max-width:320px;text-align:center;
+  }
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  #toast.success{border-color:var(--green);color:var(--green)}
+  #toast.error{border-color:var(--accent2);color:var(--accent2)}
+
+  /* SETUP */
+  #setup-overlay{
+    position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;padding:32px;
+  }
+  .setup-logo{font-size:32px;font-weight:800;color:var(--text);margin-bottom:8px}
+  .setup-logo span{color:var(--accent)}
+  .setup-sub{font-size:14px;color:var(--muted);margin-bottom:32px;text-align:center;line-height:1.6}
+  .setup-label{font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500;align-self:flex-start;width:100%}
+  .setup-input{
+    width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);
+    color:var(--text);font-size:14px;padding:12px 14px;outline:none;margin-bottom:16px;font-family:inherit;
+  }
+  .setup-input:focus{border-color:var(--accent)}
+  .setup-help{font-size:11px;color:var(--muted);margin-top:-10px;margin-bottom:16px;line-height:1.6;width:100%}
+  .setup-btn{width:100%;padding:15px;border-radius:var(--radius);border:none;background:var(--accent);color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px}
+  .setup-skip{font-size:12px;color:var(--muted);cursor:pointer;margin-top:12px;text-decoration:underline}
+</style>
+</head>
+<body>
+
+<!-- SETUP OVERLAY -->
+<div id="setup-overlay">
+  <div class="setup-logo">物件<span>スカウト</span></div>
+  <div class="setup-sub">Google Sheetsに自動送信するため<br>WebhookのURLを設定してください</div>
+  <div class="setup-label">Google Apps Script Web App URL</div>
+  <input class="setup-input" id="setup-url" placeholder="https://script.google.com/macros/s/..." />
+  <div class="setup-help">※ 設定方法は下部の「使い方」ボタンで確認できます。後で設定する場合はスキップ可。</div>
+  <button class="setup-btn" onclick="saveSetup()">設定して開始</button>
+  <div class="setup-skip" onclick="skipSetup()">今はスキップ（手動コピーモードで使う）</div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" style="display:none">
+  <header>
+    <div class="logo">物件<span>スカウト</span></div>
+    <div class="save-status"><div class="dot" id="dot"></div><span id="status-text">待機中</span></div>
+  </header>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(0)" id="tab0">
+      <div class="tab-icon">📍</div>
+      現地入力
+    </div>
+    <div class="tab" onclick="switchTab(1)" id="tab1">
+      <div class="tab-icon">📋</div>
+      物件詳細
+    </div>
+  </div>
+
+  <div class="pages">
+
+    <!-- PAGE 1: 現地入力 -->
+    <div class="page" id="page-field">
+
+      <div class="card">
+        <div class="card-title">物件の種類</div>
+        <div class="type-grid">
+          <div class="type-btn active" id="type-tenant" onclick="setType('テナント')">
+            <div class="type-icon">🏪</div>
+            <div class="type-label">テナント</div>
+          </div>
+          <div class="type-btn" id="type-residence" onclick="setType('住居')">
+            <div class="type-icon">🏠</div>
+            <div class="type-label">住居</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">写真</div>
+        <div class="photo-area">
+          <input type="file" accept="image/*" multiple onchange="handlePhotos(this)" id="photo-input">
+          <div class="photo-placeholder">
+            <div class="ph-icon">📷</div>
+            タップして撮影 または ライブラリから選択
+          </div>
+        </div>
+        <div id="photo-preview"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">電話番号</div>
+        <div class="field">
+          <input type="tel" id="phone" placeholder="例：081-234-5678" />
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">現在地</div>
+        <button class="loc-btn" id="loc-btn" onclick="getLocation()">
+          <span id="loc-icon">📍</span>
+          <span id="loc-text">現在地を取得してマップリンクを生成</span>
+        </button>
+        <div id="map-link">
+          <a id="map-a" href="#" target="_blank">🗺 Googleマップで確認 →</a>
+        </div>
+      </div>
+
+      <button class="submit-btn primary" onclick="submitField()">
+        保存して詳細へ →
+      </button>
+      <button class="submit-btn secondary" style="margin-top:8px" onclick="submitFieldOnly()">
+        現地情報だけ保存
+      </button>
+
+    </div>
+
+    <!-- PAGE 2: 物件詳細 -->
+    <div class="page hidden" id="page-detail">
+
+      <div class="card">
+        <div class="card-title">家賃 / 費用</div>
+        <div class="two-col">
+          <div class="field">
+            <label>月額家賃（฿）</label>
+            <input type="number" id="rent" placeholder="例：25000" />
+          </div>
+          <div class="field">
+            <label>敷金 / 保証金</label>
+            <input type="text" id="deposit" placeholder="例：2ヶ月" />
+          </div>
+        </div>
+        <div class="field">
+          <label>広さ（㎡）</label>
+          <input type="number" id="size" placeholder="例：45" />
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">賃貸条件</div>
+        <div class="field">
+          <label>契約条件</label>
+          <input type="text" id="conditions" placeholder="例：最低1年、ペット不可" />
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>その他メモ</label>
+          <textarea id="notes" rows="4" placeholder="例：駐車場あり、改装交渉可、すぐ入居可"></textarea>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">物件名 / 識別メモ</div>
+        <div class="field" style="margin-bottom:0">
+          <input type="text" id="prop-name" placeholder="例：Soi 11 角地テナント" />
+        </div>
+      </div>
+
+      <button class="submit-btn primary" onclick="submitDetail()">
+        シートに送信 ✓
+      </button>
+      <button class="submit-btn secondary" style="margin-top:8px" onclick="copyData()">
+        データをコピー（手動用）
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const GAS_URL_KEY = 'property_scout_gas_url';
+let state = {
+  type: 'テナント',
+  photos: [],
+  phone: '',
+  lat: null,
+  lng: null,
+  mapUrl: '',
+  rent: '',
+  deposit: '',
+  size: '',
+  conditions: '',
+  notes: '',
+  propName: '',
+  timestamp: ''
+};
+
+function saveSetup() {
+  const url = document.getElementById('setup-url').value.trim();
+  if (url) localStorage.setItem(GAS_URL_KEY, url);
+  document.getElementById('setup-overlay').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+}
+function skipSetup() {
+  document.getElementById('setup-overlay').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+}
+
+window.addEventListener('load', () => {
+  const saved = localStorage.getItem(GAS_URL_KEY);
+  if (saved) {
+    document.getElementById('setup-overlay').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+  }
+});
+
+function switchTab(idx) {
+  document.getElementById('tab0').classList.toggle('active', idx === 0);
+  document.getElementById('tab1').classList.toggle('active', idx === 1);
+  document.getElementById('page-field').classList.toggle('hidden', idx !== 0);
+  document.getElementById('page-detail').classList.toggle('hidden', idx !== 1);
+}
+
+function setType(t) {
+  state.type = t;
+  document.getElementById('type-tenant').classList.toggle('active', t === 'テナント');
+  document.getElementById('type-residence').classList.toggle('active', t === '住居');
+}
+
+function handlePhotos(input) {
+  state.photos = Array.from(input.files);
+  const preview = document.getElementById('photo-preview');
+  preview.innerHTML = '';
+  if (state.photos.length > 0) {
+    preview.style.display = 'flex';
+    state.photos.forEach(file => {
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(file);
+      preview.appendChild(img);
+    });
+    showToast(`${state.photos.length}枚の写真を追加`, 'success');
+  }
+}
+
+function getLocation() {
+  const btn = document.getElementById('loc-btn');
+  const txt = document.getElementById('loc-text');
+  const icon = document.getElementById('loc-icon');
+  txt.textContent = '取得中...';
+  icon.textContent = '⏳';
+
+  if (!navigator.geolocation) {
+    showToast('このブラウザは位置情報に対応していません', 'error');
+    txt.textContent = '位置情報が使えません';
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(pos => {
+    state.lat = pos.coords.latitude.toFixed(6);
+    state.lng = pos.coords.longitude.toFixed(6);
+    state.mapUrl = `https://www.google.com/maps?q=${state.lat},${state.lng}`;
+
+    btn.classList.add('got');
+    icon.textContent = '✅';
+    txt.textContent = `取得完了 (${state.lat}, ${state.lng})`;
+
+    const mapLink = document.getElementById('map-link');
+    const mapA = document.getElementById('map-a');
+    mapLink.style.display = 'block';
+    mapA.href = state.mapUrl;
+    showToast('現在地を取得しました', 'success');
+  }, err => {
+    icon.textContent = '❌';
+    txt.textContent = '位置情報を取得できませんでした';
+    showToast('位置情報の取得に失敗しました', 'error');
+  }, { enableHighAccuracy: true, timeout: 10000 });
+}
+
+function collectField() {
+  state.phone = document.getElementById('phone').value;
+  state.timestamp = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Bangkok' });
+}
+
+function collectDetail() {
+  state.rent = document.getElementById('rent').value;
+  state.deposit = document.getElementById('deposit').value;
+  state.size = document.getElementById('size').value;
+  state.conditions = document.getElementById('conditions').value;
+  state.notes = document.getElementById('notes').value;
+  state.propName = document.getElementById('prop-name').value;
+}
+
+function submitField() {
+  collectField();
+  showToast('現地情報を保存しました', 'success');
+  switchTab(1);
+}
+
+function submitFieldOnly() {
+  collectField();
+  sendToSheet();
+}
+
+function submitDetail() {
+  collectDetail();
+  sendToSheet();
+}
+
+function setStatus(s) {
+  const dot = document.getElementById('dot');
+  const txt = document.getElementById('status-text');
+  if (s === 'saving') { dot.className = 'dot saving'; txt.textContent = '送信中...'; }
+  else if (s === 'saved') { dot.className = 'dot saved'; txt.textContent = '送信済み'; }
+  else { dot.className = 'dot'; txt.textContent = '待機中'; }
+}
+
+function sendToSheet() {
+  const gasUrl = localStorage.getItem(GAS_URL_KEY);
+  if (!gasUrl) {
+    showToast('GAS URLが未設定です。コピーで代用します', 'error');
+    copyData();
+    return;
+  }
+
+  setStatus('saving');
+  const payload = {
+    timestamp: state.timestamp || new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Bangkok' }),
+    type: state.type,
+    phone: state.phone,
+    lat: state.lat,
+    lng: state.lng,
+    mapUrl: state.mapUrl,
+    rent: state.rent,
+    deposit: state.deposit,
+    size: state.size,
+    conditions: state.conditions,
+    notes: state.notes,
+    propName: state.propName
+  };
+
+  fetch(gasUrl, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).then(() => {
+    setStatus('saved');
+    showToast('Googleシートに送信しました ✓', 'success');
+    resetForm();
+  }).catch(() => {
+    setStatus('idle');
+    showToast('送信エラー。コピーボタンで保存してください', 'error');
+  });
+}
+
+function resetForm() {
+  state = { type: state.type, photos: [], phone: '', lat: null, lng: null, mapUrl: '',
+    rent: '', deposit: '', size: '', conditions: '', notes: '', propName: '', timestamp: '' };
+  document.getElementById('phone').value = '';
+  document.getElementById('rent').value = '';
+  document.getElementById('deposit').value = '';
+  document.getElementById('size').value = '';
+  document.getElementById('conditions').value = '';
+  document.getElementById('notes').value = '';
+  document.getElementById('prop-name').value = '';
+  document.getElementById('photo-preview').style.display = 'none';
+  document.getElementById('photo-preview').innerHTML = '';
+  document.getElementById('loc-btn').classList.remove('got');
+  document.getElementById('loc-icon').textContent = '📍';
+  document.getElementById('loc-text').textContent = '現在地を取得してマップリンクを生成';
+  document.getElementById('map-link').style.display = 'none';
+  switchTab(0);
+}
+
+function copyData() {
+  collectField();
+  collectDetail();
+  const txt = [
+    `【物件スカウト】${state.timestamp || new Date().toLocaleString('ja-JP')}`,
+    `種類: ${state.type}`,
+    `電話: ${state.phone}`,
+    `場所: ${state.mapUrl || '未取得'}`,
+    `家賃: ${state.rent ? '฿'+state.rent+'/月' : '未入力'}`,
+    `敷金: ${state.deposit}`,
+    `広さ: ${state.size ? state.size+'㎡' : '未入力'}`,
+    `条件: ${state.conditions}`,
+    `メモ: ${state.notes}`,
+    `物件名: ${state.propName}`
+  ].join('\n');
+
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(txt).then(() => showToast('クリップボードにコピーしました', 'success'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = txt;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('コピーしました', 'success');
+  }
+}
+
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show ' + type;
+  setTimeout(() => { t.className = ''; }, 2800);
+}
+</script>
+</body>
+</html>
