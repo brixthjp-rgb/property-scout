@@ -115,8 +115,11 @@ header{padding:14px 20px 10px;display:flex;align-items:center;justify-content:sp
 <body>
 <div id="app">
   <header>
-    <div class="logo">物件<span>スカウト</span></div>
-    <div style="font-size:12px;color:var(--muted)" id="count-label">0件</div>
+    <div class="logo" id="logo">物件<span>スカウト</span></div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="font-size:12px;color:var(--muted)" id="count-label">0件</div>
+      <button onclick="toggleLang()" id="lang-btn" style="padding:5px 10px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:12px;cursor:pointer;font-weight:600">🇹🇭 TH</button>
+    </div>
   </header>
   <div class="tabs">
     <div class="tab active" onclick="switchTab(0)" id="tab0"><div class="tab-icon">📍</div>現地入力</div>
@@ -128,14 +131,14 @@ header{padding:14px 20px 10px;display:flex;align-items:center;justify-content:sp
     <!-- PAGE 1 現地入力 -->
     <div class="page" id="page-field">
       <div class="card">
-        <div class="card-title">物件の種類</div>
+        <div class="card-title" id="type-title">物件の種類</div>
         <div class="type-grid">
           <div class="type-btn active" id="type-tenant" onclick="setType('テナント')"><div class="ti">🏪</div><div class="type-label">テナント</div></div>
           <div class="type-btn" id="type-residence" onclick="setType('住居')"><div class="ti">🏠</div><div class="type-label">住居</div></div>
         </div>
       </div>
       <div class="card">
-        <div class="card-title">写真</div>
+        <div class="card-title" id="photo-title">写真</div>
         <div class="photo-area">
           <input type="file" accept="image/*" multiple onchange="handlePhotos(this,'photo-preview-new')">
           <div class="photo-placeholder"><div class="ph-icon">📷</div>タップして撮影 または ライブラリから選択</div>
@@ -143,33 +146,33 @@ header{padding:14px 20px 10px;display:flex;align-items:center;justify-content:sp
         <div class="photo-preview" id="photo-preview-new"></div>
       </div>
       <div class="card">
-        <div class="card-title">電話番号</div>
+        <div class="card-title" id="phone-title">電話番号</div>
         <div class="field"><input type="tel" id="phone" placeholder="例：081-234-5678"/></div>
       </div>
       <div class="card">
-        <div class="card-title">場所</div>
+        <div class="card-title" id="location-title">場所</div>
         <button class="loc-btn" id="loc-btn" onclick="getLocation()">
           <span id="loc-icon">📍</span><span id="loc-text">現在地を自動取得</span>
         </button>
-        <div class="divider">または住所を手入力</div>
+        <div class="divider" id="location-or">または住所を手入力</div>
         <div class="addr-row">
           <input class="addr-input" id="address-input" placeholder="例：Sukhumvit Soi 11, Bangkok"/>
-          <button class="addr-btn" onclick="generateMapFromAddress()">🗺 生成</button>
+          <button class="addr-btn" onclick="generateMapFromAddress()" id="map-gen-btn">🗺 生成</button>
         </div>
         <div class="map-link" id="map-link"><a id="map-a" href="#" target="_blank">🗺 Googleマップで確認 →</a></div>
       </div>
-      <button class="submit-btn primary" onclick="submitField()">保存して詳細へ →</button>
-      <button class="submit-btn secondary" onclick="saveNow()">現地情報だけ保存</button>
+      <button class="submit-btn primary" id="submit-next" onclick="submitField()">保存して詳細へ →</button>
+      <button class="submit-btn secondary" id="submit-field-only" onclick="saveNow()">現地情報だけ保存</button>
     </div>
 
     <!-- PAGE 2 物件詳細 -->
     <div class="page hidden" id="page-detail">
       <div class="card">
-        <div class="card-title">物件名 / 識別メモ</div>
+        <div class="card-title" id="prop-name-title">物件名 / 識別メモ</div>
         <div class="field"><input type="text" id="prop-name" placeholder="例：Soi 11 角地テナント"/></div>
       </div>
       <div class="card">
-        <div class="card-title">ステータス</div>
+        <div class="card-title" id="status-title">ステータス</div>
         <div class="status-grid">
           <div class="status-btn active-s0" id="snew" onclick="setStatus('未交渉')">🔵 未交渉</div>
           <div class="status-btn" id="sneg" onclick="setStatus('交渉中')">🟡 交渉中</div>
@@ -179,20 +182,20 @@ header{padding:14px 20px 10px;display:flex;align-items:center;justify-content:sp
         </div>
       </div>
       <div class="card">
-        <div class="card-title">家賃 / 費用</div>
+        <div class="card-title" id="rent-title">家賃 / 費用</div>
         <div class="two-col">
           <div class="field"><label>月額家賃（฿）</label><input type="number" id="rent" placeholder="25000"/></div>
-          <div class="field"><label>敷金 / 保証金</label><input type="text" id="deposit" placeholder="2ヶ月"/></div>
+          <div class="field"><label id="deposit-label">敷金 / 保証金</label><input type="text" id="deposit" placeholder="2ヶ月"/></div>
         </div>
-        <div class="field"><label>広さ（㎡）</label><input type="number" id="size" placeholder="45"/></div>
+        <div class="field"><label id="size-label">広さ（㎡）</label><input type="number" id="size" placeholder="45"/></div>
       </div>
       <div class="card">
-        <div class="card-title">賃貸条件・メモ</div>
+        <div class="card-title" id="cond-title">賃貸条件・メモ</div>
         <div class="field"><label>契約条件</label><input type="text" id="conditions" placeholder="最低1年、ペット不可"/></div>
-        <div class="field" style="margin-bottom:0"><label>その他メモ</label><textarea id="notes" rows="4" placeholder="駐車場あり、改装交渉可"></textarea></div>
+        <div class="field" style="margin-bottom:0"><label id="notes-label">その他メモ</label><textarea id="notes" rows="4" placeholder="駐車場あり、改装交渉可"></textarea></div>
       </div>
-      <button class="submit-btn primary" onclick="saveNow()">💾 保存する</button>
-      <button class="submit-btn secondary" onclick="switchTab(0)">← 現地入力に戻る</button>
+      <button class="submit-btn primary" id="save-btn" onclick="saveNow()">💾 保存する</button>
+      <button class="submit-btn secondary" id="back-btn" onclick="switchTab(0)">← 現地入力に戻る</button>
     </div>
 
     <!-- PAGE 3 保存リスト -->
@@ -416,7 +419,188 @@ function saveNow() {
   };
   list.push(entry);
   saveList(list);
-  updateCount();
+  
+// ---- LANGUAGE ----
+let currentLang = 'ja';
+const LANG = {
+  ja: {
+    logo: '物件<span style="color:var(--accent)">スカウト</span>',
+    countSuffix: '件',
+    langBtn: '🇹🇭 TH',
+    tab0: '現地入力', tab1: '物件詳細', tab2: '保存リスト',
+    typeTitle: '物件の種類', typeTenant: 'テナント', typeResidence: '住居',
+    photoTitle: '写真', photoPlaceholder: 'タップして撮影 または ライブラリから選択',
+    phoneTitle: '電話番号', phonePlaceholder: '例：081-234-5678',
+    locationTitle: '場所', locationBtn: '現在地を自動取得',
+    locationOr: 'または住所を手入力',
+    addressPlaceholder: '例：Sukhumvit Soi 11, Bangkok',
+    mapGenBtn: '🗺 生成', mapLink: '🗺 Googleマップで確認 →',
+    submitNext: '保存して詳細へ →', submitFieldOnly: '現地情報だけ保存',
+    propNameTitle: '物件名 / 識別メモ', propNamePlaceholder: '例：Soi 11 角地テナント',
+    statusTitle: 'ステータス',
+    statusList: ['未交渉','交渉中','契約済み','NG','保留'],
+    rentTitle: '家賃 / 費用', rentLabel: '月額家賃（฿）', rentPlaceholder: '25000',
+    depositLabel: '敷金 / 保証金', depositPlaceholder: '2ヶ月',
+    sizeLabel: '広さ（㎡）', sizePlaceholder: '45',
+    condTitle: '賃貸条件・メモ', condLabel: '契約条件', condPlaceholder: '最低1年、ペット不可',
+    notesLabel: 'その他メモ', notesPlaceholder: '駐車場あり、改装交渉可',
+    saveBtn: '💾 保存する', backBtn: '← 現地入力に戻る',
+    emptyList: 'まだ物件が保存されていません
+現地入力から追加してください',
+    appendNotePlaceholder: '追記メモを入力...', appendNoteBtn: '📝 追記する',
+    addPhotoBtn: '📷 写真を追加',
+    deleteBtn: '🗑 この物件を削除',
+    editTab: '✏️ 編集', viewTab: '📋 詳細',
+    saveEditBtn: '💾 上書き保存',
+    modalLabels: ['種類','日時','電話','場所','家賃','敷金','広さ','条件','メモ'],
+    toastPhotoAdding: '写真を処理中...',
+    toastPhotoAdded: '枚追加しました',
+    toastSaved: '保存しました！',
+    toastFieldSaved: '現地情報を保存しました',
+    toastLocating: '取得中...',
+    toastLocated: '取得完了',
+    toastLocFail: '取得できませんでした',
+    toastLocFailMsg: '位置情報の取得に失敗しました',
+    toastMapGen: 'マップリンクを生成しました',
+    toastAddrEmpty: '住所を入力してください',
+    toastNoteEmpty: 'メモを入力してください',
+    toastNoteAdded: '追記しました',
+    toastPhotoAppended: '枚追加しました',
+    toastDeleted: '削除しました',
+    toastEditSaved: '上書き保存しました',
+    toastStatusChanged: 'ステータスを「',
+    toastStatusChanged2: '」に変更しました',
+    confirmDelete: 'この物件を削除しますか？',
+    locGot: '取得完了',
+    locFail: '取得できませんでした',
+    locUnsupported: '位置情報が使えません',
+    propDefault: '物件 ',
+    rentDisplay: '/月',
+    sizeDisplay: '㎡',
+    photoDisplay: '📷 写真',
+    photoDisplaySuffix: '枚',
+  },
+  th: {
+    logo: 'สแกน<span style="color:var(--accent)">อสังหาฯ</span>',
+    countSuffix: ' แห่ง',
+    langBtn: '🇯🇵 JP',
+    tab0: 'บันทึกสถานที่', tab1: 'รายละเอียด', tab2: 'รายการ',
+    typeTitle: 'ประเภทอสังหาฯ', typeTenant: 'พื้นที่เช่า', typeResidence: 'ที่พักอาศัย',
+    photoTitle: 'รูปภาพ', photoPlaceholder: 'แตะเพื่อถ่ายรูป หรือเลือกจากคลัง',
+    phoneTitle: 'เบอร์โทรศัพท์', phonePlaceholder: 'เช่น 081-234-5678',
+    locationTitle: 'สถานที่', locationBtn: 'ใช้ตำแหน่งปัจจุบัน',
+    locationOr: 'หรือพิมพ์ที่อยู่',
+    addressPlaceholder: 'เช่น Sukhumvit Soi 11, Bangkok',
+    mapGenBtn: '🗺 สร้างลิงก์', mapLink: '🗺 เปิดใน Google Maps →',
+    submitNext: 'บันทึกและไปรายละเอียด →', submitFieldOnly: 'บันทึกเฉพาะข้อมูลสถานที่',
+    propNameTitle: 'ชื่อ / บันทึกย่อ', propNamePlaceholder: 'เช่น ตึกมุม Soi 11',
+    statusTitle: 'สถานะ',
+    statusList: ['ยังไม่เจรจา','กำลังเจรจา','เซ็นสัญญาแล้ว','ไม่ผ่าน','รอดูก่อน'],
+    rentTitle: 'ค่าเช่า / ค่าใช้จ่าย', rentLabel: 'ค่าเช่า/เดือน（฿）', rentPlaceholder: '25000',
+    depositLabel: 'เงินมัดจำ', depositPlaceholder: '2 เดือน',
+    sizeLabel: 'ขนาด（ตร.ม.）', sizePlaceholder: '45',
+    condTitle: 'เงื่อนไข / บันทึก', condLabel: 'เงื่อนไขสัญญา', condPlaceholder: 'อย่างน้อย 1 ปี, ห้ามเลี้ยงสัตว์',
+    notesLabel: 'บันทึกอื่นๆ', notesPlaceholder: 'มีที่จอดรถ, ต่อรองปรับปรุงได้',
+    saveBtn: '💾 บันทึก', backBtn: '← กลับไปบันทึกสถานที่',
+    emptyList: 'ยังไม่มีรายการอสังหาฯ
+เพิ่มได้จากหน้าบันทึกสถานที่',
+    appendNotePlaceholder: 'พิมพ์บันทึกเพิ่มเติม...', appendNoteBtn: '📝 เพิ่มบันทึก',
+    addPhotoBtn: '📷 เพิ่มรูปภาพ',
+    deleteBtn: '🗑 ลบรายการนี้',
+    editTab: '✏️ แก้ไข', viewTab: '📋 รายละเอียด',
+    saveEditBtn: '💾 บันทึกการแก้ไข',
+    modalLabels: ['ประเภท','วันที่','โทร','สถานที่','ค่าเช่า','มัดจำ','ขนาด','เงื่อนไข','บันทึก'],
+    toastPhotoAdding: 'กำลังประมวลผลรูป...',
+    toastPhotoAdded: ' รูปเพิ่มแล้ว',
+    toastSaved: 'บันทึกแล้ว！',
+    toastFieldSaved: 'บันทึกข้อมูลสถานที่แล้ว',
+    toastLocating: 'กำลังระบุตำแหน่ง...',
+    toastLocated: 'ระบุตำแหน่งแล้ว',
+    toastLocFail: 'ระบุตำแหน่งไม่ได้',
+    toastLocFailMsg: 'ไม่สามารถระบุตำแหน่งได้',
+    toastMapGen: 'สร้างลิงก์แผนที่แล้ว',
+    toastAddrEmpty: 'กรุณาพิมพ์ที่อยู่',
+    toastNoteEmpty: 'กรุณาพิมพ์บันทึก',
+    toastNoteAdded: 'เพิ่มบันทึกแล้ว',
+    toastPhotoAppended: ' รูปเพิ่มแล้ว',
+    toastDeleted: 'ลบแล้ว',
+    toastEditSaved: 'บันทึกการแก้ไขแล้ว',
+    toastStatusChanged: 'เปลี่ยนสถานะเป็น「',
+    toastStatusChanged2: '」แล้ว',
+    confirmDelete: 'ต้องการลบรายการนี้ใช่ไหม？',
+    locGot: 'ระบุตำแหน่งแล้ว',
+    locFail: 'ระบุตำแหน่งไม่ได้',
+    locUnsupported: 'ไม่รองรับ GPS',
+    propDefault: 'อสังหาฯ ',
+    rentDisplay: '/เดือน',
+    sizeDisplay: ' ตร.ม.',
+    photoDisplay: '📷 รูป',
+    photoDisplaySuffix: ' รูป',
+  }
+};
+
+function t(key){ return LANG[currentLang][key] || LANG['ja'][key] || key; }
+
+function toggleLang(){
+  currentLang = currentLang === 'ja' ? 'th' : 'ja';
+  applyLang();
+}
+
+function applyLang(){
+  const L = LANG[currentLang];
+  document.getElementById('logo').innerHTML = L.logo;
+  document.getElementById('lang-btn').textContent = L.langBtn;
+  document.getElementById('count-label').textContent = getList().length + L.countSuffix;
+  document.getElementById('tab0').innerHTML = '<div class="tab-icon">📍</div>'+L.tab0;
+  document.getElementById('tab1').innerHTML = '<div class="tab-icon">📋</div>'+L.tab1;
+  document.getElementById('tab2').innerHTML = '<div class="tab-icon">🏠</div>'+L.tab2;
+  // Page 1
+  setTextById('type-title', L.typeTitle);
+  document.getElementById('type-tenant').innerHTML = '<div class="ti">🏪</div><div class="type-label">'+L.typeTenant+'</div>';
+  document.getElementById('type-residence').innerHTML = '<div class="ti">🏠</div><div class="type-label">'+L.typeResidence+'</div>';
+  setTextById('photo-title', L.photoTitle);
+  document.querySelector('.photo-placeholder').innerHTML = '<div class="ph-icon">📷</div>'+L.photoPlaceholder;
+  setTextById('phone-title', L.phoneTitle);
+  document.getElementById('phone').placeholder = L.phonePlaceholder;
+  setTextById('location-title', L.locationTitle);
+  document.getElementById('loc-text').textContent = L.locationBtn;
+  setTextById('location-or', L.locationOr);
+  document.getElementById('address-input').placeholder = L.addressPlaceholder;
+  document.getElementById('map-gen-btn').textContent = L.mapGenBtn;
+  document.getElementById('map-a').textContent = L.mapLink;
+  document.getElementById('submit-next').textContent = L.submitNext;
+  document.getElementById('submit-field-only').textContent = L.submitFieldOnly;
+  // Page 2
+  setTextById('prop-name-title', L.propNameTitle);
+  document.getElementById('prop-name').placeholder = L.propNamePlaceholder;
+  setTextById('status-title', L.statusTitle);
+  ['snew','sneg','scon','sng','shold'].forEach((id,i)=>{
+    const el = document.getElementById(id);
+    if(el) el.textContent = ['🔵','🟡','🟢','🔴','⚪'][i]+' '+L.statusList[i];
+  });
+  setTextById('rent-title', L.rentTitle);
+  document.getElementById('rent').placeholder = L.rentPlaceholder;
+  setTextById('deposit-label', L.depositLabel);
+  document.getElementById('deposit').placeholder = L.depositPlaceholder;
+  setTextById('size-label', L.sizeLabel);
+  document.getElementById('size').placeholder = L.sizePlaceholder;
+  setTextById('cond-title', L.condTitle);
+  document.getElementById('conditions').placeholder = L.condPlaceholder;
+  setTextById('notes-label', L.notesLabel);
+  document.getElementById('notes').placeholder = L.notesPlaceholder;
+  document.getElementById('save-btn').textContent = L.saveBtn;
+  document.getElementById('back-btn').textContent = L.backBtn;
+  renderList();
+}
+
+function setTextById(id, text){
+  const el = document.getElementById(id);
+  if(el) el.textContent = text;
+}
+
+
+updateCount();
+applyLang();
   showToast('保存しました！','success');
   resetForm();
   setTimeout(()=>switchTab(2), 800);
