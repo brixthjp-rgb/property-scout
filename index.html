@@ -14,780 +14,786 @@
   --accent:#6c63ff;--accent2:#ff6584;--text:#f0f0ff;--muted:#8888aa;
   --green:#22c55e;--amber:#f59e0b;--radius:14px;--radius-sm:8px;
 }
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Noto Sans JP',sans-serif;font-size:16px;overflow:hidden}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Noto Sans JP','Sarabun',sans-serif;font-size:16px;overflow:hidden}
 #app{display:flex;flex-direction:column;height:100vh;max-width:430px;margin:0 auto}
-header{padding:14px 20px 10px;display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-bottom:1px solid var(--border)}
-.logo{font-size:17px;font-weight:700;color:var(--text)}.logo span{color:var(--accent)}
-.tabs{display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--surface);border-bottom:1px solid var(--border)}
-.tab{padding:10px 4px;text-align:center;font-size:11px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;user-select:none}
+
+/* HEADER */
+header{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
+.logo{font-size:17px;font-weight:700;color:var(--text)}
+.logo span{color:var(--accent)}
+.header-right{display:flex;align-items:center;gap:8px}
+.count-badge{font-size:12px;color:var(--muted)}
+.lang-btn{padding:4px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;-webkit-appearance:none}
+
+/* TABS */
+.tabs{display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
+.tab{padding:10px 4px;text-align:center;font-size:11px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;user-select:none;-webkit-user-select:none}
 .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 .tab-icon{font-size:16px;margin-bottom:2px}
+
+/* PAGES */
 .pages{flex:1;overflow:hidden;position:relative}
-.page{position:absolute;inset:0;overflow-y:auto;padding:16px;transition:transform .25s ease,opacity .25s ease}
-.page.hidden{pointer-events:none;opacity:0;transform:translateX(30px)}
-#page-field.hidden{transform:translateX(-30px)}
+.page{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px;opacity:1;transition:opacity .2s}
+.page.hidden{opacity:0;pointer-events:none}
+
+/* CARDS */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px}
 .card-title{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
-.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.type-btn{padding:14px 8px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);text-align:center;cursor:pointer;transition:all .15s;user-select:none}
-.type-btn .ti{font-size:26px;margin-bottom:5px}
-.type-btn .type-label{font-size:13px;font-weight:500}
-.type-btn.active{border-color:var(--accent);background:rgba(108,99,255,.12);color:var(--text)}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500}
-.field input,.field textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:15px;padding:11px 13px;outline:none;transition:border .15s;font-family:inherit}
-.field input:focus,.field textarea:focus{border-color:var(--accent)}
-.field input::placeholder,.field textarea::placeholder{color:var(--muted);opacity:.6}
-.field textarea{resize:none;line-height:1.5}
-.photo-area{border:1.5px dashed var(--border);border-radius:var(--radius-sm);padding:20px;text-align:center;cursor:pointer;position:relative;overflow:hidden}
-.photo-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
-.photo-placeholder{color:var(--muted);font-size:13px;pointer-events:none}
-.photo-placeholder .ph-icon{font-size:32px;margin-bottom:6px}
-.photo-preview{display:none;flex-wrap:wrap;gap:8px;margin-top:12px}
-.photo-preview img{width:72px;height:72px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
-.loc-btn{width:100%;padding:13px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
-.loc-btn.got{border-color:var(--green);color:var(--green)}
-.divider{display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--muted);font-size:12px}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
-.addr-row{display:flex;gap:8px}
-.addr-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:14px;padding:11px 13px;outline:none;font-family:inherit}
-.addr-input:focus{border-color:var(--accent)}
-.addr-btn{padding:11px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-size:13px;cursor:pointer;white-space:nowrap}
-.map-link{display:none;margin-top:8px}
-.map-link a{font-size:12px;color:var(--accent);text-decoration:none;word-break:break-all}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.submit-btn{width:100%;padding:16px;border-radius:var(--radius);border:none;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s;margin-top:4px}
-.submit-btn.primary{background:var(--accent);color:#fff}
-.submit-btn.primary:active{background:#5a52e0;transform:scale(.98)}
-.submit-btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border);margin-top:8px}
 
-/* STATUS BADGES */
+/* TYPE */
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.type-btn{padding:14px 8px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);text-align:center;cursor:pointer;transition:all .15s;user-select:none;-webkit-user-select:none}
+.type-btn .icon{font-size:26px;margin-bottom:5px}
+.type-btn .label{font-size:13px;font-weight:500}
+.type-btn.active{border-color:var(--accent);background:rgba(108,99,255,.15);color:var(--text)}
+
+/* INPUTS */
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:500}
+.inp{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:15px;padding:11px 13px;outline:none;font-family:inherit;-webkit-appearance:none}
+.inp:focus{border-color:var(--accent)}
+.inp::placeholder{color:var(--muted);opacity:.6}
+textarea.inp{resize:none;line-height:1.5}
+
+/* PHOTO */
+.photo-wrap{border:1.5px dashed var(--border);border-radius:var(--radius-sm);padding:20px;text-align:center;position:relative;overflow:hidden;cursor:pointer}
+.photo-wrap input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.photo-hint{color:var(--muted);font-size:13px;pointer-events:none}
+.photo-hint .ph-icon{font-size:32px;margin-bottom:6px}
+.photo-thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.photo-thumbs img{width:72px;height:72px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
+
+/* LOCATION */
+.loc-btn{width:100%;padding:13px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;-webkit-appearance:none}
+.loc-btn.got{border-color:var(--green);color:var(--green)}
+.or-divider{display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--muted);font-size:12px}
+.or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.addr-row{display:flex;gap:8px}
+.addr-inp{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:14px;padding:11px 13px;outline:none;font-family:inherit;-webkit-appearance:none}
+.addr-inp:focus{border-color:var(--accent)}
+.addr-inp::placeholder{color:var(--muted);opacity:.6}
+.addr-gen-btn{padding:11px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-size:13px;cursor:pointer;white-space:nowrap;-webkit-appearance:none}
+.map-result{display:none;margin-top:8px}
+.map-result a{font-size:12px;color:var(--accent);text-decoration:none}
+
+/* STATUS */
 .status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.status-btn{padding:10px 4px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);text-align:center;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;user-select:none}
-.status-btn.active-s0{border-color:#6c63ff;background:rgba(108,99,255,.15);color:#6c63ff}
-.status-btn.active-s1{border-color:#f59e0b;background:rgba(245,158,11,.15);color:#f59e0b}
-.status-btn.active-s2{border-color:#22c55e;background:rgba(34,197,94,.15);color:#22c55e}
-.status-btn.active-s3{border-color:#ff6584;background:rgba(255,101,132,.15);color:#ff6584}
-.status-btn.active-s4{border-color:#8888aa;background:rgba(136,136,170,.15);color:#8888aa}
-.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600}
-.badge-0{background:rgba(108,99,255,.15);color:#6c63ff}
-.badge-1{background:rgba(245,158,11,.15);color:#f59e0b}
-.badge-2{background:rgba(34,197,94,.15);color:#22c55e}
-.badge-3{background:rgba(255,101,132,.15);color:#ff6584}
-.badge-4{background:rgba(136,136,170,.15);color:#8888aa}
+.st-btn{padding:10px 4px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);text-align:center;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;user-select:none;-webkit-user-select:none}
+.st-btn.act0{border-color:#6c63ff;background:rgba(108,99,255,.15);color:#6c63ff}
+.st-btn.act1{border-color:#f59e0b;background:rgba(245,158,11,.15);color:#f59e0b}
+.st-btn.act2{border-color:#22c55e;background:rgba(34,197,94,.15);color:#22c55e}
+.st-btn.act3{border-color:#ff6584;background:rgba(255,101,132,.15);color:#ff6584}
+.st-btn.act4{border-color:#8888aa;background:rgba(136,136,170,.15);color:#8888aa}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* BUTTONS */
+.btn{width:100%;padding:15px;border-radius:var(--radius);border:none;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;font-family:inherit;-webkit-appearance:none}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:active{background:#5a52e0}
+.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn-danger{background:transparent;color:var(--accent2);border:1px solid var(--accent2)}
 
 /* LIST */
-.list-empty{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;line-height:2}
-.list-empty .empty-icon{font-size:40px;margin-bottom:8px}
-.prop-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;cursor:pointer;transition:border .15s;active:border-color:var(--accent)}
-.prop-card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;gap:8px}
-.prop-name{font-size:15px;font-weight:600;color:var(--text);flex:1}
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;line-height:2}
+.empty-state .e-icon{font-size:40px;margin-bottom:8px}
+.prop-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;cursor:pointer}
+.prop-card:active{border-color:var(--accent)}
+.prop-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.prop-card-name{font-size:15px;font-weight:600;color:var(--text);flex:1}
+.badge{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600;white-space:nowrap}
+.b0{background:rgba(108,99,255,.15);color:#6c63ff}
+.b1{background:rgba(245,158,11,.15);color:#f59e0b}
+.b2{background:rgba(34,197,94,.15);color:#22c55e}
+.b3{background:rgba(255,101,132,.15);color:#ff6584}
+.b4{background:rgba(136,136,170,.15);color:#8888aa}
 .prop-meta{font-size:12px;color:var(--muted);line-height:1.9}
 .prop-meta a{color:var(--accent);text-decoration:none}
 
-/* MODAL (detail + edit) */
+/* MODAL */
 #modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;display:none;align-items:flex-end;justify-content:center}
 #modal.open{display:flex}
-.modal-sheet{background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;padding:20px;padding-bottom:32px}
-.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.modal-title{font-size:17px;font-weight:700}
-.modal-close{font-size:22px;cursor:pointer;color:var(--muted);line-height:1}
-.modal-tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:16px;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
-.modal-tab{padding:10px;text-align:center;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;background:var(--surface2)}
-.modal-tab.active{background:var(--accent);color:#fff}
-.modal-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;gap:12px}
-.modal-row:last-child{border-bottom:none}
-.modal-label{color:var(--muted);white-space:nowrap}
-.modal-value{color:var(--text);text-align:right;word-break:break-all}
-.modal-value a{color:var(--accent);text-decoration:none}
-.edit-section{display:none}
-.edit-section.active{display:block}
-.view-section{display:block}
-.view-section.hidden{display:none}
-.del-btn{width:100%;padding:13px;border-radius:var(--radius-sm);border:1px solid var(--accent2);background:transparent;color:var(--accent2);font-size:14px;font-weight:500;cursor:pointer;margin-top:8px}
+.modal-inner{background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px 20px 40px}
+.modal-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.modal-hdr-title{font-size:17px;font-weight:700;color:var(--text)}
+.modal-close{font-size:24px;cursor:pointer;color:var(--muted);line-height:1;padding:4px}
+.modal-tabs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:16px}
+.m-tab{padding:10px;text-align:center;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;background:var(--surface2)}
+.m-tab.active{background:var(--accent);color:#fff}
+.detail-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;gap:12px}
+.detail-row:last-child{border-bottom:none}
+.detail-label{color:var(--muted);white-space:nowrap}
+.detail-val{color:var(--text);text-align:right;word-break:break-all}
+.detail-val a{color:var(--accent);text-decoration:none}
+.section-label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;margin-bottom:8px;margin-top:14px}
 
-#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:10px 20px;font-size:13px;white-space:nowrap;opacity:0;transition:all .3s;pointer-events:none;z-index:500;max-width:300px;text-align:center}
+/* TOAST */
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:10px 20px;font-size:13px;opacity:0;transition:all .25s;pointer-events:none;z-index:500;white-space:nowrap;max-width:90vw;text-align:center}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-#toast.success{border-color:var(--green);color:var(--green)}
-#toast.error{border-color:var(--accent2);color:var(--accent2)}
+#toast.ok{border-color:var(--green);color:var(--green)}
+#toast.err{border-color:var(--accent2);color:var(--accent2)}
 </style>
 </head>
 <body>
 <div id="app">
+
   <header>
-    <div class="logo" id="logo">物件<span>スカウト</span></div>
-    <div style="display:flex;align-items:center;gap:10px">
-      <div style="font-size:12px;color:var(--muted)" id="count-label">0件</div>
-      <button onclick="toggleLang()" id="lang-btn" style="padding:5px 10px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:12px;cursor:pointer;font-weight:600">🇹🇭 TH</button>
+    <div class="logo" id="el-logo">物件<span>スカウト</span></div>
+    <div class="header-right">
+      <span class="count-badge" id="el-count">0件</span>
+      <button class="lang-btn" id="el-langbtn" onclick="toggleLang()">🇹🇭 TH</button>
     </div>
   </header>
+
   <div class="tabs">
-    <div class="tab active" onclick="switchTab(0)" id="tab0"><div class="tab-icon">📍</div>現地入力</div>
-    <div class="tab" onclick="switchTab(1)" id="tab1"><div class="tab-icon">📋</div>物件詳細</div>
-    <div class="tab" onclick="switchTab(2)" id="tab2"><div class="tab-icon">🏠</div>保存リスト</div>
+    <div class="tab active" id="tab0" onclick="goTab(0)"><div class="tab-icon">📍</div><span id="tl0">現地入力</span></div>
+    <div class="tab" id="tab1" onclick="goTab(1)"><div class="tab-icon">📋</div><span id="tl1">物件詳細</span></div>
+    <div class="tab" id="tab2" onclick="goTab(2)"><div class="tab-icon">🏠</div><span id="tl2">保存リスト</span></div>
   </div>
+
   <div class="pages">
 
-    <!-- PAGE 1 現地入力 -->
-    <div class="page" id="page-field">
+    <!-- PAGE 1: 現地入力 -->
+    <div class="page" id="page0">
+
       <div class="card">
-        <div class="card-title" id="type-title">物件の種類</div>
+        <div class="card-title" id="lbl-typeTitle">物件の種類</div>
         <div class="type-grid">
-          <div class="type-btn active" id="type-tenant" onclick="setType('テナント')"><div class="ti">🏪</div><div class="type-label">テナント</div></div>
-          <div class="type-btn" id="type-residence" onclick="setType('住居')"><div class="ti">🏠</div><div class="type-label">住居</div></div>
+          <div class="type-btn active" id="btn-tenant" onclick="setType('テナント')">
+            <div class="icon">🏪</div><div class="label" id="lbl-tenant">テナント</div>
+          </div>
+          <div class="type-btn" id="btn-residence" onclick="setType('住居')">
+            <div class="icon">🏠</div><div class="label" id="lbl-residence">住居</div>
+          </div>
         </div>
       </div>
+
       <div class="card">
-        <div class="card-title" id="photo-title">写真</div>
-        <div class="photo-area">
-          <input type="file" accept="image/*" multiple onchange="handlePhotos(this,'photo-preview-new')">
-          <div class="photo-placeholder"><div class="ph-icon">📷</div>タップして撮影 または ライブラリから選択</div>
+        <div class="card-title" id="lbl-photoTitle">写真</div>
+        <div class="photo-wrap">
+          <input type="file" accept="image/*" multiple onchange="addPhotos(this,'thumbs0')">
+          <div class="photo-hint"><div class="ph-icon">📷</div><span id="lbl-photoHint">タップして撮影 または ライブラリから選択</span></div>
         </div>
-        <div class="photo-preview" id="photo-preview-new"></div>
+        <div class="photo-thumbs" id="thumbs0"></div>
       </div>
+
       <div class="card">
-        <div class="card-title" id="phone-title">電話番号</div>
-        <div class="field"><input type="tel" id="phone" placeholder="例：081-234-5678"/></div>
+        <div class="card-title" id="lbl-phoneTitle">電話番号</div>
+        <input class="inp" type="tel" id="f-phone" placeholder="081-234-5678">
       </div>
+
       <div class="card">
-        <div class="card-title" id="location-title">場所</div>
-        <button class="loc-btn" id="loc-btn" onclick="getLocation()">
-          <span id="loc-icon">📍</span><span id="loc-text">現在地を自動取得</span>
+        <div class="card-title" id="lbl-locTitle">場所</div>
+        <button class="loc-btn" id="loc-btn" onclick="getGPS()">
+          <span id="loc-icon">📍</span> <span id="loc-txt">現在地を自動取得</span>
         </button>
-        <div class="divider" id="location-or">または住所を手入力</div>
+        <div class="or-divider"><span id="lbl-or">または住所を手入力</span></div>
         <div class="addr-row">
-          <input class="addr-input" id="address-input" placeholder="例：Sukhumvit Soi 11, Bangkok"/>
-          <button class="addr-btn" onclick="generateMapFromAddress()" id="map-gen-btn">🗺 生成</button>
+          <input class="addr-inp" id="f-addr" placeholder="Sukhumvit Soi 11, Bangkok">
+          <button class="addr-gen-btn" onclick="genMapFromAddr()" id="lbl-gen">🗺 生成</button>
         </div>
-        <div class="map-link" id="map-link"><a id="map-a" href="#" target="_blank">🗺 Googleマップで確認 →</a></div>
+        <div class="map-result" id="map-result">
+          <a id="map-link-a" href="#" target="_blank">🗺 Googleマップで確認 →</a>
+        </div>
       </div>
-      <button class="submit-btn primary" id="submit-next" onclick="submitField()">保存して詳細へ →</button>
-      <button class="submit-btn secondary" id="submit-field-only" onclick="saveNow()">現地情報だけ保存</button>
+
+      <button class="btn btn-primary" onclick="goToDetail()" id="lbl-btnNext">保存して詳細へ →</button>
+      <button class="btn btn-secondary" onclick="saveEntry()" id="lbl-btnFieldOnly">現地情報だけ保存</button>
+
     </div>
 
-    <!-- PAGE 2 物件詳細 -->
-    <div class="page hidden" id="page-detail">
+    <!-- PAGE 2: 物件詳細 -->
+    <div class="page hidden" id="page1">
+
       <div class="card">
-        <div class="card-title" id="prop-name-title">物件名 / 識別メモ</div>
-        <div class="field"><input type="text" id="prop-name" placeholder="例：Soi 11 角地テナント"/></div>
+        <div class="card-title" id="lbl-propNameTitle">物件名 / 識別メモ</div>
+        <input class="inp" type="text" id="f-propname" placeholder="例：Soi 11 角地テナント">
       </div>
+
       <div class="card">
-        <div class="card-title" id="status-title">ステータス</div>
-        <div class="status-grid">
-          <div class="status-btn active-s0" id="snew" onclick="setStatus('未交渉')">🔵 未交渉</div>
-          <div class="status-btn" id="sneg" onclick="setStatus('交渉中')">🟡 交渉中</div>
-          <div class="status-btn" id="scon" onclick="setStatus('契約済み')">🟢 契約済み</div>
-          <div class="status-btn" id="sng" onclick="setStatus('NG')">🔴 NG</div>
-          <div class="status-btn" id="shold" onclick="setStatus('保留')">⚪ 保留</div>
-        </div>
+        <div class="card-title" id="lbl-statusTitle">ステータス</div>
+        <div class="status-grid" id="status-grid-main"></div>
       </div>
+
       <div class="card">
-        <div class="card-title" id="rent-title">家賃 / 費用</div>
+        <div class="card-title" id="lbl-rentTitle">家賃 / 費用</div>
         <div class="two-col">
-          <div class="field"><label>月額家賃（฿）</label><input type="number" id="rent" placeholder="25000"/></div>
-          <div class="field"><label id="deposit-label">敷金 / 保証金</label><input type="text" id="deposit" placeholder="2ヶ月"/></div>
+          <div class="field">
+            <label id="lbl-rent">月額家賃（฿）</label>
+            <input class="inp" type="number" id="f-rent" placeholder="25000">
+          </div>
+          <div class="field">
+            <label id="lbl-deposit">敷金 / 保証金</label>
+            <input class="inp" type="text" id="f-deposit" placeholder="2ヶ月">
+          </div>
         </div>
-        <div class="field"><label id="size-label">広さ（㎡）</label><input type="number" id="size" placeholder="45"/></div>
+        <div class="field" style="margin-bottom:0">
+          <label id="lbl-size">広さ（㎡）</label>
+          <input class="inp" type="number" id="f-size" placeholder="45">
+        </div>
       </div>
+
       <div class="card">
-        <div class="card-title" id="cond-title">賃貸条件・メモ</div>
-        <div class="field"><label>契約条件</label><input type="text" id="conditions" placeholder="最低1年、ペット不可"/></div>
-        <div class="field" style="margin-bottom:0"><label id="notes-label">その他メモ</label><textarea id="notes" rows="4" placeholder="駐車場あり、改装交渉可"></textarea></div>
+        <div class="card-title" id="lbl-condTitle">賃貸条件・メモ</div>
+        <div class="field">
+          <label id="lbl-cond">契約条件</label>
+          <input class="inp" type="text" id="f-cond" placeholder="最低1年、ペット不可">
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label id="lbl-notes">その他メモ</label>
+          <textarea class="inp" id="f-notes" rows="4" placeholder="駐車場あり、改装交渉可"></textarea>
+        </div>
       </div>
-      <button class="submit-btn primary" id="save-btn" onclick="saveNow()">💾 保存する</button>
-      <button class="submit-btn secondary" id="back-btn" onclick="switchTab(0)">← 現地入力に戻る</button>
+
+      <button class="btn btn-primary" onclick="saveEntry()" id="lbl-btnSave">💾 保存する</button>
+      <button class="btn btn-secondary" onclick="goTab(0)" id="lbl-btnBack">← 現地入力に戻る</button>
+
     </div>
 
-    <!-- PAGE 3 保存リスト -->
-    <div class="page hidden" id="page-list">
-      <div id="list-container"></div>
+    <!-- PAGE 3: 保存リスト -->
+    <div class="page hidden" id="page2">
+      <div id="list-wrap"></div>
     </div>
 
   </div>
 </div>
 
 <!-- MODAL -->
-<div id="modal" onclick="closeModalBg(event)">
-  <div class="modal-sheet">
-    <div class="modal-header">
-      <div class="modal-title" id="modal-title">物件詳細</div>
+<div id="modal" onclick="modalBgClick(event)">
+  <div class="modal-inner">
+    <div class="modal-hdr">
+      <div class="modal-hdr-title" id="modal-title"></div>
       <div class="modal-close" onclick="closeModal()">✕</div>
     </div>
     <div class="modal-tabs">
-      <div class="modal-tab active" id="mtab0" onclick="switchModalTab(0)">📋 詳細</div>
-      <div class="modal-tab" id="mtab1" onclick="switchModalTab(1)">✏️ 編集</div>
+      <div class="m-tab active" id="mtab0" onclick="goModalTab(0)" id="lbl-mDetail">📋 詳細</div>
+      <div class="m-tab" id="mtab1" onclick="goModalTab(1)" id="lbl-mEdit">✏️ 編集</div>
     </div>
 
-    <!-- VIEW -->
-    <div class="view-section" id="modal-view">
-      <!-- ステータス変更 -->
-      <div style="margin-bottom:14px">
-        <div style="font-size:11px;color:var(--muted);margin-bottom:8px;font-weight:600;letter-spacing:.08em">ステータス変更</div>
-        <div class="status-grid" id="modal-status-grid"></div>
-      </div>
-      <div id="modal-body"></div>
-      <!-- 写真 -->
-      <div id="modal-photos" style="margin-top:12px"></div>
-      <!-- メモ追記 -->
-      <div style="margin-top:16px">
-        <div style="font-size:11px;color:var(--muted);margin-bottom:8px;font-weight:600;letter-spacing:.08em">メモを追記</div>
-        <textarea id="append-note" rows="3" placeholder="追記メモを入力..." style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:14px;padding:11px 13px;outline:none;font-family:inherit;resize:none;line-height:1.5"></textarea>
-        <button onclick="appendNote()" style="width:100%;padding:12px;border-radius:var(--radius-sm);border:none;background:var(--surface2);color:var(--text);font-size:14px;font-weight:500;cursor:pointer;margin-top:8px;border:1px solid var(--border)">📝 追記する</button>
-      </div>
-      <!-- 写真追加 -->
-      <div style="margin-top:12px;position:relative">
-        <label style="display:block;width:100%;padding:12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:14px;font-weight:500;cursor:pointer;text-align:center">
+    <!-- DETAIL VIEW -->
+    <div id="modal-view">
+      <div class="section-label" id="lbl-statusChange">ステータス変更</div>
+      <div class="status-grid" id="status-grid-modal"></div>
+      <div id="modal-rows" style="margin-top:12px"></div>
+      <div id="modal-photo-area" style="margin-top:10px"></div>
+
+      <div class="section-label" style="margin-top:16px" id="lbl-appendNote">メモを追記</div>
+      <textarea class="inp" id="append-inp" rows="3" placeholder="追記メモを入力..."></textarea>
+      <button class="btn btn-secondary" onclick="doAppendNote()" id="lbl-btnAppend" style="margin-top:8px">📝 追記する</button>
+
+      <div style="margin-top:10px;position:relative">
+        <label style="display:block;width:100%;padding:13px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:14px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit" id="lbl-btnAddPhoto">
           📷 写真を追加
-          <input type="file" accept="image/*" multiple onchange="appendPhotos(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0">
+          <input type="file" accept="image/*" multiple onchange="doAppendPhoto(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
         </label>
       </div>
-      <button class="del-btn" onclick="deleteEntry()">🗑 この物件を削除</button>
+      <button class="btn btn-danger" onclick="doDelete()" id="lbl-btnDelete" style="margin-top:10px">🗑 この物件を削除</button>
     </div>
 
-    <!-- EDIT -->
-    <div class="edit-section" id="modal-edit">
-      <div class="card" style="margin-bottom:12px">
-        <div class="field"><label>物件名</label><input type="text" id="edit-name"/></div>
-        <div class="field"><label>電話番号</label><input type="tel" id="edit-phone"/></div>
-        <div class="field"><label>住所 / マップURL</label><input type="text" id="edit-mapurl"/></div>
+    <!-- EDIT VIEW -->
+    <div id="modal-edit" style="display:none">
+      <div class="field"><label id="lbl-eName">物件名</label><input class="inp" id="e-name"></div>
+      <div class="field"><label id="lbl-ePhone">電話番号</label><input class="inp" type="tel" id="e-phone"></div>
+      <div class="field"><label id="lbl-eMap">住所 / マップURL</label><input class="inp" id="e-map"></div>
+      <div class="two-col" style="margin-bottom:12px">
+        <div class="field"><label id="lbl-eRent">月額家賃（฿）</label><input class="inp" type="number" id="e-rent"></div>
+        <div class="field"><label id="lbl-eDeposit">敷金 / 保証金</label><input class="inp" id="e-deposit"></div>
       </div>
-      <div class="card" style="margin-bottom:12px">
-        <div class="two-col">
-          <div class="field"><label>月額家賃（฿）</label><input type="number" id="edit-rent"/></div>
-          <div class="field"><label>敷金 / 保証金</label><input type="text" id="edit-deposit"/></div>
-        </div>
-        <div class="field"><label>広さ（㎡）</label><input type="number" id="edit-size"/></div>
-        <div class="field"><label>契約条件</label><input type="text" id="edit-conditions"/></div>
-        <div class="field" style="margin-bottom:0"><label>メモ</label><textarea id="edit-notes" rows="4" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:15px;padding:11px 13px;outline:none;font-family:inherit;resize:none;line-height:1.5"></textarea></div>
-      </div>
-      <button onclick="saveEdit()" style="width:100%;padding:15px;border-radius:var(--radius);border:none;background:var(--accent);color:#fff;font-size:15px;font-weight:700;cursor:pointer">💾 上書き保存</button>
+      <div class="field"><label id="lbl-eSize">広さ（㎡）</label><input class="inp" type="number" id="e-size"></div>
+      <div class="field"><label id="lbl-eCond">契約条件</label><input class="inp" id="e-cond"></div>
+      <div class="field"><label id="lbl-eNotes">メモ</label><textarea class="inp" id="e-notes" rows="4"></textarea></div>
+      <button class="btn btn-primary" onclick="doSaveEdit()" id="lbl-btnSaveEdit">💾 上書き保存</button>
     </div>
+
   </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-const STORAGE_KEY = 'property_scout_v2';
-const STATUS_LIST = ['未交渉','交渉中','契約済み','NG','保留'];
-const STATUS_EMOJI = ['🔵','🟡','🟢','🔴','⚪'];
-const STATUS_CLASS = ['s0','s1','s2','s3','s4'];
+// ===== i18n =====
+const L = {
+  ja:{
+    logo:'物件<span style="color:var(--accent)">スカウト</span>',
+    langBtn:'🇹🇭 TH', countSfx:'件',
+    tab0:'現地入力', tab1:'物件詳細', tab2:'保存リスト',
+    typeTitle:'物件の種類', tenant:'テナント', residence:'住居',
+    photoTitle:'写真', photoHint:'タップして撮影 または ライブラリから選択',
+    phoneTitle:'電話番号', locTitle:'場所',
+    locBtn:'現在地を自動取得', locGetting:'取得中...', locDone:'取得完了', locFail:'取得できませんでした',
+    or:'または住所を手入力', gen:'🗺 生成', mapLink:'🗺 Googleマップで確認 →',
+    btnNext:'保存して詳細へ →', btnFieldOnly:'現地情報だけ保存',
+    propNameTitle:'物件名 / 識別メモ', propNamePh:'例：Soi 11 角地テナント',
+    statusTitle:'ステータス',
+    s:['🔵 未交渉','🟡 交渉中','🟢 契約済み','🔴 NG','⚪ 保留'],
+    rentTitle:'家賃 / 費用', rent:'月額家賃（฿）', deposit:'敷金 / 保証金', size:'広さ（㎡）',
+    condTitle:'賃貸条件・メモ', cond:'契約条件', notes:'その他メモ',
+    btnSave:'💾 保存する', btnBack:'← 現地入力に戻る',
+    emptyIcon:'🏠', emptyMsg:'まだ物件が保存されていません\n現地入力から追加してください',
+    mDetail:'📋 詳細', mEdit:'✏️ 編集',
+    statusChange:'ステータス変更', appendNote:'メモを追記', appendPh:'追記メモを入力...',
+    btnAppend:'📝 追記する', btnAddPhoto:'📷 写真を追加', btnDelete:'🗑 この物件を削除',
+    eName:'物件名', ePhone:'電話番号', eMap:'住所 / マップURL',
+    eRent:'月額家賃（฿）', eDeposit:'敷金 / 保証金', eSize:'広さ（㎡）', eCond:'契約条件', eNotes:'メモ',
+    btnSaveEdit:'💾 上書き保存',
+    rows:['種類','日時','電話','場所','家賃','敷金','広さ','条件','メモ'],
+    notInput:'未入力', perMonth:'/月', sqm:'㎡', openMap:'🗺 地図を開く',
+    processing:'写真を処理中...', photoAdded:'枚追加しました',
+    fieldSaved:'現地情報を記録しました', saved:'保存しました！', deleted:'削除しました',
+    appended:'追記しました', statusChanged:'ステータスを変更しました',
+    confirmDel:'この物件を削除しますか？', noNote:'メモを入力してください',
+    noAddr:'住所を入力してください', mapGenOk:'マップリンクを生成しました',
+    propDefault:'物件', locGot:'現在地を取得しました',
+  },
+  th:{
+    logo:'สำรวจ<span style="color:var(--accent)">อสังหาฯ</span>',
+    langBtn:'🇯🇵 JA', countSfx:'รายการ',
+    tab0:'บันทึกหน้างาน', tab1:'รายละเอียด', tab2:'รายการที่บันทึก',
+    typeTitle:'ประเภทอสังหาฯ', tenant:'พื้นที่เช่า', residence:'ที่พักอาศัย',
+    photoTitle:'รูปภาพ', photoHint:'แตะเพื่อถ่ายภาพ หรือเลือกจากคลัง',
+    phoneTitle:'เบอร์โทรศัพท์', locTitle:'สถานที่',
+    locBtn:'รับตำแหน่งปัจจุบัน', locGetting:'กำลังรับตำแหน่ง...', locDone:'รับตำแหน่งสำเร็จ', locFail:'รับตำแหน่งไม่ได้',
+    or:'หรือพิมพ์ที่อยู่', gen:'🗺 สร้างลิงก์', mapLink:'🗺 ดูใน Google Maps →',
+    btnNext:'บันทึกและไปรายละเอียด →', btnFieldOnly:'บันทึกเฉพาะข้อมูลหน้างาน',
+    propNameTitle:'ชื่อ / บันทึกระบุตัวตน', propNamePh:'เช่น ตึกแถวมุม Soi 11',
+    statusTitle:'สถานะ',
+    s:['🔵 ยังไม่เจรจา','🟡 กำลังเจรจา','🟢 ทำสัญญาแล้ว','🔴 ไม่ผ่าน','⚪ รอดู'],
+    rentTitle:'ค่าเช่า / ค่าใช้จ่าย', rent:'ค่าเช่า/เดือน（฿）', deposit:'เงินประกัน', size:'ขนาด（ตร.ม.）',
+    condTitle:'เงื่อนไข / บันทึก', cond:'เงื่อนไขสัญญา', notes:'บันทึกอื่นๆ',
+    btnSave:'💾 บันทึก', btnBack:'← กลับหน้าบันทึก',
+    emptyIcon:'🏠', emptyMsg:'ยังไม่มีอสังหาฯ ที่บันทึกไว้\nเพิ่มจากหน้าบันทึกหน้างาน',
+    mDetail:'📋 รายละเอียด', mEdit:'✏️ แก้ไข',
+    statusChange:'เปลี่ยนสถานะ', appendNote:'เพิ่มบันทึก', appendPh:'พิมพ์บันทึกเพิ่มเติม...',
+    btnAppend:'📝 เพิ่มบันทึก', btnAddPhoto:'📷 เพิ่มรูปภาพ', btnDelete:'🗑 ลบอสังหาฯ นี้',
+    eName:'ชื่ออสังหาฯ', ePhone:'เบอร์โทร', eMap:'ที่อยู่ / ลิงก์แผนที่',
+    eRent:'ค่าเช่า/เดือน（฿）', eDeposit:'เงินประกัน', eSize:'ขนาด（ตร.ม.）', eCond:'เงื่อนไขสัญญา', eNotes:'บันทึก',
+    btnSaveEdit:'💾 บันทึกทับ',
+    rows:['ประเภท','วันที่','โทร','สถานที่','ค่าเช่า','ประกัน','ขนาด','เงื่อนไข','บันทึก'],
+    notInput:'ไม่ได้ระบุ', perMonth:'/เดือน', sqm:'ตร.ม.', openMap:'🗺 เปิดแผนที่',
+    processing:'กำลังประมวลผลรูปภาพ...', photoAdded:'ภาพที่เพิ่ม',
+    fieldSaved:'บันทึกข้อมูลหน้างานแล้ว', saved:'บันทึกแล้ว！', deleted:'ลบแล้ว',
+    appended:'เพิ่มบันทึกแล้ว', statusChanged:'เปลี่ยนสถานะแล้ว',
+    confirmDel:'ต้องการลบอสังหาฯ นี้ใช่ไหม？', noNote:'กรุณาพิมพ์บันทึก',
+    noAddr:'กรุณาพิมพ์ที่อยู่', mapGenOk:'สร้างลิงก์แผนที่แล้ว',
+    propDefault:'อสังหาฯ', locGot:'รับตำแหน่งสำเร็จ',
+  }
+};
+let lang = localStorage.getItem('scout_lang') || 'ja';
+const t = () => L[lang];
 
-let state = { type:'テナント', photoDataUrls:[], phone:'', lat:null, lng:null, mapUrl:'', rent:'', deposit:'', size:'', conditions:'', notes:'', propName:'', status:'未交渉' };
+function applyLang() {
+  const l = t();
+  document.getElementById('el-logo').innerHTML = l.logo;
+  document.getElementById('el-langbtn').textContent = l.langBtn;
+  document.getElementById('tl0').textContent = l.tab0;
+  document.getElementById('tl1').textContent = l.tab1;
+  document.getElementById('tl2').textContent = l.tab2;
+  document.getElementById('lbl-typeTitle').textContent = l.typeTitle;
+  document.getElementById('lbl-tenant').textContent = l.tenant;
+  document.getElementById('lbl-residence').textContent = l.residence;
+  document.getElementById('lbl-photoTitle').textContent = l.photoTitle;
+  document.getElementById('lbl-photoHint').textContent = l.photoHint;
+  document.getElementById('lbl-phoneTitle').textContent = l.phoneTitle;
+  document.getElementById('lbl-locTitle').textContent = l.locTitle;
+  document.getElementById('loc-txt').textContent = l.locBtn;
+  document.getElementById('lbl-or').textContent = l.or;
+  document.getElementById('lbl-gen').textContent = l.gen;
+  document.getElementById('map-link-a').textContent = l.mapLink;
+  document.getElementById('lbl-btnNext').textContent = l.btnNext;
+  document.getElementById('lbl-btnFieldOnly').textContent = l.btnFieldOnly;
+  document.getElementById('lbl-propNameTitle').textContent = l.propNameTitle;
+  document.getElementById('f-propname').placeholder = l.propNamePh;
+  document.getElementById('lbl-statusTitle').textContent = l.statusTitle;
+  document.getElementById('lbl-rentTitle').textContent = l.rentTitle;
+  document.getElementById('lbl-rent').textContent = l.rent;
+  document.getElementById('lbl-deposit').textContent = l.deposit;
+  document.getElementById('lbl-size').textContent = l.size;
+  document.getElementById('lbl-condTitle').textContent = l.condTitle;
+  document.getElementById('lbl-cond').textContent = l.cond;
+  document.getElementById('lbl-notes').textContent = l.notes;
+  document.getElementById('lbl-btnSave').textContent = l.btnSave;
+  document.getElementById('lbl-btnBack').textContent = l.btnBack;
+  document.getElementById('lbl-statusChange').textContent = l.statusChange;
+  document.getElementById('lbl-appendNote').textContent = l.appendNote;
+  document.getElementById('append-inp').placeholder = l.appendPh;
+  document.getElementById('lbl-btnAppend').textContent = l.btnAppend;
+  document.getElementById('lbl-btnAddPhoto').childNodes[0].textContent = l.btnAddPhoto + ' ';
+  document.getElementById('lbl-btnDelete').textContent = l.btnDelete;
+  document.getElementById('lbl-eName').textContent = l.eName;
+  document.getElementById('lbl-ePhone').textContent = l.ePhone;
+  document.getElementById('lbl-eMap').textContent = l.eMap;
+  document.getElementById('lbl-eRent').textContent = l.eRent;
+  document.getElementById('lbl-eDeposit').textContent = l.eDeposit;
+  document.getElementById('lbl-eSize').textContent = l.eSize;
+  document.getElementById('lbl-eCond').textContent = l.eCond;
+  document.getElementById('lbl-eNotes').textContent = l.eNotes;
+  document.getElementById('lbl-btnSaveEdit').textContent = l.btnSaveEdit;
+  renderStatusGrid('status-grid-main', state.status, setStatusMain);
+  updateCount();
+  if (!document.getElementById('page2').classList.contains('hidden')) renderList();
+}
+
+function toggleLang() {
+  lang = lang === 'ja' ? 'th' : 'ja';
+  localStorage.setItem('scout_lang', lang);
+  applyLang();
+}
+
+// ===== STATE =====
+const STORAGE_KEY = 'prop_scout_v3';
+const STATUS_CLS = ['act0','act1','act2','act3','act4'];
+
+let state = freshState();
 let currentId = null;
-let newPhotoDataUrls = [];
 
-// ---- TAB ----
-function switchTab(idx) {
-  [0,1,2].forEach(i => document.getElementById('tab'+i).classList.toggle('active', i===idx));
-  document.getElementById('page-field').classList.toggle('hidden', idx!==0);
-  document.getElementById('page-detail').classList.toggle('hidden', idx!==1);
-  document.getElementById('page-list').classList.toggle('hidden', idx!==2);
-  if(idx===2) renderList();
+function freshState() {
+  return { type:'テナント', status:0, photos:[], phone:'', mapUrl:'', lat:null, lng:null, rent:'', deposit:'', size:'', cond:'', notes:'', propName:'', ts:'' };
 }
 
-function setType(t) {
-  state.type = t;
-  document.getElementById('type-tenant').classList.toggle('active', t==='テナント');
-  document.getElementById('type-residence').classList.toggle('active', t==='住居');
-}
-
-function setStatus(s) {
-  state.status = s;
-  STATUS_LIST.forEach((st,i) => {
-    const ids = ['snew','sneg','scon','sng','shold'];
-    const el = document.getElementById(ids[i]);
-    if(el) { el.className = 'status-btn'; if(st===s) el.classList.add('active-'+STATUS_CLASS[i]); }
+// ===== TABS =====
+function goTab(idx) {
+  [0,1,2].forEach(i => {
+    document.getElementById('tab'+i).classList.toggle('active', i===idx);
+    document.getElementById('page'+i).classList.toggle('hidden', i!==idx);
   });
+  if (idx===2) renderList();
 }
 
-// ---- PHOTOS ----
-function compressImage(file, callback) {
+// ===== TYPE =====
+function setType(v) {
+  state.type = v;
+  document.getElementById('btn-tenant').classList.toggle('active', v==='テナント');
+  document.getElementById('btn-residence').classList.toggle('active', v==='住居');
+}
+
+// ===== STATUS GRID =====
+function renderStatusGrid(elId, current, callback) {
+  const l = t();
+  document.getElementById(elId).innerHTML = l.s.map((s,i) =>
+    `<div class="st-btn${current===i?' '+STATUS_CLS[i]:''}" onclick="${callback.name}(${i})">${s}</div>`
+  ).join('');
+}
+
+function setStatusMain(i) {
+  state.status = i;
+  renderStatusGrid('status-grid-main', i, setStatusMain);
+}
+
+function setStatusModal(i) {
+  const list = getList();
+  const p = list.find(x => x.id === currentId);
+  if (!p) return;
+  p.status = i;
+  saveList(list);
+  renderStatusGrid('status-grid-modal', i, setStatusModal);
+  renderList();
+  toast(t().statusChanged, 'ok');
+}
+
+// ===== PHOTOS =====
+function compressImage(file, cb) {
   const reader = new FileReader();
   reader.onload = e => {
     const img = new Image();
     img.onload = () => {
-      const canvas = document.createElement('canvas');
       const MAX = 800;
       let w = img.width, h = img.height;
-      if(w > h && w > MAX){ h = h*MAX/w; w = MAX; }
-      else if(h > MAX){ w = w*MAX/h; h = MAX; }
-      canvas.width = w; canvas.height = h;
-      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      callback(canvas.toDataURL('image/jpeg', 0.6));
+      if (w > h && w > MAX) { h = h*MAX/w; w = MAX; }
+      else if (h > MAX) { w = w*MAX/h; h = MAX; }
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      cb(c.toDataURL('image/jpeg', 0.6));
     };
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
 
-function handlePhotos(input, previewId) {
+function addPhotos(input, thumbId) {
   const files = Array.from(input.files).slice(0, 5);
-  if(!files.length) return;
-  const preview = document.getElementById(previewId);
-  preview.innerHTML = ''; preview.style.display = 'flex';
-  if(!state.photoDataUrls) state.photoDataUrls = [];
-  showToast('写真を処理中...','');
-  let loaded = 0;
+  if (!files.length) return;
+  toast(t().processing, '');
+  const thumbs = document.getElementById(thumbId);
+  let done = 0;
   files.forEach(file => {
     compressImage(file, dataUrl => {
-      state.photoDataUrls.push(dataUrl);
+      state.photos.push(dataUrl);
       const img = document.createElement('img');
       img.src = dataUrl;
-      preview.appendChild(img);
-      loaded++;
-      if(loaded === files.length) showToast(files.length+'枚追加しました','success');
+      thumbs.appendChild(img);
+      thumbs.style.display = 'flex';
+      done++;
+      if (done === files.length) toast(files.length + t().photoAdded, 'ok');
     });
   });
 }
 
-// ---- LOCATION ----
-function getLocation() {
-  const txt = document.getElementById('loc-text'), icon = document.getElementById('loc-icon');
-  txt.textContent='取得中...'; icon.textContent='⏳';
-  if(!navigator.geolocation){ showToast('位置情報が使えません','error'); return; }
+// ===== GPS =====
+function getGPS() {
+  const btn = document.getElementById('loc-btn');
+  const icon = document.getElementById('loc-icon');
+  const txt = document.getElementById('loc-txt');
+  txt.textContent = t().locGetting; icon.textContent = '⏳';
+  if (!navigator.geolocation) { toast(t().locFail, 'err'); return; }
   navigator.geolocation.getCurrentPosition(pos => {
     state.lat = pos.coords.latitude.toFixed(6);
     state.lng = pos.coords.longitude.toFixed(6);
-    state.mapUrl = 'https://www.google.com/maps?q='+state.lat+','+state.lng;
-    document.getElementById('loc-btn').classList.add('got');
-    icon.textContent='✅'; txt.textContent='取得完了 ('+state.lat+', '+state.lng+')';
-    document.getElementById('map-link').style.display='block';
-    document.getElementById('map-a').href=state.mapUrl;
-    showToast('現在地を取得しました','success');
-  }, ()=>{ icon.textContent='❌'; txt.textContent='取得できませんでした'; showToast('取得に失敗しました','error'); }, {enableHighAccuracy:true,timeout:10000});
+    state.mapUrl = 'https://www.google.com/maps?q=' + state.lat + ',' + state.lng;
+    icon.textContent = '✅';
+    txt.textContent = t().locDone + ' (' + state.lat + ', ' + state.lng + ')';
+    btn.classList.add('got');
+    document.getElementById('map-result').style.display = 'block';
+    document.getElementById('map-link-a').href = state.mapUrl;
+    toast(t().locGot, 'ok');
+  }, () => {
+    icon.textContent = '❌'; txt.textContent = t().locFail;
+    toast(t().locFail, 'err');
+  }, { enableHighAccuracy: true, timeout: 10000 });
 }
 
-function generateMapFromAddress() {
-  const addr = document.getElementById('address-input').value.trim();
-  if(!addr){ showToast('住所を入力してください','error'); return; }
-  state.mapUrl = 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr);
-  state.lat=null; state.lng=null;
-  document.getElementById('map-link').style.display='block';
-  document.getElementById('map-a').href=state.mapUrl;
-  showToast('マップリンクを生成しました','success');
+function genMapFromAddr() {
+  const addr = document.getElementById('f-addr').value.trim();
+  if (!addr) { toast(t().noAddr, 'err'); return; }
+  state.mapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(addr);
+  state.lat = null; state.lng = null;
+  document.getElementById('map-result').style.display = 'block';
+  document.getElementById('map-link-a').href = state.mapUrl;
+  toast(t().mapGenOk, 'ok');
 }
 
-// ---- COLLECT & SAVE ----
-function collectAll() {
-  state.phone = document.getElementById('phone').value;
-  state.rent = document.getElementById('rent').value;
-  state.deposit = document.getElementById('deposit').value;
-  state.size = document.getElementById('size').value;
-  state.conditions = document.getElementById('conditions').value;
-  state.notes = document.getElementById('notes').value;
-  state.propName = document.getElementById('prop-name').value;
+// ===== SAVE =====
+function goToDetail() {
+  state.phone = document.getElementById('f-phone').value;
+  state.ts = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Bangkok' });
+  toast(t().fieldSaved, 'ok');
+  goTab(1);
 }
 
-function submitField() {
-  state.phone = document.getElementById('phone').value;
-  state.timestamp = new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'});
-  showToast('現地情報を保存しました','success');
-  switchTab(1);
-}
-
-function saveNow() {
-  const phone = document.getElementById('phone').value;
-  if(phone) state.phone = phone;
-  const rent = document.getElementById('rent').value;
-  const deposit = document.getElementById('deposit').value;
-  const size = document.getElementById('size').value;
-  const conditions = document.getElementById('conditions').value;
-  const notes = document.getElementById('notes').value;
-  const propName = document.getElementById('prop-name').value;
-  if(rent) state.rent = rent;
-  if(deposit) state.deposit = deposit;
-  if(size) state.size = size;
-  if(conditions) state.conditions = conditions;
-  if(notes) state.notes = notes;
-  if(propName) state.propName = propName;
+function saveEntry() {
+  state.phone = document.getElementById('f-phone').value;
+  const propName = document.getElementById('f-propname').value;
+  const rent = document.getElementById('f-rent').value;
+  const deposit = document.getElementById('f-deposit').value;
+  const size = document.getElementById('f-size').value;
+  const cond = document.getElementById('f-cond').value;
+  const notes = document.getElementById('f-notes').value;
+  if (propName) state.propName = propName;
+  if (rent) state.rent = rent;
+  if (deposit) state.deposit = deposit;
+  if (size) state.size = size;
+  if (cond) state.cond = cond;
+  if (notes) state.notes = notes;
 
   const list = getList();
   const entry = {
     id: Date.now(),
-    timestamp: state.timestamp || new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'}),
+    ts: state.ts || new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Bangkok' }),
     type: state.type,
-    status: state.status || '未交渉',
-    propName: state.propName || '物件 '+(list.length+1),
+    status: state.status,
+    propName: state.propName || t().propDefault + ' ' + (list.length + 1),
     phone: state.phone,
     mapUrl: state.mapUrl,
     lat: state.lat, lng: state.lng,
     rent: state.rent, deposit: state.deposit, size: state.size,
-    conditions: state.conditions, notes: state.notes,
-    photoDataUrls: state.photoDataUrls || [],
+    cond: state.cond, notes: state.notes,
+    photos: state.photos,
     appendedNotes: []
   };
   list.push(entry);
   saveList(list);
-  
-// ---- LANGUAGE ----
-let currentLang = 'ja';
-const LANG = {
-  ja: {
-    logo: '物件<span style="color:var(--accent)">スカウト</span>',
-    countSuffix: '件',
-    langBtn: '🇹🇭 TH',
-    tab0: '現地入力', tab1: '物件詳細', tab2: '保存リスト',
-    typeTitle: '物件の種類', typeTenant: 'テナント', typeResidence: '住居',
-    photoTitle: '写真', photoPlaceholder: 'タップして撮影 または ライブラリから選択',
-    phoneTitle: '電話番号', phonePlaceholder: '例：081-234-5678',
-    locationTitle: '場所', locationBtn: '現在地を自動取得',
-    locationOr: 'または住所を手入力',
-    addressPlaceholder: '例：Sukhumvit Soi 11, Bangkok',
-    mapGenBtn: '🗺 生成', mapLink: '🗺 Googleマップで確認 →',
-    submitNext: '保存して詳細へ →', submitFieldOnly: '現地情報だけ保存',
-    propNameTitle: '物件名 / 識別メモ', propNamePlaceholder: '例：Soi 11 角地テナント',
-    statusTitle: 'ステータス',
-    statusList: ['未交渉','交渉中','契約済み','NG','保留'],
-    rentTitle: '家賃 / 費用', rentLabel: '月額家賃（฿）', rentPlaceholder: '25000',
-    depositLabel: '敷金 / 保証金', depositPlaceholder: '2ヶ月',
-    sizeLabel: '広さ（㎡）', sizePlaceholder: '45',
-    condTitle: '賃貸条件・メモ', condLabel: '契約条件', condPlaceholder: '最低1年、ペット不可',
-    notesLabel: 'その他メモ', notesPlaceholder: '駐車場あり、改装交渉可',
-    saveBtn: '💾 保存する', backBtn: '← 現地入力に戻る',
-    emptyList: 'まだ物件が保存されていません
-現地入力から追加してください',
-    appendNotePlaceholder: '追記メモを入力...', appendNoteBtn: '📝 追記する',
-    addPhotoBtn: '📷 写真を追加',
-    deleteBtn: '🗑 この物件を削除',
-    editTab: '✏️ 編集', viewTab: '📋 詳細',
-    saveEditBtn: '💾 上書き保存',
-    modalLabels: ['種類','日時','電話','場所','家賃','敷金','広さ','条件','メモ'],
-    toastPhotoAdding: '写真を処理中...',
-    toastPhotoAdded: '枚追加しました',
-    toastSaved: '保存しました！',
-    toastFieldSaved: '現地情報を保存しました',
-    toastLocating: '取得中...',
-    toastLocated: '取得完了',
-    toastLocFail: '取得できませんでした',
-    toastLocFailMsg: '位置情報の取得に失敗しました',
-    toastMapGen: 'マップリンクを生成しました',
-    toastAddrEmpty: '住所を入力してください',
-    toastNoteEmpty: 'メモを入力してください',
-    toastNoteAdded: '追記しました',
-    toastPhotoAppended: '枚追加しました',
-    toastDeleted: '削除しました',
-    toastEditSaved: '上書き保存しました',
-    toastStatusChanged: 'ステータスを「',
-    toastStatusChanged2: '」に変更しました',
-    confirmDelete: 'この物件を削除しますか？',
-    locGot: '取得完了',
-    locFail: '取得できませんでした',
-    locUnsupported: '位置情報が使えません',
-    propDefault: '物件 ',
-    rentDisplay: '/月',
-    sizeDisplay: '㎡',
-    photoDisplay: '📷 写真',
-    photoDisplaySuffix: '枚',
-  },
-  th: {
-    logo: 'สแกน<span style="color:var(--accent)">อสังหาฯ</span>',
-    countSuffix: ' แห่ง',
-    langBtn: '🇯🇵 JP',
-    tab0: 'บันทึกสถานที่', tab1: 'รายละเอียด', tab2: 'รายการ',
-    typeTitle: 'ประเภทอสังหาฯ', typeTenant: 'พื้นที่เช่า', typeResidence: 'ที่พักอาศัย',
-    photoTitle: 'รูปภาพ', photoPlaceholder: 'แตะเพื่อถ่ายรูป หรือเลือกจากคลัง',
-    phoneTitle: 'เบอร์โทรศัพท์', phonePlaceholder: 'เช่น 081-234-5678',
-    locationTitle: 'สถานที่', locationBtn: 'ใช้ตำแหน่งปัจจุบัน',
-    locationOr: 'หรือพิมพ์ที่อยู่',
-    addressPlaceholder: 'เช่น Sukhumvit Soi 11, Bangkok',
-    mapGenBtn: '🗺 สร้างลิงก์', mapLink: '🗺 เปิดใน Google Maps →',
-    submitNext: 'บันทึกและไปรายละเอียด →', submitFieldOnly: 'บันทึกเฉพาะข้อมูลสถานที่',
-    propNameTitle: 'ชื่อ / บันทึกย่อ', propNamePlaceholder: 'เช่น ตึกมุม Soi 11',
-    statusTitle: 'สถานะ',
-    statusList: ['ยังไม่เจรจา','กำลังเจรจา','เซ็นสัญญาแล้ว','ไม่ผ่าน','รอดูก่อน'],
-    rentTitle: 'ค่าเช่า / ค่าใช้จ่าย', rentLabel: 'ค่าเช่า/เดือน（฿）', rentPlaceholder: '25000',
-    depositLabel: 'เงินมัดจำ', depositPlaceholder: '2 เดือน',
-    sizeLabel: 'ขนาด（ตร.ม.）', sizePlaceholder: '45',
-    condTitle: 'เงื่อนไข / บันทึก', condLabel: 'เงื่อนไขสัญญา', condPlaceholder: 'อย่างน้อย 1 ปี, ห้ามเลี้ยงสัตว์',
-    notesLabel: 'บันทึกอื่นๆ', notesPlaceholder: 'มีที่จอดรถ, ต่อรองปรับปรุงได้',
-    saveBtn: '💾 บันทึก', backBtn: '← กลับไปบันทึกสถานที่',
-    emptyList: 'ยังไม่มีรายการอสังหาฯ
-เพิ่มได้จากหน้าบันทึกสถานที่',
-    appendNotePlaceholder: 'พิมพ์บันทึกเพิ่มเติม...', appendNoteBtn: '📝 เพิ่มบันทึก',
-    addPhotoBtn: '📷 เพิ่มรูปภาพ',
-    deleteBtn: '🗑 ลบรายการนี้',
-    editTab: '✏️ แก้ไข', viewTab: '📋 รายละเอียด',
-    saveEditBtn: '💾 บันทึกการแก้ไข',
-    modalLabels: ['ประเภท','วันที่','โทร','สถานที่','ค่าเช่า','มัดจำ','ขนาด','เงื่อนไข','บันทึก'],
-    toastPhotoAdding: 'กำลังประมวลผลรูป...',
-    toastPhotoAdded: ' รูปเพิ่มแล้ว',
-    toastSaved: 'บันทึกแล้ว！',
-    toastFieldSaved: 'บันทึกข้อมูลสถานที่แล้ว',
-    toastLocating: 'กำลังระบุตำแหน่ง...',
-    toastLocated: 'ระบุตำแหน่งแล้ว',
-    toastLocFail: 'ระบุตำแหน่งไม่ได้',
-    toastLocFailMsg: 'ไม่สามารถระบุตำแหน่งได้',
-    toastMapGen: 'สร้างลิงก์แผนที่แล้ว',
-    toastAddrEmpty: 'กรุณาพิมพ์ที่อยู่',
-    toastNoteEmpty: 'กรุณาพิมพ์บันทึก',
-    toastNoteAdded: 'เพิ่มบันทึกแล้ว',
-    toastPhotoAppended: ' รูปเพิ่มแล้ว',
-    toastDeleted: 'ลบแล้ว',
-    toastEditSaved: 'บันทึกการแก้ไขแล้ว',
-    toastStatusChanged: 'เปลี่ยนสถานะเป็น「',
-    toastStatusChanged2: '」แล้ว',
-    confirmDelete: 'ต้องการลบรายการนี้ใช่ไหม？',
-    locGot: 'ระบุตำแหน่งแล้ว',
-    locFail: 'ระบุตำแหน่งไม่ได้',
-    locUnsupported: 'ไม่รองรับ GPS',
-    propDefault: 'อสังหาฯ ',
-    rentDisplay: '/เดือน',
-    sizeDisplay: ' ตร.ม.',
-    photoDisplay: '📷 รูป',
-    photoDisplaySuffix: ' รูป',
-  }
-};
-
-function t(key){ return LANG[currentLang][key] || LANG['ja'][key] || key; }
-
-function toggleLang(){
-  currentLang = currentLang === 'ja' ? 'th' : 'ja';
-  applyLang();
-}
-
-function applyLang(){
-  const L = LANG[currentLang];
-  document.getElementById('logo').innerHTML = L.logo;
-  document.getElementById('lang-btn').textContent = L.langBtn;
-  document.getElementById('count-label').textContent = getList().length + L.countSuffix;
-  document.getElementById('tab0').innerHTML = '<div class="tab-icon">📍</div>'+L.tab0;
-  document.getElementById('tab1').innerHTML = '<div class="tab-icon">📋</div>'+L.tab1;
-  document.getElementById('tab2').innerHTML = '<div class="tab-icon">🏠</div>'+L.tab2;
-  // Page 1
-  setTextById('type-title', L.typeTitle);
-  document.getElementById('type-tenant').innerHTML = '<div class="ti">🏪</div><div class="type-label">'+L.typeTenant+'</div>';
-  document.getElementById('type-residence').innerHTML = '<div class="ti">🏠</div><div class="type-label">'+L.typeResidence+'</div>';
-  setTextById('photo-title', L.photoTitle);
-  document.querySelector('.photo-placeholder').innerHTML = '<div class="ph-icon">📷</div>'+L.photoPlaceholder;
-  setTextById('phone-title', L.phoneTitle);
-  document.getElementById('phone').placeholder = L.phonePlaceholder;
-  setTextById('location-title', L.locationTitle);
-  document.getElementById('loc-text').textContent = L.locationBtn;
-  setTextById('location-or', L.locationOr);
-  document.getElementById('address-input').placeholder = L.addressPlaceholder;
-  document.getElementById('map-gen-btn').textContent = L.mapGenBtn;
-  document.getElementById('map-a').textContent = L.mapLink;
-  document.getElementById('submit-next').textContent = L.submitNext;
-  document.getElementById('submit-field-only').textContent = L.submitFieldOnly;
-  // Page 2
-  setTextById('prop-name-title', L.propNameTitle);
-  document.getElementById('prop-name').placeholder = L.propNamePlaceholder;
-  setTextById('status-title', L.statusTitle);
-  ['snew','sneg','scon','sng','shold'].forEach((id,i)=>{
-    const el = document.getElementById(id);
-    if(el) el.textContent = ['🔵','🟡','🟢','🔴','⚪'][i]+' '+L.statusList[i];
-  });
-  setTextById('rent-title', L.rentTitle);
-  document.getElementById('rent').placeholder = L.rentPlaceholder;
-  setTextById('deposit-label', L.depositLabel);
-  document.getElementById('deposit').placeholder = L.depositPlaceholder;
-  setTextById('size-label', L.sizeLabel);
-  document.getElementById('size').placeholder = L.sizePlaceholder;
-  setTextById('cond-title', L.condTitle);
-  document.getElementById('conditions').placeholder = L.condPlaceholder;
-  setTextById('notes-label', L.notesLabel);
-  document.getElementById('notes').placeholder = L.notesPlaceholder;
-  document.getElementById('save-btn').textContent = L.saveBtn;
-  document.getElementById('back-btn').textContent = L.backBtn;
-  renderList();
-}
-
-function setTextById(id, text){
-  const el = document.getElementById(id);
-  if(el) el.textContent = text;
-}
-
-
-updateCount();
-applyLang();
-  showToast('保存しました！','success');
+  updateCount();
+  toast(t().saved, 'ok');
   resetForm();
-  setTimeout(()=>switchTab(2), 800);
+  setTimeout(() => goTab(2), 800);
 }
 
-// ---- LIST ----
-function getList() { try{ return JSON.parse(localStorage.getItem(STORAGE_KEY))||[]; }catch(e){ return []; } }
-function saveList(list){ localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
-function updateCount(){ document.getElementById('count-label').textContent = getList().length+'件'; }
+// ===== STORAGE =====
+function getList() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(e) { return []; } }
+function saveList(list) { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
+function updateCount() {
+  const n = getList().length;
+  document.getElementById('el-count').textContent = n + t().countSfx;
+}
 
+// ===== LIST =====
 function renderList() {
   const list = getList();
-  const c = document.getElementById('list-container');
-  if(!list.length){
-    c.innerHTML='<div class="list-empty"><div class="empty-icon">🏠</div>まだ物件が保存されていません<br>現地入力から追加してください</div>';
+  const wrap = document.getElementById('list-wrap');
+  if (!list.length) {
+    wrap.innerHTML = '<div class="empty-state"><div class="e-icon">' + t().emptyIcon + '</div>' + t().emptyMsg.replace('\n','<br>') + '</div>';
     return;
   }
-  c.innerHTML = list.slice().reverse().map(p => {
-    const si = STATUS_LIST.indexOf(p.status||'未交渉');
+  const l = t();
+  wrap.innerHTML = list.slice().reverse().map(p => {
+    const si = typeof p.status === 'number' ? p.status : 0;
     return `<div class="prop-card" onclick="openModal(${p.id})">
-      <div class="prop-card-header">
-        <div class="prop-name">${p.propName}</div>
-        <span class="badge badge-${si>=0?si:0}">${STATUS_EMOJI[si>=0?si:0]} ${p.status||'未交渉'}</span>
+      <div class="prop-card-top">
+        <div class="prop-card-name">${p.propName}</div>
+        <span class="badge b${si}">${l.s[si]}</span>
       </div>
       <div class="prop-meta">
-        ${p.type}　${p.rent?'฿'+Number(p.rent).toLocaleString()+'/月　':''}${p.size?p.size+'㎡　':''}${p.phone?'📞'+p.phone+'　':''}${p.mapUrl?'<a href="'+p.mapUrl+'" target="_blank" onclick="event.stopPropagation()">🗺 地図</a>':''}
-        <br><span style="font-size:11px;color:var(--muted)">${p.timestamp}</span>
+        ${p.type}　${p.rent ? '฿'+Number(p.rent).toLocaleString()+l.perMonth+'　' : ''}${p.size ? p.size+l.sqm+'　' : ''}${p.phone ? '📞'+p.phone+'　' : ''}${p.mapUrl ? '<a href="'+p.mapUrl+'" target="_blank" onclick="event.stopPropagation()">🗺</a>' : ''}
+        <br><span style="font-size:11px">${p.ts}</span>
       </div>
     </div>`;
   }).join('');
 }
 
-// ---- MODAL ----
+// ===== MODAL =====
 function openModal(id) {
   currentId = id;
-  const p = getList().find(x=>x.id===id);
-  if(!p) return;
+  const p = getList().find(x => x.id === id);
+  if (!p) return;
+  const l = t();
   document.getElementById('modal-title').textContent = p.propName;
-  // status grid
-  document.getElementById('modal-status-grid').innerHTML = STATUS_LIST.map((s,i)=>{
-    const active = (p.status||'未交渉')===s ? 'active-'+STATUS_CLASS[i] : '';
-    return `<div class="status-btn ${active}" onclick="changeStatus('${s}')">${STATUS_EMOJI[i]} ${s}</div>`;
-  }).join('');
-  // detail rows
+  renderStatusGrid('status-grid-modal', typeof p.status === 'number' ? p.status : 0, setStatusModal);
+
+  // rows
+  const ni = l.notInput;
   const rows = [
-    ['種類',p.type],['日時',p.timestamp],['電話',p.phone||'未入力'],
-    ['場所',p.mapUrl?'<a href="'+p.mapUrl+'" target="_blank">🗺 地図を開く</a>':'未入力'],
-    ['家賃',p.rent?'฿'+Number(p.rent).toLocaleString()+'/月':'未入力'],
-    ['敷金',p.deposit||'未入力'],['広さ',p.size?p.size+'㎡':'未入力'],
-    ['条件',p.conditions||'未入力'],['メモ',p.notes||'未入力'],
+    [l.rows[0], p.type],
+    [l.rows[1], p.ts],
+    [l.rows[2], p.phone || ni],
+    [l.rows[3], p.mapUrl ? '<a href="'+p.mapUrl+'" target="_blank">'+l.openMap+'</a>' : ni],
+    [l.rows[4], p.rent ? '฿'+Number(p.rent).toLocaleString()+l.perMonth : ni],
+    [l.rows[5], p.deposit || ni],
+    [l.rows[6], p.size ? p.size+l.sqm : ni],
+    [l.rows[7], p.cond || ni],
+    [l.rows[8], p.notes || ni],
   ];
-  if(p.appendedNotes && p.appendedNotes.length){
-    p.appendedNotes.forEach((n,i)=>rows.push(['追記'+(i+1),n.text+' ('+n.time+')']));
+  if (p.appendedNotes && p.appendedNotes.length) {
+    p.appendedNotes.forEach((n, i) => rows.push(['+ '+(i+1), n.text + ' (' + n.ts + ')']));
   }
-  document.getElementById('modal-body').innerHTML = rows.map(([l,v])=>
-    '<div class="modal-row"><span class="modal-label">'+l+'</span><span class="modal-value">'+v+'</span></div>'
+  document.getElementById('modal-rows').innerHTML = rows.map(([lb, v]) =>
+    '<div class="detail-row"><span class="detail-label">'+lb+'</span><span class="detail-val">'+v+'</span></div>'
   ).join('');
+
   // photos
-  const mp = document.getElementById('modal-photos');
-  if(p.photoDataUrls && p.photoDataUrls.length){
-    mp.innerHTML='<div style="display:flex;flex-wrap:wrap;gap:8px">'+p.photoDataUrls.map(src=>'<img src="'+src+'" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border)">').join('')+'</div>';
-  } else { mp.innerHTML=''; }
+  const mp = document.getElementById('modal-photo-area');
+  mp.innerHTML = p.photos && p.photos.length
+    ? '<div style="display:flex;flex-wrap:wrap;gap:8px">' + p.photos.map(src => '<img src="'+src+'" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border)">').join('') + '</div>'
+    : '';
+
   // edit fields
-  document.getElementById('edit-name').value = p.propName||'';
-  document.getElementById('edit-phone').value = p.phone||'';
-  document.getElementById('edit-mapurl').value = p.mapUrl||'';
-  document.getElementById('edit-rent').value = p.rent||'';
-  document.getElementById('edit-deposit').value = p.deposit||'';
-  document.getElementById('edit-size').value = p.size||'';
-  document.getElementById('edit-conditions').value = p.conditions||'';
-  document.getElementById('edit-notes').value = p.notes||'';
-  document.getElementById('append-note').value = '';
-  switchModalTab(0);
+  document.getElementById('e-name').value = p.propName || '';
+  document.getElementById('e-phone').value = p.phone || '';
+  document.getElementById('e-map').value = p.mapUrl || '';
+  document.getElementById('e-rent').value = p.rent || '';
+  document.getElementById('e-deposit').value = p.deposit || '';
+  document.getElementById('e-size').value = p.size || '';
+  document.getElementById('e-cond').value = p.cond || '';
+  document.getElementById('e-notes').value = p.notes || '';
+  document.getElementById('append-inp').value = '';
+  goModalTab(0);
   document.getElementById('modal').classList.add('open');
 }
 
-function switchModalTab(idx){
+function goModalTab(idx) {
   document.getElementById('mtab0').classList.toggle('active', idx===0);
   document.getElementById('mtab1').classList.toggle('active', idx===1);
-  document.getElementById('modal-view').classList.toggle('hidden', idx!==0);
-  document.getElementById('modal-edit').style.display = idx===1?'block':'none';
-  document.getElementById('modal-view').style.display = idx===0?'block':'none';
+  document.getElementById('modal-view').style.display = idx===0 ? 'block' : 'none';
+  document.getElementById('modal-edit').style.display = idx===1 ? 'block' : 'none';
 }
 
-function changeStatus(s){
+function doAppendNote() {
+  const txt = document.getElementById('append-inp').value.trim();
+  if (!txt) { toast(t().noNote, 'err'); return; }
   const list = getList();
-  const p = list.find(x=>x.id===currentId);
-  if(!p) return;
-  p.status = s;
+  const p = list.find(x => x.id === currentId);
+  if (!p) return;
+  if (!p.appendedNotes) p.appendedNotes = [];
+  p.appendedNotes.push({ text: txt, ts: new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Bangkok' }) });
   saveList(list);
-  updateCount();
-  renderList();
-  // update badges in modal
-  document.getElementById('modal-status-grid').innerHTML = STATUS_LIST.map((st,i)=>{
-    const active = st===s?'active-'+STATUS_CLASS[i]:'';
-    return `<div class="status-btn ${active}" onclick="changeStatus('${st}')">${STATUS_EMOJI[i]} ${st}</div>`;
-  }).join('');
-  showToast('ステータスを「'+s+'」に変更しました','success');
-}
-
-function appendNote(){
-  const txt = document.getElementById('append-note').value.trim();
-  if(!txt){ showToast('メモを入力してください','error'); return; }
-  const list = getList();
-  const p = list.find(x=>x.id===currentId);
-  if(!p) return;
-  if(!p.appendedNotes) p.appendedNotes=[];
-  p.appendedNotes.push({text:txt, time:new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'})});
-  saveList(list);
-  document.getElementById('append-note').value='';
-  showToast('追記しました','success');
+  toast(t().appended, 'ok');
   openModal(currentId);
 }
 
-function appendPhotos(input){
+function doAppendPhoto(input) {
   const files = Array.from(input.files).slice(0, 5);
-  if(!files.length) return;
+  if (!files.length) return;
   const list = getList();
-  const p = list.find(x=>x.id===currentId);
-  if(!p) return;
-  if(!p.photoDataUrls) p.photoDataUrls = [];
-  showToast('写真を処理中...','');
-  let loaded = 0;
+  const p = list.find(x => x.id === currentId);
+  if (!p) return;
+  if (!p.photos) p.photos = [];
+  toast(t().processing, '');
+  let done = 0;
   files.forEach(file => {
     compressImage(file, dataUrl => {
-      p.photoDataUrls.push(dataUrl);
-      loaded++;
-      if(loaded === files.length){
+      p.photos.push(dataUrl);
+      done++;
+      if (done === files.length) {
         saveList(list);
-        showToast(files.length+'枚追加しました','success');
+        toast(files.length + t().photoAdded, 'ok');
         openModal(currentId);
       }
     });
   });
 }
 
-function saveEdit(){
+function doSaveEdit() {
   const list = getList();
-  const p = list.find(x=>x.id===currentId);
-  if(!p) return;
-  p.propName = document.getElementById('edit-name').value||p.propName;
-  p.phone = document.getElementById('edit-phone').value;
-  p.mapUrl = document.getElementById('edit-mapurl').value;
-  p.rent = document.getElementById('edit-rent').value;
-  p.deposit = document.getElementById('edit-deposit').value;
-  p.size = document.getElementById('edit-size').value;
-  p.conditions = document.getElementById('edit-conditions').value;
-  p.notes = document.getElementById('edit-notes').value;
+  const p = list.find(x => x.id === currentId);
+  if (!p) return;
+  p.propName = document.getElementById('e-name').value || p.propName;
+  p.phone = document.getElementById('e-phone').value;
+  p.mapUrl = document.getElementById('e-map').value;
+  p.rent = document.getElementById('e-rent').value;
+  p.deposit = document.getElementById('e-deposit').value;
+  p.size = document.getElementById('e-size').value;
+  p.cond = document.getElementById('e-cond').value;
+  p.notes = document.getElementById('e-notes').value;
   saveList(list);
   renderList();
-  showToast('上書き保存しました','success');
+  toast(t().saved, 'ok');
   openModal(currentId);
-  switchModalTab(0);
+  goModalTab(0);
 }
 
-function deleteEntry(){
-  if(!confirm('この物件を削除しますか？')) return;
-  const list = getList().filter(x=>x.id!==currentId);
-  saveList(list);
+function doDelete() {
+  if (!confirm(t().confirmDel)) return;
+  saveList(getList().filter(x => x.id !== currentId));
   updateCount();
   renderList();
   closeModal();
-  showToast('削除しました','success');
+  toast(t().deleted, 'ok');
 }
 
-function closeModal(){ document.getElementById('modal').classList.remove('open'); currentId=null; }
-function closeModalBg(e){ if(e.target===document.getElementById('modal')) closeModal(); }
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  currentId = null;
+}
+function modalBgClick(e) { if (e.target === document.getElementById('modal')) closeModal(); }
 
-function resetForm(){
-  state={type:state.type,photoDataUrls:[],phone:'',lat:null,lng:null,mapUrl:'',rent:'',deposit:'',size:'',conditions:'',notes:'',propName:'',status:'未交渉'};
-  ['phone','rent','deposit','size','conditions','notes','prop-name','address-input'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
-  document.getElementById('photo-preview-new').style.display='none';
-  document.getElementById('photo-preview-new').innerHTML='';
+// ===== RESET =====
+function resetForm() {
+  state = freshState();
+  ['f-phone','f-rent','f-deposit','f-size','f-cond','f-notes','f-propname','f-addr'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('thumbs0').innerHTML = '';
+  document.getElementById('thumbs0').style.display = 'none';
   document.getElementById('loc-btn').classList.remove('got');
-  document.getElementById('loc-icon').textContent='📍';
-  document.getElementById('loc-text').textContent='現在地を自動取得';
-  document.getElementById('map-link').style.display='none';
-  setStatus('未交渉');
+  document.getElementById('loc-icon').textContent = '📍';
+  document.getElementById('loc-txt').textContent = t().locBtn;
+  document.getElementById('map-result').style.display = 'none';
+  renderStatusGrid('status-grid-main', 0, setStatusMain);
+  setType('テナント');
 }
 
-function showToast(msg,type=''){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.className='show '+type;
-  setTimeout(()=>{ t.className=''; },2800);
+// ===== TOAST =====
+function toast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'show' + (type ? ' ' + type : '');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => { el.className = ''; }, 2800);
 }
 
-updateCount();
+// ===== INIT =====
+renderStatusGrid('status-grid-main', 0, setStatusMain);
+applyLang();
 </script>
 </body>
 </html>
