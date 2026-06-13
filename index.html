@@ -259,6 +259,11 @@ textarea.inp{resize:none;line-height:1.5}
   </div>
 </div>
 
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:600;align-items:center;justify-content:center;cursor:zoom-out">
+  <img id="lightbox-img" style="max-width:96vw;max-height:96vh;object-fit:contain;border-radius:8px">
+</div>
+
 <!-- MODAL -->
 <div id="modal" onclick="modalBgClick(event)">
   <div class="modal-inner">
@@ -492,41 +497,40 @@ function setStatusModal(i) {
 }
 
 // ===== PHOTOS =====
-function compressImage(file, cb) {
-  const reader = new FileReader();
-  reader.onload = e => {
-    const img = new Image();
-    img.onload = () => {
-      const MAX = 800;
-      let w = img.width, h = img.height;
-      if (w > h && w > MAX) { h = h*MAX/w; w = MAX; }
-      else if (h > MAX) { w = w*MAX/h; h = MAX; }
-      const c = document.createElement('canvas');
-      c.width = w; c.height = h;
-      c.getContext('2d').drawImage(img, 0, 0, w, h);
-      cb(c.toDataURL('image/jpeg', 0.6));
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
+const CLOUDINARY_CLOUD = 'dnsp5zgoy';
+const CLOUDINARY_PRESET = 'property-scout';
+
+async function uploadToCloudinary(file) {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', CLOUDINARY_PRESET);
+  const res = await fetch('https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD + '/image/upload', {
+    method: 'POST', body: fd
+  });
+  const data = await res.json();
+  return data.secure_url;
 }
 
 function addPhotos(input, thumbId) {
-  const files = Array.from(input.files).slice(0, 5);
+  const files = Array.from(input.files).slice(0, 10);
   if (!files.length) return;
   toast(t().processing, '');
   const thumbs = document.getElementById(thumbId);
   let done = 0;
-  files.forEach(file => {
-    compressImage(file, dataUrl => {
-      state.photos.push(dataUrl);
+  files.forEach(async file => {
+    try {
+      const url = await uploadToCloudinary(file);
+      state.photos.push(url);
       const img = document.createElement('img');
-      img.src = dataUrl;
+      img.src = url;
+      img.style.cssText = 'width:72px;height:72px;object-fit:cover;border-radius:6px;border:1px solid var(--border)';
       thumbs.appendChild(img);
       thumbs.style.display = 'flex';
       done++;
       if (done === files.length) toast(files.length + t().photoAdded, 'ok');
-    });
+    } catch(e) {
+      toast('アップロード失敗', 'err');
+    }
   });
 }
 
@@ -675,7 +679,7 @@ function openModal(id) {
   // photos
   const mp = document.getElementById('modal-photo-area');
   mp.innerHTML = p.photos && p.photos.length
-    ? '<div style="display:flex;flex-wrap:wrap;gap:8px">' + p.photos.map(src => '<img src="'+src+'" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border)">').join('') + '</div>'
+    ? '<div style="display:flex;flex-wrap:wrap;gap:8px">' + p.photos.map(src => '<img src="'+src+'" onclick="openLightbox(this.src)" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);cursor:zoom-in">').join('') + '</div>'
     : '';
 
   // edit fields
@@ -715,7 +719,7 @@ function doAppendNote() {
 }
 
 function doAppendPhoto(input) {
-  const files = Array.from(input.files).slice(0, 5);
+  const files = Array.from(input.files).slice(0, 10);
   if (!files.length) return;
   const list = getList();
   const p = list.find(x => x.id === currentId);
@@ -723,16 +727,19 @@ function doAppendPhoto(input) {
   if (!p.photos) p.photos = [];
   toast(t().processing, '');
   let done = 0;
-  files.forEach(file => {
-    compressImage(file, dataUrl => {
-      p.photos.push(dataUrl);
+  files.forEach(async file => {
+    try {
+      const url = await uploadToCloudinary(file);
+      p.photos.push(url);
       done++;
       if (done === files.length) {
         saveList(list);
         toast(files.length + t().photoAdded, 'ok');
         openModal(currentId);
       }
-    });
+    } catch(e) {
+      toast('アップロード失敗', 'err');
+    }
   });
 }
 
@@ -800,6 +807,13 @@ function toast(msg, type) {
   el.className = 'show' + (type ? ' ' + type : '');
   clearTimeout(el._t);
   el._t = setTimeout(() => { el.className = ''; }, 2800);
+}
+
+// ===== LIGHTBOX =====
+function openLightbox(src) {
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = src;
+  lb.style.display = 'flex';
 }
 
 // ===== INIT =====
