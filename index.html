@@ -556,6 +556,7 @@ function getGPS() {
 function genMapFromAddr() {
   const addr = document.getElementById('f-addr').value.trim();
   if (!addr) { toast(t().noAddr, 'err'); return; }
+  state.address = addr;
   state.mapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(addr);
   state.lat = null; state.lng = null;
   document.getElementById('map-result').style.display = 'block';
@@ -599,6 +600,7 @@ function saveEntry() {
     rent: state.rent, deposit: state.deposit, size: state.size,
     cond: state.cond, notes: state.notes,
     photos: state.photos,
+    address: state.address || '',
     appendedNotes: []
   };
   list.push(entry);
@@ -679,7 +681,9 @@ function openModal(id) {
   // edit fields
   document.getElementById('e-name').value = p.propName || '';
   document.getElementById('e-phone').value = p.phone || '';
-  document.getElementById('e-map').value = p.mapUrl || '';
+  // Store raw address separately; show address if it was hand-typed, else show mapUrl
+  const storedAddr = p.address || '';
+  document.getElementById('e-map').value = storedAddr || p.mapUrl || '';
   document.getElementById('e-rent').value = p.rent || '';
   document.getElementById('e-deposit').value = p.deposit || '';
   document.getElementById('e-size').value = p.size || '';
@@ -738,7 +742,14 @@ function doSaveEdit() {
   if (!p) return;
   p.propName = document.getElementById('e-name').value || p.propName;
   p.phone = document.getElementById('e-phone').value;
-  p.mapUrl = document.getElementById('e-map').value;
+  const rawMap = document.getElementById('e-map').value.trim();
+  if (rawMap.startsWith('http')) {
+    p.mapUrl = rawMap;
+  } else if (rawMap) {
+    p.mapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(rawMap);
+  } else {
+    p.mapUrl = '';
+  }
   p.rent = document.getElementById('e-rent').value;
   p.deposit = document.getElementById('e-deposit').value;
   p.size = document.getElementById('e-size').value;
