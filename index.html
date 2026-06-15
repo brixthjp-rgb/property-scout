@@ -16,54 +16,37 @@
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Noto Sans JP','Sarabun',sans-serif;font-size:16px;overflow:hidden}
 #app{display:flex;flex-direction:column;height:100vh;max-width:430px;margin:0 auto}
-
-/* HEADER */
 header{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
-.logo{font-size:17px;font-weight:700;color:var(--text)}
-.logo span{color:var(--accent)}
+.logo{font-size:17px;font-weight:700;color:var(--text)}.logo span{color:var(--accent)}
 .header-right{display:flex;align-items:center;gap:8px}
 .count-badge{font-size:12px;color:var(--muted)}
 .lang-btn{padding:4px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;-webkit-appearance:none}
-
-/* TABS */
 .tabs{display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
 .tab{padding:10px 4px;text-align:center;font-size:11px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;user-select:none;-webkit-user-select:none}
 .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 .tab-icon{font-size:16px;margin-bottom:2px}
-
-/* PAGES */
 .pages{flex:1;overflow:hidden;position:relative}
 .page{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px;opacity:1;transition:opacity .2s}
 .page.hidden{opacity:0;pointer-events:none}
-
-/* CARDS */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px}
 .card-title{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
-
-/* TYPE */
 .type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .type-btn{padding:14px 8px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);text-align:center;cursor:pointer;transition:all .15s;user-select:none;-webkit-user-select:none}
 .type-btn .icon{font-size:26px;margin-bottom:5px}
 .type-btn .label{font-size:13px;font-weight:500}
 .type-btn.active{border-color:var(--accent);background:rgba(108,99,255,.15);color:var(--text)}
-
-/* INPUTS */
 .field{margin-bottom:12px}
 .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:500}
 .inp{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:15px;padding:11px 13px;outline:none;font-family:inherit;-webkit-appearance:none}
 .inp:focus{border-color:var(--accent)}
 .inp::placeholder{color:var(--muted);opacity:.6}
 textarea.inp{resize:none;line-height:1.5}
-
-/* PHOTO */
 .photo-wrap{border:1.5px dashed var(--border);border-radius:var(--radius-sm);padding:20px;text-align:center;position:relative;overflow:hidden;cursor:pointer}
 .photo-wrap input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .photo-hint{color:var(--muted);font-size:13px;pointer-events:none}
 .photo-hint .ph-icon{font-size:32px;margin-bottom:6px}
 .photo-thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .photo-thumbs img{width:72px;height:72px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
-
-/* LOCATION */
 .loc-btn{width:100%;padding:13px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;-webkit-appearance:none}
 .loc-btn.got{border-color:var(--green);color:var(--green)}
 .or-divider{display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--muted);font-size:12px}
@@ -75,8 +58,6 @@ textarea.inp{resize:none;line-height:1.5}
 .addr-gen-btn{padding:11px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-size:13px;cursor:pointer;white-space:nowrap;-webkit-appearance:none}
 .map-result{display:none;margin-top:8px}
 .map-result a{font-size:12px;color:var(--accent);text-decoration:none}
-
-/* STATUS */
 .status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .st-btn{padding:10px 4px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);text-align:center;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;user-select:none;-webkit-user-select:none}
 .st-btn.act0{border-color:#6c63ff;background:rgba(108,99,255,.15);color:#6c63ff}
@@ -84,18 +65,13 @@ textarea.inp{resize:none;line-height:1.5}
 .st-btn.act2{border-color:#22c55e;background:rgba(34,197,94,.15);color:#22c55e}
 .st-btn.act3{border-color:#ff6584;background:rgba(255,101,132,.15);color:#ff6584}
 .st-btn.act4{border-color:#8888aa;background:rgba(136,136,170,.15);color:#8888aa}
-
-/* TWO COL */
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-
-/* BUTTONS */
 .btn{width:100%;padding:15px;border-radius:var(--radius);border:none;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;font-family:inherit;-webkit-appearance:none}
 .btn-primary{background:var(--accent);color:#fff}
 .btn-primary:active{background:#5a52e0}
 .btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
 .btn-danger{background:transparent;color:var(--accent2);border:1px solid var(--accent2)}
-
-/* LIST */
+.btn-share{background:#25D366;color:#fff}
 .empty-state{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;line-height:2}
 .empty-state .e-icon{font-size:40px;margin-bottom:8px}
 .prop-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;cursor:pointer}
@@ -110,14 +86,12 @@ textarea.inp{resize:none;line-height:1.5}
 .b4{background:rgba(136,136,170,.15);color:#8888aa}
 .prop-meta{font-size:12px;color:var(--muted);line-height:1.9}
 .prop-meta a{color:var(--accent);text-decoration:none}
-
-/* MODAL */
-#modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;display:none;align-items:flex-end;justify-content:center}
-#modal.open{display:flex}
-.modal-inner{background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px 20px 40px}
-.modal-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.modal-hdr-title{font-size:17px;font-weight:700;color:var(--text)}
-.modal-close{font-size:24px;cursor:pointer;color:var(--muted);line-height:1;padding:4px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;display:none;align-items:flex-end;justify-content:center;-webkit-overflow-scrolling:touch}
+.overlay.open{display:flex}
+.sheet{background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px 20px 40px}
+.sheet-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.sheet-title{font-size:17px;font-weight:700;color:var(--text)}
+.sheet-close{font-size:24px;cursor:pointer;color:var(--muted);line-height:1;padding:4px}
 .modal-tabs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:16px}
 .m-tab{padding:10px;text-align:center;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;background:var(--surface2)}
 .m-tab.active{background:var(--accent);color:#fff}
@@ -126,10 +100,11 @@ textarea.inp{resize:none;line-height:1.5}
 .detail-label{color:var(--muted);white-space:nowrap}
 .detail-val{color:var(--text);text-align:right;word-break:break-all}
 .detail-val a{color:var(--accent);text-decoration:none}
-.section-label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;margin-bottom:8px;margin-top:14px}
-
-/* TOAST */
-#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:10px 20px;font-size:13px;opacity:0;transition:all .25s;pointer-events:none;z-index:500;white-space:nowrap;max-width:90vw;text-align:center}
+.section-lbl{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;margin-bottom:8px;margin-top:14px}
+.toggle-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border)}
+.toggle-row:last-child{border-bottom:none}
+.toggle-val{font-size:12px;color:var(--muted);margin-right:10px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:10px 20px;font-size:13px;opacity:0;transition:all .25s;pointer-events:none;z-index:600;white-space:nowrap;max-width:90vw;text-align:center}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #toast.ok{border-color:var(--green);color:var(--green)}
 #toast.err{border-color:var(--accent2);color:var(--accent2)}
@@ -137,7 +112,6 @@ textarea.inp{resize:none;line-height:1.5}
 </head>
 <body>
 <div id="app">
-
   <header>
     <div class="logo" id="el-logo">物件<span>スカウト</span></div>
     <div class="header-right">
@@ -145,18 +119,15 @@ textarea.inp{resize:none;line-height:1.5}
       <button class="lang-btn" id="el-langbtn" onclick="toggleLang()">🇹🇭 TH</button>
     </div>
   </header>
-
   <div class="tabs">
     <div class="tab active" id="tab0" onclick="goTab(0)"><div class="tab-icon">📍</div><span id="tl0">現地入力</span></div>
     <div class="tab" id="tab1" onclick="goTab(1)"><div class="tab-icon">📋</div><span id="tl1">物件詳細</span></div>
     <div class="tab" id="tab2" onclick="goTab(2)"><div class="tab-icon">🏠</div><span id="tl2">保存リスト</span></div>
   </div>
-
   <div class="pages">
 
-    <!-- PAGE 1: 現地入力 -->
+    <!-- PAGE 1 現地入力 -->
     <div class="page" id="page0">
-
       <div class="card">
         <div class="card-title" id="lbl-typeTitle">物件の種類</div>
         <div class="type-grid">
@@ -168,7 +139,6 @@ textarea.inp{resize:none;line-height:1.5}
           </div>
         </div>
       </div>
-
       <div class="card">
         <div class="card-title" id="lbl-photoTitle">写真</div>
         <div class="photo-wrap">
@@ -177,12 +147,10 @@ textarea.inp{resize:none;line-height:1.5}
         </div>
         <div class="photo-thumbs" id="thumbs0"></div>
       </div>
-
       <div class="card">
         <div class="card-title" id="lbl-phoneTitle">電話番号</div>
         <input class="inp" type="tel" id="f-phone" placeholder="081-234-5678">
       </div>
-
       <div class="card">
         <div class="card-title" id="lbl-locTitle">場所</div>
         <button class="loc-btn" id="loc-btn" onclick="getGPS()">
@@ -191,67 +159,44 @@ textarea.inp{resize:none;line-height:1.5}
         <div class="or-divider"><span id="lbl-or">または住所を手入力</span></div>
         <div class="addr-row">
           <input class="addr-inp" id="f-addr" placeholder="Sukhumvit Soi 11, Bangkok">
-          <button class="addr-gen-btn" onclick="genMapFromAddr()" id="lbl-gen">🗺 生成</button>
+          <button class="addr-gen-btn" id="lbl-gen" onclick="genMapFromAddr()">🗺 生成</button>
         </div>
         <div class="map-result" id="map-result">
           <a id="map-link-a" href="#" target="_blank">🗺 Googleマップで確認 →</a>
         </div>
       </div>
-
-      <button class="btn btn-primary" onclick="goToDetail()" id="lbl-btnNext">保存して詳細へ →</button>
-      <button class="btn btn-secondary" onclick="saveEntry()" id="lbl-btnFieldOnly">現地情報だけ保存</button>
-
+      <button class="btn btn-primary" id="lbl-btnNext" onclick="goToDetail()">保存して詳細へ →</button>
+      <button class="btn btn-secondary" id="lbl-btnFieldOnly" onclick="saveEntry()">現地情報だけ保存</button>
     </div>
 
-    <!-- PAGE 2: 物件詳細 -->
+    <!-- PAGE 2 物件詳細 -->
     <div class="page hidden" id="page1">
-
       <div class="card">
         <div class="card-title" id="lbl-propNameTitle">物件名 / 識別メモ</div>
         <input class="inp" type="text" id="f-propname" placeholder="例：Soi 11 角地テナント">
       </div>
-
       <div class="card">
         <div class="card-title" id="lbl-statusTitle">ステータス</div>
         <div class="status-grid" id="status-grid-main"></div>
       </div>
-
       <div class="card">
         <div class="card-title" id="lbl-rentTitle">家賃 / 費用</div>
         <div class="two-col">
-          <div class="field">
-            <label id="lbl-rent">月額家賃（฿）</label>
-            <input class="inp" type="number" id="f-rent" placeholder="25000">
-          </div>
-          <div class="field">
-            <label id="lbl-deposit">敷金 / 保証金</label>
-            <input class="inp" type="text" id="f-deposit" placeholder="2ヶ月">
-          </div>
+          <div class="field"><label id="lbl-rent">月額家賃（฿）</label><input class="inp" type="number" id="f-rent" placeholder="25000"></div>
+          <div class="field"><label id="lbl-deposit">敷金 / 保証金</label><input class="inp" type="text" id="f-deposit" placeholder="2ヶ月"></div>
         </div>
-        <div class="field" style="margin-bottom:0">
-          <label id="lbl-size">広さ（㎡）</label>
-          <input class="inp" type="number" id="f-size" placeholder="45">
-        </div>
+        <div class="field" style="margin-bottom:0"><label id="lbl-size">広さ（㎡）</label><input class="inp" type="number" id="f-size" placeholder="45"></div>
       </div>
-
       <div class="card">
         <div class="card-title" id="lbl-condTitle">賃貸条件・メモ</div>
-        <div class="field">
-          <label id="lbl-cond">契約条件</label>
-          <input class="inp" type="text" id="f-cond" placeholder="最低1年、ペット不可">
-        </div>
-        <div class="field" style="margin-bottom:0">
-          <label id="lbl-notes">その他メモ</label>
-          <textarea class="inp" id="f-notes" rows="4" placeholder="駐車場あり、改装交渉可"></textarea>
-        </div>
+        <div class="field"><label id="lbl-cond">契約条件</label><input class="inp" type="text" id="f-cond" placeholder="最低1年、ペット不可"></div>
+        <div class="field" style="margin-bottom:0"><label id="lbl-notes">その他メモ</label><textarea class="inp" id="f-notes" rows="4" placeholder="駐車場あり、改装交渉可"></textarea></div>
       </div>
-
-      <button class="btn btn-primary" onclick="saveEntry()" id="lbl-btnSave">💾 保存する</button>
-      <button class="btn btn-secondary" onclick="goTab(0)" id="lbl-btnBack">← 現地入力に戻る</button>
-
+      <button class="btn btn-primary" id="lbl-btnSave" onclick="saveEntry()">💾 保存する</button>
+      <button class="btn btn-secondary" id="lbl-btnBack" onclick="goTab(0)">← 現地入力に戻る</button>
     </div>
 
-    <!-- PAGE 3: 保存リスト -->
+    <!-- PAGE 3 保存リスト -->
     <div class="page hidden" id="page2">
       <div id="list-wrap"></div>
     </div>
@@ -259,41 +204,35 @@ textarea.inp{resize:none;line-height:1.5}
   </div>
 </div>
 
-<!-- LIGHTBOX -->
-<div id="lightbox" onclick="this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:600;align-items:center;justify-content:center;cursor:zoom-out">
-  <img id="lightbox-img" style="max-width:96vw;max-height:96vh;object-fit:contain;border-radius:8px">
-</div>
-
-<!-- MODAL -->
-<div id="modal" onclick="modalBgClick(event)">
-  <div class="modal-inner">
-    <div class="modal-hdr">
-      <div class="modal-hdr-title" id="modal-title"></div>
-      <div class="modal-close" onclick="closeModal()">✕</div>
+<!-- MODAL (物件詳細) -->
+<div class="overlay" id="modal" onclick="modalBgClick(event)">
+  <div class="sheet">
+    <div class="sheet-hdr">
+      <div class="sheet-title" id="modal-title"></div>
+      <div class="sheet-close" onclick="closeModal()">✕</div>
     </div>
     <div class="modal-tabs">
-      <div class="m-tab active" id="mtab0" onclick="goModalTab(0)" id="lbl-mDetail">📋 詳細</div>
-      <div class="m-tab" id="mtab1" onclick="goModalTab(1)" id="lbl-mEdit">✏️ 編集</div>
+      <div class="m-tab active" id="mtab0" onclick="goModalTab(0)">📋 <span id="lbl-mDetail">詳細</span></div>
+      <div class="m-tab" id="mtab1" onclick="goModalTab(1)">✏️ <span id="lbl-mEdit">編集</span></div>
     </div>
 
     <!-- DETAIL VIEW -->
     <div id="modal-view">
-      <div class="section-label" id="lbl-statusChange">ステータス変更</div>
+      <div class="section-lbl" id="lbl-statusChange">ステータス変更</div>
       <div class="status-grid" id="status-grid-modal"></div>
       <div id="modal-rows" style="margin-top:12px"></div>
       <div id="modal-photo-area" style="margin-top:10px"></div>
-
-      <div class="section-label" style="margin-top:16px" id="lbl-appendNote">メモを追記</div>
+      <div class="section-lbl" style="margin-top:16px" id="lbl-appendNote">メモを追記</div>
       <textarea class="inp" id="append-inp" rows="3" placeholder="追記メモを入力..."></textarea>
-      <button class="btn btn-secondary" onclick="doAppendNote()" id="lbl-btnAppend" style="margin-top:8px">📝 追記する</button>
-
+      <button class="btn btn-secondary" id="lbl-btnAppend" onclick="doAppendNote()" style="margin-top:8px">📝 追記する</button>
       <div style="margin-top:10px;position:relative">
         <label style="display:block;width:100%;padding:13px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:14px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit" id="lbl-btnAddPhoto">
           📷 写真を追加
           <input type="file" accept="image/*" multiple onchange="doAppendPhoto(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
         </label>
       </div>
-      <button class="btn btn-danger" onclick="doDelete()" id="lbl-btnDelete" style="margin-top:10px">🗑 この物件を削除</button>
+      <button class="btn btn-share" id="lbl-btnShareOpen" onclick="openShare()" style="margin-top:8px">📤 顧客に共有</button>
+      <button class="btn btn-danger" id="lbl-btnDelete" onclick="doDelete()" style="margin-top:8px">🗑 この物件を削除</button>
     </div>
 
     <!-- EDIT VIEW -->
@@ -308,84 +247,187 @@ textarea.inp{resize:none;line-height:1.5}
       <div class="field"><label id="lbl-eSize">広さ（㎡）</label><input class="inp" type="number" id="e-size"></div>
       <div class="field"><label id="lbl-eCond">契約条件</label><input class="inp" id="e-cond"></div>
       <div class="field"><label id="lbl-eNotes">メモ</label><textarea class="inp" id="e-notes" rows="4"></textarea></div>
-      <button class="btn btn-primary" onclick="doSaveEdit()" id="lbl-btnSaveEdit">💾 上書き保存</button>
+      <button class="btn btn-primary" id="lbl-btnSaveEdit" onclick="doSaveEdit()">💾 上書き保存</button>
     </div>
-
   </div>
+</div>
+
+<!-- SHARE SHEET -->
+<div class="overlay" id="share-sheet" style="z-index:400" onclick="shareBgClick(event)">
+  <div class="sheet">
+    <div class="sheet-hdr">
+      <div class="sheet-title" id="share-title">共有設定</div>
+      <div class="sheet-close" onclick="closeShare()">✕</div>
+    </div>
+    <div class="section-lbl" id="lbl-shareFixed">✅ 必ず含まれる項目</div>
+    <div id="share-fixed-preview" style="background:var(--surface2);border-radius:var(--radius-sm);padding:12px;font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.8;white-space:pre-wrap"></div>
+    <div class="section-lbl" id="lbl-shareOpt">⚙️ 含めるか選べる項目</div>
+    <div id="share-toggles"></div>
+    <button class="btn btn-share" id="lbl-btnShare" onclick="doShare()" style="margin-top:16px">📋 コピーしてLINEに貼る</button>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:700;align-items:center;justify-content:center;cursor:zoom-out">
+  <img id="lightbox-img" style="max-width:96vw;max-height:96vh;object-fit:contain;border-radius:8px">
 </div>
 
 <div id="toast"></div>
 
 <script>
-// ===== i18n =====
+const CLOUDINARY_CLOUD = 'dnsp5zgoy';
+const CLOUDINARY_PRESET = 'property-scout';
+const STORAGE_KEY = 'prop_scout_v3';
+const SB_URL = 'https://byikapxfaqfxglphoapg.supabase.co';
+const SB_KEY = 'sb_publishable_MAHYtSIOOIwIkoAikBT8fQ_Iv-xxrPg';
+const SB_HEADERS = { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
+
+async function sbFetch(path, opts={}) {
+  const res = await fetch(SB_URL + path, { ...opts, headers: { ...SB_HEADERS, ...(opts.headers||{}) } });
+  if (!res.ok) { const e = await res.text(); throw new Error(e); }
+  return res.status === 204 ? null : res.json();
+}
+
+async function syncToCloud(entry) {
+  const row = {
+    type: entry.type, status: entry.status, prop_name: entry.propName,
+    phone: entry.phone, map_url: entry.mapUrl, address: entry.address||'',
+    lat: entry.lat||'', lng: entry.lng||'', rent: entry.rent, deposit: entry.deposit,
+    size: entry.size, cond: entry.cond, notes: entry.notes,
+    photos: entry.photos||[], appended_notes: entry.appendedNotes||[], ts: entry.ts,
+    local_id: String(entry.id)
+  };
+  if (entry.cloud_id) {
+    await sbFetch('/rest/v1/properties?id=eq.'+entry.cloud_id, { method:'PATCH', body: JSON.stringify(row) });
+  } else {
+    const result = await sbFetch('/rest/v1/properties?select=id', { method:'POST', headers:{'Prefer':'return=representation'}, body: JSON.stringify(row) });
+    return result && result[0] ? result[0].id : null;
+  }
+  return entry.cloud_id;
+}
+
+async function loadFromCloud() {
+  const rows = await sbFetch('/rest/v1/properties?order=created_at.desc&select=*');
+  if (!rows || !rows.length) return;
+  const list = getList();
+  rows.forEach(row => {
+    const existing = list.find(x => x.cloud_id === row.id || String(x.id) === String(row.local_id));
+    const entry = {
+      id: existing ? existing.id : Date.now() + Math.random(),
+      cloud_id: row.id,
+      ts: row.ts || row.created_at,
+      type: row.type, status: row.status||0, propName: row.prop_name,
+      phone: row.phone, mapUrl: row.map_url, address: row.address,
+      lat: row.lat, lng: row.lng, rent: row.rent, deposit: row.deposit,
+      size: row.size, cond: row.cond, notes: row.notes,
+      photos: row.photos||[], appendedNotes: row.appended_notes||[]
+    };
+    if (existing) { Object.assign(existing, entry); }
+    else { list.push(entry); }
+  });
+  saveList(list);
+}
+
+async function deleteFromCloud(cloud_id) {
+  if (!cloud_id) return;
+  await sbFetch('/rest/v1/properties?id=eq.'+cloud_id, { method:'DELETE' });
+}
+const STATUS_CLS = ['act0','act1','act2','act3','act4'];
+
 const L = {
   ja:{
     logo:'物件<span style="color:var(--accent)">スカウト</span>',
-    langBtn:'🇹🇭 TH', countSfx:'件',
-    tab0:'現地入力', tab1:'物件詳細', tab2:'保存リスト',
-    typeTitle:'物件の種類', tenant:'テナント', residence:'住居',
-    photoTitle:'写真', photoHint:'タップして撮影 または ライブラリから選択',
-    phoneTitle:'電話番号', locTitle:'場所',
-    locBtn:'現在地を自動取得', locGetting:'取得中...', locDone:'取得完了', locFail:'取得できませんでした',
-    or:'または住所を手入力', gen:'🗺 生成', mapLink:'🗺 Googleマップで確認 →',
-    btnNext:'保存して詳細へ →', btnFieldOnly:'現地情報だけ保存',
-    propNameTitle:'物件名 / 識別メモ', propNamePh:'例：Soi 11 角地テナント',
+    langBtn:'🇹🇭 TH',countSfx:'件',
+    tab0:'現地入力',tab1:'物件詳細',tab2:'保存リスト',
+    typeTitle:'物件の種類',tenant:'テナント',residence:'住居',
+    photoTitle:'写真',photoHint:'タップして撮影 または ライブラリから選択',
+    phoneTitle:'電話番号',locTitle:'場所',
+    locBtn:'現在地を自動取得',locGetting:'取得中...',locDone:'取得完了',locFail:'取得できませんでした',
+    or:'または住所を手入力',gen:'🗺 生成',mapLink:'🗺 Googleマップで確認 →',
+    btnNext:'保存して詳細へ →',btnFieldOnly:'現地情報だけ保存',
+    propNameTitle:'物件名 / 識別メモ',propNamePh:'例：Soi 11 角地テナント',
     statusTitle:'ステータス',
     s:['🔵 未交渉','🟡 交渉中','🟢 契約済み','🔴 NG','⚪ 保留'],
-    rentTitle:'家賃 / 費用', rent:'月額家賃（฿）', deposit:'敷金 / 保証金', size:'広さ（㎡）',
-    condTitle:'賃貸条件・メモ', cond:'契約条件', notes:'その他メモ',
-    btnSave:'💾 保存する', btnBack:'← 現地入力に戻る',
-    emptyIcon:'🏠', emptyMsg:'まだ物件が保存されていません\n現地入力から追加してください',
-    mDetail:'📋 詳細', mEdit:'✏️ 編集',
-    statusChange:'ステータス変更', appendNote:'メモを追記', appendPh:'追記メモを入力...',
-    btnAppend:'📝 追記する', btnAddPhoto:'📷 写真を追加', btnDelete:'🗑 この物件を削除',
-    eName:'物件名', ePhone:'電話番号', eMap:'住所 / マップURL',
-    eRent:'月額家賃（฿）', eDeposit:'敷金 / 保証金', eSize:'広さ（㎡）', eCond:'契約条件', eNotes:'メモ',
+    rentTitle:'家賃 / 費用',rent:'月額家賃（฿）',deposit:'敷金 / 保証金',size:'広さ（㎡）',
+    condTitle:'賃貸条件・メモ',cond:'契約条件',notes:'その他メモ',
+    btnSave:'💾 保存する',btnBack:'← 現地入力に戻る',
+    emptyMsg:'まだ物件が保存されていません\n現地入力から追加してください',
+    mDetail:'詳細',mEdit:'編集',
+    statusChange:'ステータス変更',appendNote:'メモを追記',appendPh:'追記メモを入力...',
+    btnAppend:'📝 追記する',btnAddPhoto:'📷 写真を追加',
+    btnShareOpen:'📤 顧客に共有',btnDelete:'🗑 この物件を削除',
+    eName:'物件名',ePhone:'電話番号',eMap:'住所 / マップURL',
+    eRent:'月額家賃（฿）',eDeposit:'敷金 / 保証金',eSize:'広さ（㎡）',eCond:'契約条件',eNotes:'メモ',
     btnSaveEdit:'💾 上書き保存',
     rows:['種類','日時','電話','場所','家賃','敷金','広さ','条件','メモ'],
-    notInput:'未入力', perMonth:'/月', sqm:'㎡', openMap:'🗺 地図を開く',
-    processing:'写真を処理中...', photoAdded:'枚追加しました',
-    fieldSaved:'現地情報を記録しました', saved:'保存しました！', deleted:'削除しました',
-    appended:'追記しました', statusChanged:'ステータスを変更しました',
-    confirmDel:'この物件を削除しますか？', noNote:'メモを入力してください',
-    noAddr:'住所を入力してください', mapGenOk:'マップリンクを生成しました',
-    propDefault:'物件', locGot:'現在地を取得しました',
+    ni:'未入力',perMonth:'/月',sqm:'㎡',openMap:'🗺 地図を開く',
+    processing:'アップロード中...',photoAdded:'枚追加しました',
+    fieldSaved:'現地情報を記録しました',saved:'保存しました！',deleted:'削除しました',
+    appended:'追記しました',statusChanged:'ステータスを変更しました',
+    confirmDel:'この物件を削除しますか？',noNote:'メモを入力してください',
+    noAddr:'住所を入力してください',mapGenOk:'マップリンクを生成しました',
+    propDefault:'物件',locGot:'現在地を取得しました',uploadFail:'アップロード失敗',
+    shareTitle:'共有設定',shareFixed:'✅ 必ず含まれる項目',shareOpt:'⚙️ 含めるか選べる項目',
+    btnShare:'📋 コピーしてLINEに貼る',copiedMsg:'コピーしました！LINEに貼り付けてください',
+    sOptPhone:'📞 電話番号',sOptDeposit:'💰 敷金/保証金',sOptSize:'📐 広さ',
+    sOptCond:'📋 契約条件',sOptNotes:'📝 メモ',
+    shareHeader:'━━━━━━━━━━━━━━━',shareFooter:'━━━━━━━━━━━━━━━',
+    shareIntro:'物件のご案内',
+    sRent:'💰 家賃：',sSizeL:'📐 広さ：',sDeposit:'💳 敷金：',sCond:'📋 条件：',
+    sPhone:'📞 電話：',sMap:'🗺 地図：',sPhoto:'📷 写真：',sNotes:'📝 備考：',sPhotoSfx:'枚あり',
   },
   th:{
     logo:'สำรวจ<span style="color:var(--accent)">อสังหาฯ</span>',
-    langBtn:'🇯🇵 JA', countSfx:'รายการ',
-    tab0:'บันทึกหน้างาน', tab1:'รายละเอียด', tab2:'รายการที่บันทึก',
-    typeTitle:'ประเภทอสังหาฯ', tenant:'พื้นที่เช่า', residence:'ที่พักอาศัย',
-    photoTitle:'รูปภาพ', photoHint:'แตะเพื่อถ่ายภาพ หรือเลือกจากคลัง',
-    phoneTitle:'เบอร์โทรศัพท์', locTitle:'สถานที่',
-    locBtn:'รับตำแหน่งปัจจุบัน', locGetting:'กำลังรับตำแหน่ง...', locDone:'รับตำแหน่งสำเร็จ', locFail:'รับตำแหน่งไม่ได้',
-    or:'หรือพิมพ์ที่อยู่', gen:'🗺 สร้างลิงก์', mapLink:'🗺 ดูใน Google Maps →',
-    btnNext:'บันทึกและไปรายละเอียด →', btnFieldOnly:'บันทึกเฉพาะข้อมูลหน้างาน',
-    propNameTitle:'ชื่อ / บันทึกระบุตัวตน', propNamePh:'เช่น ตึกแถวมุม Soi 11',
+    langBtn:'🇯🇵 JA',countSfx:'รายการ',
+    tab0:'บันทึกหน้างาน',tab1:'รายละเอียด',tab2:'รายการที่บันทึก',
+    typeTitle:'ประเภทอสังหาฯ',tenant:'พื้นที่เช่า',residence:'ที่พักอาศัย',
+    photoTitle:'รูปภาพ',photoHint:'แตะเพื่อถ่ายภาพ หรือเลือกจากคลัง',
+    phoneTitle:'เบอร์โทรศัพท์',locTitle:'สถานที่',
+    locBtn:'รับตำแหน่งปัจจุบัน',locGetting:'กำลังรับตำแหน่ง...',locDone:'รับตำแหน่งสำเร็จ',locFail:'รับตำแหน่งไม่ได้',
+    or:'หรือพิมพ์ที่อยู่',gen:'🗺 สร้างลิงก์',mapLink:'🗺 ดูใน Google Maps →',
+    btnNext:'บันทึกและไปรายละเอียด →',btnFieldOnly:'บันทึกเฉพาะข้อมูลหน้างาน',
+    propNameTitle:'ชื่อ / บันทึกระบุตัวตน',propNamePh:'เช่น ตึกแถวมุม Soi 11',
     statusTitle:'สถานะ',
     s:['🔵 ยังไม่เจรจา','🟡 กำลังเจรจา','🟢 ทำสัญญาแล้ว','🔴 ไม่ผ่าน','⚪ รอดู'],
-    rentTitle:'ค่าเช่า / ค่าใช้จ่าย', rent:'ค่าเช่า/เดือน（฿）', deposit:'เงินประกัน', size:'ขนาด（ตร.ม.）',
-    condTitle:'เงื่อนไข / บันทึก', cond:'เงื่อนไขสัญญา', notes:'บันทึกอื่นๆ',
-    btnSave:'💾 บันทึก', btnBack:'← กลับหน้าบันทึก',
-    emptyIcon:'🏠', emptyMsg:'ยังไม่มีอสังหาฯ ที่บันทึกไว้\nเพิ่มจากหน้าบันทึกหน้างาน',
-    mDetail:'📋 รายละเอียด', mEdit:'✏️ แก้ไข',
-    statusChange:'เปลี่ยนสถานะ', appendNote:'เพิ่มบันทึก', appendPh:'พิมพ์บันทึกเพิ่มเติม...',
-    btnAppend:'📝 เพิ่มบันทึก', btnAddPhoto:'📷 เพิ่มรูปภาพ', btnDelete:'🗑 ลบอสังหาฯ นี้',
-    eName:'ชื่ออสังหาฯ', ePhone:'เบอร์โทร', eMap:'ที่อยู่ / ลิงก์แผนที่',
-    eRent:'ค่าเช่า/เดือน（฿）', eDeposit:'เงินประกัน', eSize:'ขนาด（ตร.ม.）', eCond:'เงื่อนไขสัญญา', eNotes:'บันทึก',
+    rentTitle:'ค่าเช่า / ค่าใช้จ่าย',rent:'ค่าเช่า/เดือน（฿）',deposit:'เงินประกัน',size:'ขนาด（ตร.ม.）',
+    condTitle:'เงื่อนไข / บันทึก',cond:'เงื่อนไขสัญญา',notes:'บันทึกอื่นๆ',
+    btnSave:'💾 บันทึก',btnBack:'← กลับหน้าบันทึก',
+    emptyMsg:'ยังไม่มีอสังหาฯ ที่บันทึกไว้\nเพิ่มจากหน้าบันทึกหน้างาน',
+    mDetail:'รายละเอียด',mEdit:'แก้ไข',
+    statusChange:'เปลี่ยนสถานะ',appendNote:'เพิ่มบันทึก',appendPh:'พิมพ์บันทึกเพิ่มเติม...',
+    btnAppend:'📝 เพิ่มบันทึก',btnAddPhoto:'📷 เพิ่มรูปภาพ',
+    btnShareOpen:'📤 แชร์ให้ลูกค้า',btnDelete:'🗑 ลบอสังหาฯ นี้',
+    eName:'ชื่ออสังหาฯ',ePhone:'เบอร์โทร',eMap:'ที่อยู่ / ลิงก์แผนที่',
+    eRent:'ค่าเช่า/เดือน（฿）',eDeposit:'เงินประกัน',eSize:'ขนาด（ตร.ม.）',eCond:'เงื่อนไขสัญญา',eNotes:'บันทึก',
     btnSaveEdit:'💾 บันทึกทับ',
     rows:['ประเภท','วันที่','โทร','สถานที่','ค่าเช่า','ประกัน','ขนาด','เงื่อนไข','บันทึก'],
-    notInput:'ไม่ได้ระบุ', perMonth:'/เดือน', sqm:'ตร.ม.', openMap:'🗺 เปิดแผนที่',
-    processing:'กำลังประมวลผลรูปภาพ...', photoAdded:'ภาพที่เพิ่ม',
-    fieldSaved:'บันทึกข้อมูลหน้างานแล้ว', saved:'บันทึกแล้ว！', deleted:'ลบแล้ว',
-    appended:'เพิ่มบันทึกแล้ว', statusChanged:'เปลี่ยนสถานะแล้ว',
-    confirmDel:'ต้องการลบอสังหาฯ นี้ใช่ไหม？', noNote:'กรุณาพิมพ์บันทึก',
-    noAddr:'กรุณาพิมพ์ที่อยู่', mapGenOk:'สร้างลิงก์แผนที่แล้ว',
-    propDefault:'อสังหาฯ', locGot:'รับตำแหน่งสำเร็จ',
+    ni:'ไม่ได้ระบุ',perMonth:'/เดือน',sqm:'ตร.ม.',openMap:'🗺 เปิดแผนที่',
+    processing:'กำลังอัปโหลด...',photoAdded:'ภาพที่เพิ่ม',
+    fieldSaved:'บันทึกข้อมูลหน้างานแล้ว',saved:'บันทึกแล้ว！',deleted:'ลบแล้ว',
+    appended:'เพิ่มบันทึกแล้ว',statusChanged:'เปลี่ยนสถานะแล้ว',
+    confirmDel:'ต้องการลบอสังหาฯ นี้ใช่ไหม？',noNote:'กรุณาพิมพ์บันทึก',
+    noAddr:'กรุณาพิมพ์ที่อยู่',mapGenOk:'สร้างลิงก์แผนที่แล้ว',
+    propDefault:'อสังหาฯ',locGot:'รับตำแหน่งสำเร็จ',uploadFail:'อัปโหลดไม่สำเร็จ',
+    shareTitle:'ตั้งค่าการแชร์',shareFixed:'✅ รายการที่จะแสดงเสมอ',shareOpt:'⚙️ เลือกว่าจะแสดงหรือไม่',
+    btnShare:'📋 คัดลอกเพื่อส่ง LINE',copiedMsg:'คัดลอกแล้ว！วางใน LINE ได้เลย',
+    sOptPhone:'📞 เบอร์โทร',sOptDeposit:'💰 เงินประกัน',sOptSize:'📐 ขนาด',
+    sOptCond:'📋 เงื่อนไข',sOptNotes:'📝 บันทึก',
+    shareHeader:'━━━━━━━━━━━━━━━',shareFooter:'━━━━━━━━━━━━━━━',
+    shareIntro:'แนะนำอสังหาฯ',
+    sRent:'💰 ค่าเช่า：',sSizeL:'📐 ขนาด：',sDeposit:'💳 ประกัน：',sCond:'📋 เงื่อนไข：',
+    sPhone:'📞 โทร：',sMap:'🗺 แผนที่：',sPhoto:'📷 รูปภาพ：',sNotes:'📝 หมายเหตุ：',sPhotoSfx:'ภาพ',
   }
 };
 let lang = localStorage.getItem('scout_lang') || 'ja';
 const t = () => L[lang];
+
+let state = freshState();
+let currentId = null;
+let shareOpts = {};
+
+function freshState() {
+  return {type:'テナント',status:0,photos:[],phone:'',mapUrl:'',address:'',lat:null,lng:null,rent:'',deposit:'',size:'',cond:'',notes:'',propName:'',ts:''};
+}
 
 function applyLang() {
   const l = t();
@@ -423,7 +465,8 @@ function applyLang() {
   document.getElementById('lbl-appendNote').textContent = l.appendNote;
   document.getElementById('append-inp').placeholder = l.appendPh;
   document.getElementById('lbl-btnAppend').textContent = l.btnAppend;
-  document.getElementById('lbl-btnAddPhoto').childNodes[0].textContent = l.btnAddPhoto + ' ';
+  document.getElementById('lbl-btnAddPhoto').childNodes[0].textContent = l.btnAddPhoto+' ';
+  document.getElementById('lbl-btnShareOpen').textContent = l.btnShareOpen;
   document.getElementById('lbl-btnDelete').textContent = l.btnDelete;
   document.getElementById('lbl-eName').textContent = l.eName;
   document.getElementById('lbl-ePhone').textContent = l.ePhone;
@@ -434,29 +477,23 @@ function applyLang() {
   document.getElementById('lbl-eCond').textContent = l.eCond;
   document.getElementById('lbl-eNotes').textContent = l.eNotes;
   document.getElementById('lbl-btnSaveEdit').textContent = l.btnSaveEdit;
+  document.getElementById('lbl-mDetail').textContent = l.mDetail;
+  document.getElementById('lbl-mEdit').textContent = l.mEdit;
+  document.getElementById('share-title').textContent = l.shareTitle;
+  document.getElementById('lbl-shareFixed').textContent = l.shareFixed;
+  document.getElementById('lbl-shareOpt').textContent = l.shareOpt;
+  document.getElementById('lbl-btnShare').textContent = l.btnShare;
   renderStatusGrid('status-grid-main', state.status, setStatusMain);
   updateCount();
   if (!document.getElementById('page2').classList.contains('hidden')) renderList();
 }
 
 function toggleLang() {
-  lang = lang === 'ja' ? 'th' : 'ja';
+  lang = lang==='ja'?'th':'ja';
   localStorage.setItem('scout_lang', lang);
   applyLang();
 }
 
-// ===== STATE =====
-const STORAGE_KEY = 'prop_scout_v3';
-const STATUS_CLS = ['act0','act1','act2','act3','act4'];
-
-let state = freshState();
-let currentId = null;
-
-function freshState() {
-  return { type:'テナント', status:0, photos:[], phone:'', mapUrl:'', lat:null, lng:null, rent:'', deposit:'', size:'', cond:'', notes:'', propName:'', ts:'' };
-}
-
-// ===== TABS =====
 function goTab(idx) {
   [0,1,2].forEach(i => {
     document.getElementById('tab'+i).classList.toggle('active', i===idx);
@@ -465,360 +502,370 @@ function goTab(idx) {
   if (idx===2) renderList();
 }
 
-// ===== TYPE =====
 function setType(v) {
   state.type = v;
   document.getElementById('btn-tenant').classList.toggle('active', v==='テナント');
   document.getElementById('btn-residence').classList.toggle('active', v==='住居');
 }
 
-// ===== STATUS GRID =====
-function renderStatusGrid(elId, current, callback) {
-  const l = t();
-  document.getElementById(elId).innerHTML = l.s.map((s,i) =>
-    `<div class="st-btn${current===i?' '+STATUS_CLS[i]:''}" onclick="${callback.name}(${i})">${s}</div>`
+function renderStatusGrid(elId, current, cb) {
+  document.getElementById(elId).innerHTML = t().s.map((s,i) =>
+    `<div class="st-btn${current===i?' '+STATUS_CLS[i]:''}" onclick="${cb.name}(${i})">${s}</div>`
   ).join('');
 }
 
-function setStatusMain(i) {
-  state.status = i;
-  renderStatusGrid('status-grid-main', i, setStatusMain);
-}
+function setStatusMain(i) { state.status=i; renderStatusGrid('status-grid-main',i,setStatusMain); }
 
 function setStatusModal(i) {
-  const list = getList();
-  const p = list.find(x => x.id === currentId);
-  if (!p) return;
-  p.status = i;
-  saveList(list);
-  renderStatusGrid('status-grid-modal', i, setStatusModal);
+  const list=getList(), p=list.find(x=>x.id===currentId);
+  if(!p) return;
+  p.status=i; saveList(list);
+  renderStatusGrid('status-grid-modal',i,setStatusModal);
   renderList();
-  toast(t().statusChanged, 'ok');
+  toast(t().statusChanged,'ok');
+  syncToCloud(p).catch(()=>{});
 }
-
-// ===== PHOTOS =====
-const CLOUDINARY_CLOUD = 'dnsp5zgoy';
-const CLOUDINARY_PRESET = 'property-scout';
 
 async function uploadToCloudinary(file) {
   const fd = new FormData();
   fd.append('file', file);
   fd.append('upload_preset', CLOUDINARY_PRESET);
-  const res = await fetch('https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD + '/image/upload', {
-    method: 'POST', body: fd
-  });
+  const res = await fetch('https://api.cloudinary.com/v1_1/'+CLOUDINARY_CLOUD+'/image/upload',{method:'POST',body:fd});
   const data = await res.json();
   return data.secure_url;
 }
 
 function addPhotos(input, thumbId) {
-  const files = Array.from(input.files).slice(0, 10);
+  const files = Array.from(input.files).slice(0,10);
   if (!files.length) return;
-  toast(t().processing, '');
+  toast(t().processing,'');
   const thumbs = document.getElementById(thumbId);
-  let done = 0;
+  let done=0;
   files.forEach(async file => {
     try {
       const url = await uploadToCloudinary(file);
       state.photos.push(url);
       const img = document.createElement('img');
       img.src = url;
-      img.style.cssText = 'width:72px;height:72px;object-fit:cover;border-radius:6px;border:1px solid var(--border)';
-      thumbs.appendChild(img);
-      thumbs.style.display = 'flex';
+      thumbs.appendChild(img); thumbs.style.display='flex';
       done++;
-      if (done === files.length) toast(files.length + t().photoAdded, 'ok');
-    } catch(e) {
-      toast('アップロード失敗', 'err');
-    }
+      if (done===files.length) toast(files.length+t().photoAdded,'ok');
+    } catch(e) { toast(t().uploadFail,'err'); }
   });
 }
 
-// ===== GPS =====
 function getGPS() {
-  const btn = document.getElementById('loc-btn');
-  const icon = document.getElementById('loc-icon');
-  const txt = document.getElementById('loc-txt');
-  txt.textContent = t().locGetting; icon.textContent = '⏳';
-  if (!navigator.geolocation) { toast(t().locFail, 'err'); return; }
+  const icon=document.getElementById('loc-icon'), txt=document.getElementById('loc-txt');
+  txt.textContent=t().locGetting; icon.textContent='⏳';
+  if (!navigator.geolocation){toast(t().locFail,'err');return;}
   navigator.geolocation.getCurrentPosition(pos => {
-    state.lat = pos.coords.latitude.toFixed(6);
-    state.lng = pos.coords.longitude.toFixed(6);
-    state.mapUrl = 'https://www.google.com/maps?q=' + state.lat + ',' + state.lng;
-    icon.textContent = '✅';
-    txt.textContent = t().locDone + ' (' + state.lat + ', ' + state.lng + ')';
-    btn.classList.add('got');
-    document.getElementById('map-result').style.display = 'block';
-    document.getElementById('map-link-a').href = state.mapUrl;
-    toast(t().locGot, 'ok');
-  }, () => {
-    icon.textContent = '❌'; txt.textContent = t().locFail;
-    toast(t().locFail, 'err');
-  }, { enableHighAccuracy: true, timeout: 10000 });
+    state.lat=pos.coords.latitude.toFixed(6);
+    state.lng=pos.coords.longitude.toFixed(6);
+    state.mapUrl='https://www.google.com/maps?q='+state.lat+','+state.lng;
+    icon.textContent='✅'; txt.textContent=t().locDone+' ('+state.lat+', '+state.lng+')';
+    document.getElementById('loc-btn').classList.add('got');
+    document.getElementById('map-result').style.display='block';
+    document.getElementById('map-link-a').href=state.mapUrl;
+    toast(t().locGot,'ok');
+  }, ()=>{ icon.textContent='❌'; txt.textContent=t().locFail; toast(t().locFail,'err'); },{enableHighAccuracy:true,timeout:10000});
 }
 
 function genMapFromAddr() {
-  const addr = document.getElementById('f-addr').value.trim();
-  if (!addr) { toast(t().noAddr, 'err'); return; }
-  state.address = addr;
-  state.mapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(addr);
-  state.lat = null; state.lng = null;
-  document.getElementById('map-result').style.display = 'block';
-  document.getElementById('map-link-a').href = state.mapUrl;
-  toast(t().mapGenOk, 'ok');
+  const addr=document.getElementById('f-addr').value.trim();
+  if (!addr){toast(t().noAddr,'err');return;}
+  state.address=addr;
+  state.mapUrl='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr);
+  state.lat=null; state.lng=null;
+  document.getElementById('map-result').style.display='block';
+  document.getElementById('map-link-a').href=state.mapUrl;
+  toast(t().mapGenOk,'ok');
 }
 
-// ===== SAVE =====
 function goToDetail() {
-  state.phone = document.getElementById('f-phone').value;
-  state.ts = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Bangkok' });
-  toast(t().fieldSaved, 'ok');
+  state.phone=document.getElementById('f-phone').value;
+  state.ts=new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'});
+  toast(t().fieldSaved,'ok');
   goTab(1);
 }
 
 function saveEntry() {
-  state.phone = document.getElementById('f-phone').value;
-  const propName = document.getElementById('f-propname').value;
-  const rent = document.getElementById('f-rent').value;
-  const deposit = document.getElementById('f-deposit').value;
-  const size = document.getElementById('f-size').value;
-  const cond = document.getElementById('f-cond').value;
-  const notes = document.getElementById('f-notes').value;
-  if (propName) state.propName = propName;
-  if (rent) state.rent = rent;
-  if (deposit) state.deposit = deposit;
-  if (size) state.size = size;
-  if (cond) state.cond = cond;
-  if (notes) state.notes = notes;
-
-  const list = getList();
-  const entry = {
-    id: Date.now(),
-    ts: state.ts || new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Bangkok' }),
-    type: state.type,
-    status: state.status,
-    propName: state.propName || t().propDefault + ' ' + (list.length + 1),
-    phone: state.phone,
-    mapUrl: state.mapUrl,
-    lat: state.lat, lng: state.lng,
-    rent: state.rent, deposit: state.deposit, size: state.size,
-    cond: state.cond, notes: state.notes,
-    photos: state.photos,
-    address: state.address || '',
-    appendedNotes: []
+  state.phone=document.getElementById('f-phone').value;
+  const pn=document.getElementById('f-propname').value;
+  const r=document.getElementById('f-rent').value;
+  const d=document.getElementById('f-deposit').value;
+  const s=document.getElementById('f-size').value;
+  const c=document.getElementById('f-cond').value;
+  const n=document.getElementById('f-notes').value;
+  if(pn) state.propName=pn;
+  if(r) state.rent=r;
+  if(d) state.deposit=d;
+  if(s) state.size=s;
+  if(c) state.cond=c;
+  if(n) state.notes=n;
+  const list=getList();
+  const entry={
+    id:Date.now(),
+    ts:state.ts||new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'}),
+    type:state.type, status:state.status,
+    propName:state.propName||t().propDefault+' '+(list.length+1),
+    phone:state.phone, mapUrl:state.mapUrl, address:state.address,
+    lat:state.lat, lng:state.lng,
+    rent:state.rent, deposit:state.deposit, size:state.size,
+    cond:state.cond, notes:state.notes,
+    photos:state.photos, appendedNotes:[]
   };
-  list.push(entry);
-  saveList(list);
-  updateCount();
-  toast(t().saved, 'ok');
+  list.push(entry); saveList(list); updateCount();
+  toast(t().saved,'ok');
   resetForm();
-  setTimeout(() => goTab(2), 800);
+  setTimeout(()=>goTab(2),800);
+  syncToCloud(entry).then(cloud_id => {
+    if (cloud_id) {
+      const l = getList();
+      const p = l.find(x => x.id === entry.id);
+      if (p) { p.cloud_id = cloud_id; saveList(l); }
+    }
+  }).catch(()=>{});
 }
 
-// ===== STORAGE =====
-function getList() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(e) { return []; } }
-function saveList(list) { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
-function updateCount() {
-  const n = getList().length;
-  document.getElementById('el-count').textContent = n + t().countSfx;
-}
+function getList(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||[];}catch(e){return[];}}
+function saveList(list){localStorage.setItem(STORAGE_KEY,JSON.stringify(list));}
+function updateCount(){document.getElementById('el-count').textContent=getList().length+t().countSfx;}
 
-// ===== LIST =====
 function renderList() {
-  const list = getList();
-  const wrap = document.getElementById('list-wrap');
-  if (!list.length) {
-    wrap.innerHTML = '<div class="empty-state"><div class="e-icon">' + t().emptyIcon + '</div>' + t().emptyMsg.replace('\n','<br>') + '</div>';
+  const list=getList(), wrap=document.getElementById('list-wrap'), l=t();
+  if (!list.length){
+    wrap.innerHTML='<div class="empty-state"><div class="e-icon">🏠</div>'+l.emptyMsg.replace('\n','<br>')+'</div>';
     return;
   }
-  const l = t();
-  wrap.innerHTML = list.slice().reverse().map(p => {
-    const si = typeof p.status === 'number' ? p.status : 0;
+  wrap.innerHTML=list.slice().reverse().map(p=>{
+    const si=typeof p.status==='number'?p.status:0;
     return `<div class="prop-card" onclick="openModal(${p.id})">
-      <div class="prop-card-top">
-        <div class="prop-card-name">${p.propName}</div>
-        <span class="badge b${si}">${l.s[si]}</span>
-      </div>
+      <div class="prop-card-top"><div class="prop-card-name">${p.propName}</div><span class="badge b${si}">${l.s[si]}</span></div>
       <div class="prop-meta">
-        ${p.type}　${p.rent ? '฿'+Number(p.rent).toLocaleString()+l.perMonth+'　' : ''}${p.size ? p.size+l.sqm+'　' : ''}${p.phone ? '📞'+p.phone+'　' : ''}${p.mapUrl ? '<a href="'+p.mapUrl+'" target="_blank" onclick="event.stopPropagation()">🗺</a>' : ''}
+        ${p.type}　${p.rent?'฿'+Number(p.rent).toLocaleString()+l.perMonth+'　':''}${p.size?p.size+l.sqm+'　':''}${p.phone?'📞'+p.phone+'　':''}${p.mapUrl?'<a href="'+p.mapUrl+'" target="_blank" onclick="event.stopPropagation()">🗺</a>':''}
         <br><span style="font-size:11px">${p.ts}</span>
       </div>
     </div>`;
   }).join('');
 }
 
-// ===== MODAL =====
 function openModal(id) {
-  currentId = id;
-  const p = getList().find(x => x.id === id);
+  currentId=id;
+  const p=getList().find(x=>x.id===id);
   if (!p) return;
-  const l = t();
-  document.getElementById('modal-title').textContent = p.propName;
-  renderStatusGrid('status-grid-modal', typeof p.status === 'number' ? p.status : 0, setStatusModal);
-
-  // rows
-  const ni = l.notInput;
-  const rows = [
-    [l.rows[0], p.type],
-    [l.rows[1], p.ts],
-    [l.rows[2], p.phone || ni],
-    [l.rows[3], p.mapUrl ? '<a href="'+p.mapUrl+'" target="_blank">'+l.openMap+'</a>' : ni],
-    [l.rows[4], p.rent ? '฿'+Number(p.rent).toLocaleString()+l.perMonth : ni],
-    [l.rows[5], p.deposit || ni],
-    [l.rows[6], p.size ? p.size+l.sqm : ni],
-    [l.rows[7], p.cond || ni],
-    [l.rows[8], p.notes || ni],
+  const l=t();
+  document.getElementById('modal-title').textContent=p.propName;
+  renderStatusGrid('status-grid-modal',typeof p.status==='number'?p.status:0,setStatusModal);
+  const ni=l.ni;
+  const rows=[
+    [l.rows[0],p.type],[l.rows[1],p.ts],[l.rows[2],p.phone||ni],
+    [l.rows[3],p.mapUrl?'<a href="'+p.mapUrl+'" target="_blank">'+l.openMap+'</a>':ni],
+    [l.rows[4],p.rent?'฿'+Number(p.rent).toLocaleString()+l.perMonth:ni],
+    [l.rows[5],p.deposit||ni],[l.rows[6],p.size?p.size+l.sqm:ni],
+    [l.rows[7],p.cond||ni],[l.rows[8],p.notes||ni],
   ];
-  if (p.appendedNotes && p.appendedNotes.length) {
-    p.appendedNotes.forEach((n, i) => rows.push(['+ '+(i+1), n.text + ' (' + n.ts + ')']));
-  }
-  document.getElementById('modal-rows').innerHTML = rows.map(([lb, v]) =>
+  if (p.appendedNotes&&p.appendedNotes.length)
+    p.appendedNotes.forEach((n,i)=>rows.push(['+ '+(i+1),n.text+' ('+n.ts+')']));
+  document.getElementById('modal-rows').innerHTML=rows.map(([lb,v])=>
     '<div class="detail-row"><span class="detail-label">'+lb+'</span><span class="detail-val">'+v+'</span></div>'
   ).join('');
-
-  // photos
-  const mp = document.getElementById('modal-photo-area');
-  mp.innerHTML = p.photos && p.photos.length
-    ? '<div style="display:flex;flex-wrap:wrap;gap:8px">' + p.photos.map(src => '<img src="'+src+'" onclick="openLightbox(this.src)" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);cursor:zoom-in">').join('') + '</div>'
-    : '';
-
-  // edit fields
-  document.getElementById('e-name').value = p.propName || '';
-  document.getElementById('e-phone').value = p.phone || '';
-  // Store raw address separately; show address if it was hand-typed, else show mapUrl
-  const storedAddr = p.address || '';
-  document.getElementById('e-map').value = storedAddr || p.mapUrl || '';
-  document.getElementById('e-rent').value = p.rent || '';
-  document.getElementById('e-deposit').value = p.deposit || '';
-  document.getElementById('e-size').value = p.size || '';
-  document.getElementById('e-cond').value = p.cond || '';
-  document.getElementById('e-notes').value = p.notes || '';
-  document.getElementById('append-inp').value = '';
+  const mp=document.getElementById('modal-photo-area');
+  mp.innerHTML=p.photos&&p.photos.length
+    ?'<div style="display:flex;flex-wrap:wrap;gap:8px">'+p.photos.map(src=>'<img src="'+src+'" onclick="openLightbox(this.src)" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);cursor:zoom-in">').join('')+'</div>'
+    :'';
+  document.getElementById('e-name').value=p.propName||'';
+  document.getElementById('e-phone').value=p.phone||'';
+  document.getElementById('e-map').value=p.address||p.mapUrl||'';
+  document.getElementById('e-rent').value=p.rent||'';
+  document.getElementById('e-deposit').value=p.deposit||'';
+  document.getElementById('e-size').value=p.size||'';
+  document.getElementById('e-cond').value=p.cond||'';
+  document.getElementById('e-notes').value=p.notes||'';
+  document.getElementById('append-inp').value='';
   goModalTab(0);
   document.getElementById('modal').classList.add('open');
 }
 
 function goModalTab(idx) {
-  document.getElementById('mtab0').classList.toggle('active', idx===0);
-  document.getElementById('mtab1').classList.toggle('active', idx===1);
-  document.getElementById('modal-view').style.display = idx===0 ? 'block' : 'none';
-  document.getElementById('modal-edit').style.display = idx===1 ? 'block' : 'none';
+  document.getElementById('mtab0').classList.toggle('active',idx===0);
+  document.getElementById('mtab1').classList.toggle('active',idx===1);
+  document.getElementById('modal-view').style.display=idx===0?'block':'none';
+  document.getElementById('modal-edit').style.display=idx===1?'block':'none';
 }
 
 function doAppendNote() {
-  const txt = document.getElementById('append-inp').value.trim();
-  if (!txt) { toast(t().noNote, 'err'); return; }
-  const list = getList();
-  const p = list.find(x => x.id === currentId);
+  const txt=document.getElementById('append-inp').value.trim();
+  if (!txt){toast(t().noNote,'err');return;}
+  const list=getList(), p=list.find(x=>x.id===currentId);
   if (!p) return;
-  if (!p.appendedNotes) p.appendedNotes = [];
-  p.appendedNotes.push({ text: txt, ts: new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Bangkok' }) });
-  saveList(list);
-  toast(t().appended, 'ok');
-  openModal(currentId);
+  if (!p.appendedNotes) p.appendedNotes=[];
+  p.appendedNotes.push({text:txt,ts:new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'})});
+  saveList(list); toast(t().appended,'ok'); openModal(currentId);
+  syncToCloud(p).catch(()=>{});
 }
 
 function doAppendPhoto(input) {
-  const files = Array.from(input.files).slice(0, 10);
+  const files=Array.from(input.files).slice(0,10);
   if (!files.length) return;
-  const list = getList();
-  const p = list.find(x => x.id === currentId);
+  const list=getList(), p=list.find(x=>x.id===currentId);
   if (!p) return;
-  if (!p.photos) p.photos = [];
-  toast(t().processing, '');
-  let done = 0;
-  files.forEach(async file => {
+  if (!p.photos) p.photos=[];
+  toast(t().processing,'');
+  let done=0;
+  files.forEach(async file=>{
     try {
-      const url = await uploadToCloudinary(file);
-      p.photos.push(url);
-      done++;
-      if (done === files.length) {
-        saveList(list);
-        toast(files.length + t().photoAdded, 'ok');
-        openModal(currentId);
-      }
-    } catch(e) {
-      toast('アップロード失敗', 'err');
-    }
+      const url=await uploadToCloudinary(file);
+      p.photos.push(url); done++;
+      if (done===files.length){saveList(list);toast(files.length+t().photoAdded,'ok');openModal(currentId);syncToCloud(p).catch(()=>{});}
+    } catch(e){toast(t().uploadFail,'err');}
   });
 }
 
 function doSaveEdit() {
-  const list = getList();
-  const p = list.find(x => x.id === currentId);
+  const list=getList(), p=list.find(x=>x.id===currentId);
   if (!p) return;
-  p.propName = document.getElementById('e-name').value || p.propName;
-  p.phone = document.getElementById('e-phone').value;
-  const rawMap = document.getElementById('e-map').value.trim();
-  if (rawMap.startsWith('http')) {
-    p.mapUrl = rawMap;
-  } else if (rawMap) {
-    p.mapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(rawMap);
-  } else {
-    p.mapUrl = '';
-  }
-  p.rent = document.getElementById('e-rent').value;
-  p.deposit = document.getElementById('e-deposit').value;
-  p.size = document.getElementById('e-size').value;
-  p.cond = document.getElementById('e-cond').value;
-  p.notes = document.getElementById('e-notes').value;
-  saveList(list);
-  renderList();
-  toast(t().saved, 'ok');
-  openModal(currentId);
-  goModalTab(0);
+  p.propName=document.getElementById('e-name').value||p.propName;
+  p.phone=document.getElementById('e-phone').value;
+  const rawMap=document.getElementById('e-map').value.trim();
+  if (!rawMap){p.mapUrl='';p.address='';}
+  else if (rawMap.startsWith('http')){p.mapUrl=rawMap;p.address='';}
+  else {p.address=rawMap;p.mapUrl='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(rawMap);}
+  p.rent=document.getElementById('e-rent').value;
+  p.deposit=document.getElementById('e-deposit').value;
+  p.size=document.getElementById('e-size').value;
+  p.cond=document.getElementById('e-cond').value;
+  p.notes=document.getElementById('e-notes').value;
+  saveList(list); renderList(); toast(t().saved,'ok');
+  openModal(currentId); goModalTab(0);
+  syncToCloud(p).catch(()=>{});
 }
 
 function doDelete() {
   if (!confirm(t().confirmDel)) return;
-  saveList(getList().filter(x => x.id !== currentId));
-  updateCount();
-  renderList();
-  closeModal();
-  toast(t().deleted, 'ok');
+  const delEntry = getList().find(x=>x.id===currentId);
+  saveList(getList().filter(x=>x.id!==currentId));
+  updateCount(); renderList(); closeModal(); toast(t().deleted,'ok');
+  if (delEntry && delEntry.cloud_id) deleteFromCloud(delEntry.cloud_id).catch(()=>{});
 }
 
-function closeModal() {
-  document.getElementById('modal').classList.remove('open');
-  currentId = null;
-}
-function modalBgClick(e) { if (e.target === document.getElementById('modal')) closeModal(); }
+function closeModal(){document.getElementById('modal').classList.remove('open');currentId=null;}
+function modalBgClick(e){if(e.target===document.getElementById('modal'))closeModal();}
 
-// ===== RESET =====
-function resetForm() {
-  state = freshState();
-  ['f-phone','f-rent','f-deposit','f-size','f-cond','f-notes','f-propname','f-addr'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.value = '';
+// SHARE
+function openShare() {
+  const p=getList().find(x=>x.id===currentId);
+  if (!p) return;
+  const l=t();
+  const typeLabel=p.type==='テナント'?'🏪 '+l.tenant:'🏠 '+l.residence;
+  const fixed=[
+    typeLabel, p.propName,
+    p.rent?l.sRent+'฿'+Number(p.rent).toLocaleString()+l.perMonth:null,
+    p.mapUrl?l.sMap+p.mapUrl:null,
+    p.photos&&p.photos.length?l.sPhoto+p.photos.length+l.sPhotoSfx:null,
+  ].filter(Boolean).join('\n');
+  document.getElementById('share-fixed-preview').textContent=fixed;
+  const opts=[
+    {key:'phone',label:l.sOptPhone,val:p.phone},
+    {key:'deposit',label:l.sOptDeposit,val:p.deposit},
+    {key:'size',label:l.sOptSize,val:p.size?p.size+l.sqm:null},
+    {key:'cond',label:l.sOptCond,val:p.cond},
+    {key:'notes',label:l.sOptNotes,val:p.notes},
+  ];
+  const wrap=document.getElementById('share-toggles');
+  wrap.innerHTML='';
+  opts.forEach(opt=>{
+    if (!opt.val) return;
+    const checked=shareOpts[opt.key]!==false;
+    const row=document.createElement('div');
+    row.className='toggle-row';
+    row.innerHTML=`<span style="font-size:14px;color:var(--text)">${opt.label}</span>
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+        <span class="toggle-val">${opt.val}</span>
+        <input type="checkbox" data-key="${opt.key}" ${checked?'checked':''} onchange="shareOpts[this.dataset.key]=this.checked" style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent)">
+      </label>`;
+    wrap.appendChild(row);
   });
-  document.getElementById('thumbs0').innerHTML = '';
-  document.getElementById('thumbs0').style.display = 'none';
+  document.getElementById('share-sheet').classList.add('open');
+}
+
+function doShare() {
+  const p=getList().find(x=>x.id===currentId);
+  if (!p) return;
+  const l=t();
+  const typeLabel=p.type==='テナント'?'🏪 '+l.tenant:'🏠 '+l.residence;
+  const lines=[
+    l.shareHeader,
+    typeLabel+' '+l.shareIntro,
+    l.shareHeader,
+    p.propName,
+    p.rent?l.sRent+'฿'+Number(p.rent).toLocaleString()+l.perMonth:null,
+    shareOpts.size!==false&&p.size?l.sSizeL+p.size+l.sqm:null,
+    shareOpts.deposit!==false&&p.deposit?l.sDeposit+p.deposit:null,
+    shareOpts.cond!==false&&p.cond?l.sCond+p.cond:null,
+    shareOpts.phone!==false&&p.phone?l.sPhone+p.phone:null,
+    p.mapUrl?l.sMap+p.mapUrl:null,
+    p.photos&&p.photos.length?l.sPhoto+p.photos.length+l.sPhotoSfx:null,
+    shareOpts.notes!==false&&p.notes?l.sNotes+p.notes:null,
+    l.shareFooter,
+  ].filter(Boolean).join('\n');
+  const fallbackCopy = txt => {
+    const ta = document.createElement('textarea');
+    ta.value = txt;
+    ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    closeShare(); toast(l.copiedMsg,'ok');
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(lines)
+      .then(()=>{ closeShare(); toast(l.copiedMsg,'ok'); })
+      .catch(()=>fallbackCopy(lines));
+  } else {
+    fallbackCopy(lines);
+  }
+}
+
+function closeShare(){document.getElementById('share-sheet').classList.remove('open');}
+function shareBgClick(e){if(e.target===document.getElementById('share-sheet'))closeShare();}
+
+function openLightbox(src){
+  document.getElementById('lightbox-img').src=src;
+  document.getElementById('lightbox').style.display='flex';
+}
+
+function resetForm() {
+  state=freshState();
+  ['f-phone','f-rent','f-deposit','f-size','f-cond','f-notes','f-propname','f-addr'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
+  document.getElementById('thumbs0').innerHTML='';
+  document.getElementById('thumbs0').style.display='none';
   document.getElementById('loc-btn').classList.remove('got');
-  document.getElementById('loc-icon').textContent = '📍';
-  document.getElementById('loc-txt').textContent = t().locBtn;
-  document.getElementById('map-result').style.display = 'none';
-  renderStatusGrid('status-grid-main', 0, setStatusMain);
+  document.getElementById('loc-icon').textContent='📍';
+  document.getElementById('loc-txt').textContent=t().locBtn;
+  document.getElementById('map-result').style.display='none';
+  renderStatusGrid('status-grid-main',0,setStatusMain);
   setType('テナント');
 }
 
-// ===== TOAST =====
-function toast(msg, type) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = 'show' + (type ? ' ' + type : '');
-  clearTimeout(el._t);
-  el._t = setTimeout(() => { el.className = ''; }, 2800);
+function toast(msg,type){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.className='show'+(type?' '+type:'');
+  clearTimeout(el._t);el._t=setTimeout(()=>{el.className='';},2800);
 }
 
-// ===== LIGHTBOX =====
-function openLightbox(src) {
-  const lb = document.getElementById('lightbox');
-  document.getElementById('lightbox-img').src = src;
-  lb.style.display = 'flex';
-}
-
-// ===== INIT =====
-renderStatusGrid('status-grid-main', 0, setStatusMain);
+renderStatusGrid('status-grid-main',0,setStatusMain);
 applyLang();
+
+// 起動時にクラウドからデータを読み込む
+loadFromCloud().then(()=>{ renderList(); updateCount(); }).catch(()=>{});
+
+// 30秒ごとに自動同期
+setInterval(()=>{
+  loadFromCloud().then(()=>{ renderList(); updateCount(); }).catch(()=>{});
+}, 30000);
 </script>
 </body>
 </html>
