@@ -116,6 +116,7 @@ textarea.inp{resize:none;line-height:1.5}
     <div class="logo" id="el-logo">物件<span>スカウト</span></div>
     <div class="header-right">
       <span class="count-badge" id="el-count">0件</span>
+      <button class="lang-btn" onclick="copyStaffUrl()" title="スタッフに共有">👥</button>
       <button class="lang-btn" id="el-langbtn" onclick="toggleLang()">🇹🇭 TH</button>
     </div>
   </header>
@@ -761,9 +762,13 @@ function openShare() {
     typeLabel, p.propName,
     p.rent?l.sRent+'฿'+Number(p.rent).toLocaleString()+l.perMonth:null,
     p.mapUrl?l.sMap+p.mapUrl:null,
-    p.photos&&p.photos.length?l.sPhoto+p.photos.length+l.sPhotoSfx:null,
   ].filter(Boolean).join('\n');
   document.getElementById('share-fixed-preview').textContent=fixed;
+
+  const wrap=document.getElementById('share-toggles');
+  wrap.innerHTML='';
+
+  // テキスト項目
   const opts=[
     {key:'phone',label:l.sOptPhone,val:p.phone},
     {key:'deposit',label:l.sOptDeposit,val:p.deposit},
@@ -771,8 +776,6 @@ function openShare() {
     {key:'cond',label:l.sOptCond,val:p.cond},
     {key:'notes',label:l.sOptNotes,val:p.notes},
   ];
-  const wrap=document.getElementById('share-toggles');
-  wrap.innerHTML='';
   opts.forEach(opt=>{
     if (!opt.val) return;
     const checked=shareOpts[opt.key]!==false;
@@ -785,6 +788,26 @@ function openShare() {
       </label>`;
     wrap.appendChild(row);
   });
+
+  // 写真を1枚ずつ選択
+  if (p.photos && p.photos.length) {
+    const photoHdr = document.createElement('div');
+    photoHdr.style.cssText='font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;margin:14px 0 8px';
+    photoHdr.textContent = l.photoTitle;
+    wrap.appendChild(photoHdr);
+    const grid = document.createElement('div');
+    grid.style.cssText='display:flex;flex-wrap:wrap;gap:8px';
+    p.photos.forEach((url,i)=>{
+      const checked = shareOpts['photo_'+i] !== false;
+      const box = document.createElement('label');
+      box.style.cssText='position:relative;cursor:pointer;display:block';
+      box.innerHTML=`<img src="${url}" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:2px solid ${checked?'var(--accent)':'var(--border)'};" id="photo-thumb-${i}">
+        <input type="checkbox" data-key="photo_${i}" ${checked?'checked':''} onchange="shareOpts[this.dataset.key]=this.checked;document.getElementById('photo-thumb-${i}').style.borderColor=this.checked?'var(--accent)':'var(--border)'" style="position:absolute;top:4px;right:4px;width:16px;height:16px;accent-color:var(--accent)">`;
+      grid.appendChild(box);
+    });
+    wrap.appendChild(grid);
+  }
+
   document.getElementById('share-sheet').classList.add('open');
 }
 
@@ -793,6 +816,9 @@ function doShare() {
   if (!p) return;
   const l=t();
   const typeLabel=p.type==='テナント'?'🏪 '+l.tenant:'🏠 '+l.residence;
+  // 選択された写真URLを収集
+  const selectedPhotos = p.photos ? p.photos.filter((_,i)=>shareOpts['photo_'+i]!==false) : [];
+
   const lines=[
     l.shareHeader,
     typeLabel+' '+l.shareIntro,
@@ -804,8 +830,10 @@ function doShare() {
     shareOpts.cond!==false&&p.cond?l.sCond+p.cond:null,
     shareOpts.phone!==false&&p.phone?l.sPhone+p.phone:null,
     p.mapUrl?l.sMap+p.mapUrl:null,
-    p.photos&&p.photos.length?l.sPhoto+p.photos.length+l.sPhotoSfx:null,
     shareOpts.notes!==false&&p.notes?l.sNotes+p.notes:null,
+    selectedPhotos.length ? l.shareFooter+'
+📷 写真リンク：' : null,
+    ...selectedPhotos.map((url,i)=>'写真'+(i+1)+'：'+url),
     l.shareFooter,
   ].filter(Boolean).join('\n');
   const fallbackCopy = txt => {
@@ -858,6 +886,28 @@ function toast(msg,type){
 
 renderStatusGrid('status-grid-main',0,setStatusMain);
 applyLang();
+
+function copyStaffUrl() {
+  const url = window.location.href.split('?')[0];
+  const msg = lang==='ja'
+    ? 'スタッフ共有URL:
+'+url+'
+
+このURLを開くとリアルタイムで物件データを共有・編集できます。'
+    : 'URL สำหรับทีมงาน:
+'+url+'
+
+เปิด URL นี้เพื่อดูและแก้ไขข้อมูลอสังหาฯ แบบ real-time';
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(msg).then(()=>toast(lang==='ja'?'スタッフ共有URLをコピーしました！LINEで送ってください':'คัดลอก URL แล้ว！ส่งให้ทีมงานได้เลย','ok'));
+  } else {
+    const ta=document.createElement('textarea');
+    ta.value=msg;ta.style.cssText='position:fixed;top:-9999px';
+    document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
+    toast(lang==='ja'?'スタッフ共有URLをコピーしました！':'คัดลอก URL แล้ว！','ok');
+  }
+}
 
 // 起動時にクラウドからデータを読み込む
 loadFromCloud().then(()=>{ renderList(); updateCount(); }).catch(()=>{});
