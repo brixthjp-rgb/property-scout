@@ -65,7 +65,7 @@ textarea.inp{resize:none;line-height:1.5}
 .st-btn.a3{border-color:#ff6584;background:rgba(255,101,132,.15);color:#ff6584}
 .st-btn.a4{border-color:#8888aa;background:rgba(136,136,170,.15);color:#8888aa}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.btn{width:100%;padding:15px;border-radius:var(--radius);border:none;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;font-family:inherit;-webkit-appearance:none;display:block}
+.btn{width:100%;padding:15px;border-radius:var(--radius);border:none;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;font-family:inherit;-webkit-appearance:none;display:block;text-align:center}
 .btn-p{background:var(--accent);color:#fff}
 .btn-p:active{background:#5a52e0}
 .btn-s{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
@@ -102,6 +102,9 @@ textarea.inp{resize:none;line-height:1.5}
 .tog-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border)}
 .tog-row:last-child{border-bottom:none}
 .tog-val{font-size:12px;color:var(--muted);margin-right:8px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#loading{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:10px 20px;font-size:13px;opacity:0;transition:all .25s;pointer-events:none;z-index:600;white-space:nowrap;max-width:90vw;text-align:center}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #toast.ok{border-color:var(--green);color:var(--green)}
@@ -109,11 +112,19 @@ textarea.inp{resize:none;line-height:1.5}
 </style>
 </head>
 <body>
-<div id="app">
+
+<!-- ローディング画面 -->
+<div id="loading">
+  <div class="spinner"></div>
+  <div style="color:var(--muted);font-size:14px">データを読み込み中...</div>
+</div>
+
+<div id="app" style="display:none">
   <header>
     <div class="logo" id="el-logo">物件<span>スカウト</span></div>
     <div class="hdr-right">
       <span style="font-size:12px;color:var(--muted)" id="el-count">0件</span>
+      <button class="hdr-btn" onclick="doSync()" title="同期">🔄</button>
       <button class="hdr-btn" onclick="copyStaffUrl()">👥</button>
       <button class="hdr-btn" id="el-langbtn" onclick="toggleLang()">🇹🇭 TH</button>
     </div>
@@ -191,7 +202,6 @@ textarea.inp{resize:none;line-height:1.5}
     <div class="page hidden" id="page2">
       <div id="list-wrap"></div>
     </div>
-
   </div>
 </div>
 
@@ -250,7 +260,7 @@ textarea.inp{resize:none;line-height:1.5}
     <div id="share-fixed-preview" style="background:var(--surface2);border-radius:var(--rsm);padding:12px;font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.8;white-space:pre-wrap"></div>
     <div class="sec-lbl" id="lbl-shareOpt">⚙️ 含めるか選べる項目</div>
     <div id="share-toggles"></div>
-    <div class="sec-lbl" id="lbl-sharePhoto" style="margin-top:14px">📷 送る写真を選ぶ</div>
+    <div class="sec-lbl" style="margin-top:14px" id="lbl-sharePhoto">📷 送る写真を選ぶ</div>
     <div id="share-photo-grid" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px"></div>
     <button class="btn btn-share" onclick="doShare()" id="lbl-btnShare" style="margin-top:8px">📋 コピーしてLINEに貼る</button>
   </div>
@@ -266,11 +276,14 @@ textarea.inp{resize:none;line-height:1.5}
 <script>
 const CLOUD_NAME = 'dnsp5zgoy';
 const CLOUD_PRESET = 'property-scout';
-const STORE_KEY = 'prop_scout_v3';
 const SB_URL = 'https://byikapxfaqfxglphoapg.supabase.co';
 const SB_KEY = 'sb_publishable_MAHYtSIOOIwIkoAikBT8fQ_Iv-xxrPg';
 const SB_H = {'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
 const ST_CLS = ['a0','a1','a2','a3','a4'];
+
+// Supabaseをメインのデータストアとして使用
+// localStorageはキャッシュとして使用
+const CACHE_KEY = 'prop_cache_v4';
 
 const L = {
   ja:{
@@ -300,11 +313,12 @@ const L = {
     rows:['種類','日時','電話','場所','家賃','敷金','広さ','条件','メモ'],
     ni:'未入力',pm:'/月',sqm:'㎡',openMap:'🗺 地図を開く',
     uploading:'アップロード中...',photoAdded:'枚追加しました',
-    fieldSaved:'現地情報を記録しました',saved:'保存しました！',deleted:'削除しました',
+    fieldSaved:'現地情報を記録しました',saved:'クラウドに保存しました！',deleted:'削除しました',
     appended:'追記しました',stChanged:'ステータスを変更しました',
     confirmDel:'この物件を削除しますか？',noNote:'メモを入力してください',
     noAddr:'住所を入力してください',mapOk:'マップリンクを生成しました',
     propDef:'物件',locGot:'現在地を取得しました',uploadFail:'アップロード失敗',
+    syncOk:'同期しました',syncErr:'同期エラー',syncing:'同期中...',
     shareTitle:'共有設定',shareFixed:'✅ 必ず含まれる項目',shareOpt:'⚙️ 含めるか選べる項目',
     sharePhoto:'📷 送る写真を選ぶ',btnShare:'📋 コピーしてLINEに貼る',
     copied:'コピーしました！LINEに貼り付けてください',
@@ -313,8 +327,8 @@ const L = {
     sep:'━━━━━━━━━━━━━━━',intro:'物件のご案内',
     sRent:'💰 家賃：',sSize:'📐 広さ：',sDep:'💳 敷金：',sCond:'📋 条件：',
     sPhone:'📞 電話：',sMap:'🗺 地図：',sNotes:'📝 備考：',
-    staffMsg:'スタッフ共有URL:\n',staffSub:'\n\nこのURLを開くとリアルタイムで物件データを共有・編集できます。',
-    staffCopied:'スタッフ共有URLをコピーしました！LINEで送ってください',
+    staffMsg:'スタッフ共有URL:\n',staffSub:'\n\nこのURLを開くと全員が同じデータをリアルタイムで共有・編集できます。',
+    staffCopied:'URLをコピーしました！LINEでスタッフに送ってください',
   },
   th:{
     logo:'สำรวจ<span style="color:var(--accent)">อสังหาฯ</span>',
@@ -343,11 +357,12 @@ const L = {
     rows:['ประเภท','วันที่','โทร','สถานที่','ค่าเช่า','ประกัน','ขนาด','เงื่อนไข','บันทึก'],
     ni:'ไม่ได้ระบุ',pm:'/เดือน',sqm:'ตร.ม.',openMap:'🗺 เปิดแผนที่',
     uploading:'กำลังอัปโหลด...',photoAdded:'ภาพที่เพิ่ม',
-    fieldSaved:'บันทึกข้อมูลหน้างานแล้ว',saved:'บันทึกแล้ว！',deleted:'ลบแล้ว',
+    fieldSaved:'บันทึกข้อมูลหน้างานแล้ว',saved:'บันทึกลงคลาวด์แล้ว！',deleted:'ลบแล้ว',
     appended:'เพิ่มบันทึกแล้ว',stChanged:'เปลี่ยนสถานะแล้ว',
     confirmDel:'ต้องการลบอสังหาฯ นี้ใช่ไหม？',noNote:'กรุณาพิมพ์บันทึก',
     noAddr:'กรุณาพิมพ์ที่อยู่',mapOk:'สร้างลิงก์แผนที่แล้ว',
     propDef:'อสังหาฯ',locGot:'รับตำแหน่งสำเร็จ',uploadFail:'อัปโหลดไม่สำเร็จ',
+    syncOk:'ซิงค์แล้ว',syncErr:'ซิงค์ไม่สำเร็จ',syncing:'กำลังซิงค์...',
     shareTitle:'ตั้งค่าการแชร์',shareFixed:'✅ รายการที่จะแสดงเสมอ',shareOpt:'⚙️ เลือกว่าจะแสดงหรือไม่',
     sharePhoto:'📷 เลือกรูปที่จะส่ง',btnShare:'📋 คัดลอกเพื่อส่ง LINE',
     copied:'คัดลอกแล้ว！วางใน LINE ได้เลย',
@@ -356,21 +371,108 @@ const L = {
     sep:'━━━━━━━━━━━━━━━',intro:'แนะนำอสังหาฯ',
     sRent:'💰 ค่าเช่า：',sSize:'📐 ขนาด：',sDep:'💳 ประกัน：',sCond:'📋 เงื่อนไข：',
     sPhone:'📞 โทร：',sMap:'🗺 แผนที่：',sNotes:'📝 หมายเหตุ：',
-    staffMsg:'URL สำหรับทีมงาน:\n',staffSub:'\n\nเปิด URL นี้เพื่อดูและแก้ไขข้อมูลอสังหาฯ แบบ real-time',
+    staffMsg:'URL สำหรับทีมงาน:\n',staffSub:'\n\nเปิด URL นี้เพื่อดูและแก้ไขข้อมูลอสังหาฯ แบบ real-time พร้อมกันทุกคน',
     staffCopied:'คัดลอก URL แล้ว！ส่งให้ทีมงานได้เลย',
   }
 };
+
 let lang = localStorage.getItem('scout_lang') || 'ja';
 const t = () => L[lang];
-
 let state = freshState();
 let curId = null;
 let sOpts = {};
+// メモリ上のデータストア（Supabaseがソース）
+let DB = [];
 
 function freshState() {
   return {type:'テナント',status:0,photos:[],phone:'',mapUrl:'',address:'',lat:null,lng:null,rent:'',deposit:'',size:'',cond:'',notes:'',propName:'',ts:''};
 }
 
+// ===== Supabase =====
+async function sbReq(path, opts={}) {
+  const res = await fetch(SB_URL+path, {
+    ...opts,
+    headers: {...SB_H, ...(opts.headers||{})}
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.status === 204 ? null : res.json();
+}
+
+// Supabaseから全データを取得してDBとキャッシュを更新
+async function syncDown() {
+  const rows = await sbReq('/rest/v1/properties?order=created_at.desc&select=*');
+  DB = (rows||[]).map(rowToEntry);
+  localStorage.setItem(CACHE_KEY, JSON.stringify(DB));
+  return DB;
+}
+
+// Supabaseに新規保存
+async function sbInsert(entry) {
+  const result = await sbReq('/rest/v1/properties?select=id', {
+    method:'POST',
+    headers:{'Prefer':'return=representation'},
+    body: JSON.stringify(entryToRow(entry))
+  });
+  return result && result[0] ? result[0].id : null;
+}
+
+// Supabaseを更新
+async function sbUpdate(entry) {
+  await sbReq('/rest/v1/properties?id=eq.'+entry.cloud_id, {
+    method:'PATCH',
+    body: JSON.stringify(entryToRow(entry))
+  });
+}
+
+// Supabaseから削除
+async function sbDelete(cloudId) {
+  await sbReq('/rest/v1/properties?id=eq.'+cloudId, {method:'DELETE'});
+}
+
+function rowToEntry(row) {
+  return {
+    cloud_id: row.id,
+    ts: row.ts || row.created_at,
+    type: row.type || 'テナント',
+    status: typeof row.status === 'number' ? row.status : 0,
+    propName: row.prop_name || '',
+    phone: row.phone || '',
+    mapUrl: row.map_url || '',
+    address: row.address || '',
+    lat: row.lat || null,
+    lng: row.lng || null,
+    rent: row.rent || '',
+    deposit: row.deposit || '',
+    size: row.size || '',
+    cond: row.cond || '',
+    notes: row.notes || '',
+    photos: row.photos || [],
+    appendedNotes: row.appended_notes || []
+  };
+}
+
+function entryToRow(entry) {
+  return {
+    type: entry.type,
+    status: entry.status,
+    prop_name: entry.propName,
+    phone: entry.phone,
+    map_url: entry.mapUrl,
+    address: entry.address || '',
+    lat: entry.lat || '',
+    lng: entry.lng || '',
+    rent: entry.rent,
+    deposit: entry.deposit,
+    size: entry.size,
+    cond: entry.cond,
+    notes: entry.notes,
+    photos: entry.photos || [],
+    appended_notes: entry.appendedNotes || [],
+    ts: entry.ts
+  };
+}
+
+// ===== UI Helper =====
 function applyLang() {
   const l = t();
   document.getElementById('el-logo').innerHTML = l.logo;
@@ -407,7 +509,7 @@ function applyLang() {
   document.getElementById('lbl-appendNote').textContent = l.appendNote;
   document.getElementById('append-inp').placeholder = l.appendPh;
   document.getElementById('lbl-btnAppend').textContent = l.btnAppend;
-  document.getElementById('lbl-btnAddPhoto').childNodes[0].textContent = l.btnAddPhoto + ' ';
+  document.getElementById('lbl-btnAddPhoto').childNodes[0].textContent = l.btnAddPhoto+' ';
   document.getElementById('lbl-btnShareOpen').textContent = l.btnShareOpen;
   document.getElementById('lbl-btnDelete').textContent = l.btnDelete;
   document.getElementById('lbl-eName').textContent = l.eName;
@@ -432,27 +534,27 @@ function applyLang() {
 }
 
 function toggleLang() {
-  lang = lang === 'ja' ? 'th' : 'ja';
+  lang = lang==='ja'?'th':'ja';
   localStorage.setItem('scout_lang', lang);
   applyLang();
 }
 
 function goTab(idx) {
-  [0,1,2].forEach(i => {
-    document.getElementById('tab'+i).classList.toggle('active', i===idx);
-    document.getElementById('page'+i).classList.toggle('hidden', i!==idx);
+  [0,1,2].forEach(i=>{
+    document.getElementById('tab'+i).classList.toggle('active',i===idx);
+    document.getElementById('page'+i).classList.toggle('hidden',i!==idx);
   });
   if (idx===2) renderList();
 }
 
 function setType(v) {
-  state.type = v;
-  document.getElementById('btn-tenant').classList.toggle('active', v==='テナント');
-  document.getElementById('btn-res').classList.toggle('active', v==='住居');
+  state.type=v;
+  document.getElementById('btn-tenant').classList.toggle('active',v==='テナント');
+  document.getElementById('btn-res').classList.toggle('active',v==='住居');
 }
 
 function renderStGrid(elId, cur, cb) {
-  document.getElementById(elId).innerHTML = t().s.map((s,i) =>
+  document.getElementById(elId).innerHTML = t().s.map((s,i)=>
     '<div class="st-btn'+(cur===i?' '+ST_CLS[i]:'')+'" onclick="'+cb.name+'('+i+')">'+s+'</div>'
   ).join('');
 }
@@ -460,54 +562,55 @@ function renderStGrid(elId, cur, cb) {
 function setStMain(i) { state.status=i; renderStGrid('st-grid-main',i,setStMain); }
 
 function setStModal(i) {
-  const list=getList(), p=list.find(x=>x.id===curId);
+  const p=DB.find(x=>x.cloud_id===curId);
   if (!p) return;
-  p.status=i; saveList(list);
+  p.status=i;
   renderStGrid('st-grid-modal',i,setStModal);
   renderList();
   toast(t().stChanged,'ok');
-  syncUp(p).catch(()=>{});
+  sbUpdate(p).catch(()=>{});
 }
 
+// ===== Photos =====
 async function uploadPhoto(file) {
-  const fd = new FormData();
-  fd.append('file', file);
-  fd.append('upload_preset', CLOUD_PRESET);
-  const res = await fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/image/upload',{method:'POST',body:fd});
-  const data = await res.json();
+  const fd=new FormData();
+  fd.append('file',file);
+  fd.append('upload_preset',CLOUD_PRESET);
+  const res=await fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/image/upload',{method:'POST',body:fd});
+  const data=await res.json();
   if (!data.secure_url) throw new Error('Upload failed');
   return data.secure_url;
 }
 
-function addPhotos(input, thumbId) {
-  const files = Array.from(input.files).slice(0,10);
+function addPhotos(input,thumbId) {
+  const files=Array.from(input.files).slice(0,10);
   if (!files.length) return;
   toast(t().uploading,'');
-  const thumbs = document.getElementById(thumbId);
+  const thumbs=document.getElementById(thumbId);
   let done=0;
-  files.forEach(async file => {
+  files.forEach(async file=>{
     try {
-      const url = await uploadPhoto(file);
+      const url=await uploadPhoto(file);
       state.photos.push(url);
-      const img = document.createElement('img');
-      img.src = url;
-      thumbs.appendChild(img);
-      thumbs.style.display='flex';
+      const img=document.createElement('img');
+      img.src=url;
+      thumbs.appendChild(img);thumbs.style.display='flex';
       done++;
       if (done===files.length) toast(files.length+t().photoAdded,'ok');
     } catch(e) { toast(t().uploadFail,'err'); }
   });
 }
 
+// ===== GPS =====
 function getGPS() {
-  const icon=document.getElementById('loc-icon'), txt=document.getElementById('loc-txt');
-  txt.textContent=t().locGetting; icon.textContent='⏳';
+  const icon=document.getElementById('loc-icon'),txt=document.getElementById('loc-txt');
+  txt.textContent=t().locGetting;icon.textContent='⏳';
   if (!navigator.geolocation){toast(t().locFail,'err');return;}
   navigator.geolocation.getCurrentPosition(pos=>{
     state.lat=pos.coords.latitude.toFixed(6);
     state.lng=pos.coords.longitude.toFixed(6);
     state.mapUrl='https://www.google.com/maps?q='+state.lat+','+state.lng;
-    icon.textContent='✅'; txt.textContent=t().locDone+' ('+state.lat+', '+state.lng+')';
+    icon.textContent='✅';txt.textContent=t().locDone+' ('+state.lat+', '+state.lng+')';
     document.getElementById('loc-btn').classList.add('got');
     document.getElementById('map-res').style.display='block';
     document.getElementById('map-a').href=state.mapUrl;
@@ -526,6 +629,7 @@ function genMap() {
   toast(t().mapOk,'ok');
 }
 
+// ===== SAVE =====
 function goToDetail() {
   state.phone=document.getElementById('f-phone').value;
   state.ts=new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'});
@@ -533,7 +637,7 @@ function goToDetail() {
   goTab(1);
 }
 
-function saveEntry() {
+async function saveEntry() {
   state.phone=document.getElementById('f-phone').value;
   const pn=document.getElementById('f-propname').value;
   const r=document.getElementById('f-rent').value;
@@ -547,54 +651,63 @@ function saveEntry() {
   if(s) state.size=s;
   if(c) state.cond=c;
   if(n) state.notes=n;
-  const list=getList();
-  const entry={
-    id:Date.now(),
-    ts:state.ts||new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'}),
-    type:state.type,status:state.status,
-    propName:state.propName||t().propDef+' '+(list.length+1),
-    phone:state.phone,mapUrl:state.mapUrl,address:state.address,
-    lat:state.lat,lng:state.lng,rent:state.rent,deposit:state.deposit,
-    size:state.size,cond:state.cond,notes:state.notes,
-    photos:state.photos,appendedNotes:[]
+
+  const entry = {
+    type: state.type, status: state.status,
+    propName: state.propName || t().propDef+' '+(DB.length+1),
+    phone: state.phone, mapUrl: state.mapUrl, address: state.address,
+    lat: state.lat, lng: state.lng,
+    rent: state.rent, deposit: state.deposit, size: state.size,
+    cond: state.cond, notes: state.notes,
+    photos: state.photos, appendedNotes: [],
+    ts: state.ts || new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'})
   };
-  list.push(entry);saveList(list);updateCount();
-  toast(t().saved,'ok');
-  resetForm();
-  setTimeout(()=>goTab(2),800);
-  syncUp(entry).then(cid=>{
-    if(cid){const l=getList();const p=l.find(x=>x.id===entry.id);if(p){p.cloud_id=cid;saveList(l);}}
-  }).catch(()=>{});
+
+  try {
+    const cid = await sbInsert(entry);
+    entry.cloud_id = cid;
+    DB.unshift(entry);
+    localStorage.setItem(CACHE_KEY, JSON.stringify(DB));
+    updateCount();
+    toast(t().saved,'ok');
+    resetForm();
+    setTimeout(()=>goTab(2),800);
+  } catch(e) {
+    toast(t().syncErr,'err');
+  }
 }
 
-function getList(){try{return JSON.parse(localStorage.getItem(STORE_KEY))||[];}catch(e){return[];}}
-function saveList(list){localStorage.setItem(STORE_KEY,JSON.stringify(list));}
-function updateCount(){document.getElementById('el-count').textContent=getList().length+t().sfx;}
+function updateCount() {
+  document.getElementById('el-count').textContent = DB.length+t().sfx;
+}
 
+// ===== LIST =====
 function renderList() {
-  const list=getList(),wrap=document.getElementById('list-wrap'),l=t();
-  if(!list.length){
+  const wrap=document.getElementById('list-wrap'),l=t();
+  if (!DB.length){
     wrap.innerHTML='<div class="empty-st"><div style="font-size:40px;margin-bottom:8px">🏠</div>'+l.emptyMsg.replace('\n','<br>')+'</div>';
     return;
   }
-  wrap.innerHTML=list.slice().reverse().map(p=>{
+  wrap.innerHTML=DB.map(p=>{
     const si=typeof p.status==='number'?p.status:0;
-    return '<div class="prop-card" onclick="openModal('+p.id+')">'
-      +'<div class="prop-card-top"><div class="prop-card-name">'+p.propName+'</div>'
+    return '<div class="prop-card" onclick="openModal(\''+p.cloud_id+'\')"><div class="prop-card-top">'
+      +'<div class="prop-card-name">'+p.propName+'</div>'
       +'<span class="badge b'+si+'">'+l.s[si]+'</span></div>'
       +'<div class="prop-meta">'+p.type+'&nbsp;&nbsp;'
       +(p.rent?'฿'+Number(p.rent).toLocaleString()+l.pm+'&nbsp;&nbsp;':'')
       +(p.size?p.size+l.sqm+'&nbsp;&nbsp;':'')
       +(p.phone?'📞'+p.phone+'&nbsp;&nbsp;':'')
       +(p.mapUrl?'<a href="'+p.mapUrl+'" target="_blank" onclick="event.stopPropagation()">🗺</a>':'')
-      +'<br><span style="font-size:11px">'+p.ts+'</span></div></div>';
+      +'<br><span style="font-size:11px">'+p.ts+'</span>'
+      +'</div></div>';
   }).join('');
 }
 
-function openModal(id) {
-  curId=id;
-  const p=getList().find(x=>x.id===id);
-  if(!p) return;
+// ===== MODAL =====
+function openModal(cid) {
+  curId = cid;
+  const p=DB.find(x=>x.cloud_id===cid);
+  if (!p) return;
   const l=t();
   document.getElementById('modal-title').textContent=p.propName;
   renderStGrid('st-grid-modal',typeof p.status==='number'?p.status:0,setStModal);
@@ -606,7 +719,7 @@ function openModal(id) {
     [l.rows[5],p.deposit||ni],[l.rows[6],p.size?p.size+l.sqm:ni],
     [l.rows[7],p.cond||ni],[l.rows[8],p.notes||ni],
   ];
-  if(p.appendedNotes&&p.appendedNotes.length)
+  if (p.appendedNotes&&p.appendedNotes.length)
     p.appendedNotes.forEach((n,i)=>rows.push(['+ '+(i+1),n.text+' ('+n.ts+')']));
   document.getElementById('modal-rows').innerHTML=rows.map(([lb,v])=>
     '<div class="d-row"><span class="d-lbl">'+lb+'</span><span class="d-val">'+v+'</span></div>'
@@ -636,71 +749,86 @@ function goMTab(idx) {
   document.getElementById('modal-edit').style.display=idx===1?'block':'none';
 }
 
-function doAppendNote() {
+async function doAppendNote() {
   const txt=document.getElementById('append-inp').value.trim();
-  if(!txt){toast(t().noNote,'err');return;}
-  const list=getList(),p=list.find(x=>x.id===curId);
-  if(!p) return;
-  if(!p.appendedNotes) p.appendedNotes=[];
+  if (!txt){toast(t().noNote,'err');return;}
+  const p=DB.find(x=>x.cloud_id===curId);
+  if (!p) return;
+  if (!p.appendedNotes) p.appendedNotes=[];
   p.appendedNotes.push({text:txt,ts:new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'})});
-  saveList(list);toast(t().appended,'ok');openModal(curId);
-  syncUp(p).catch(()=>{});
+  try {
+    await sbUpdate(p);
+    localStorage.setItem(CACHE_KEY,JSON.stringify(DB));
+    toast(t().appended,'ok');
+    openModal(curId);
+  } catch(e) { toast(t().syncErr,'err'); }
 }
 
 function doAppendPhoto(input) {
   const files=Array.from(input.files).slice(0,10);
-  if(!files.length) return;
-  const list=getList(),p=list.find(x=>x.id===curId);
-  if(!p) return;
-  if(!p.photos) p.photos=[];
+  if (!files.length) return;
+  const p=DB.find(x=>x.cloud_id===curId);
+  if (!p) return;
+  if (!p.photos) p.photos=[];
   toast(t().uploading,'');
   let done=0;
   files.forEach(async file=>{
-    try{
+    try {
       const url=await uploadPhoto(file);
       p.photos.push(url);done++;
-      if(done===files.length){saveList(list);toast(files.length+t().photoAdded,'ok');openModal(curId);syncUp(p).catch(()=>{});}
-    }catch(e){toast(t().uploadFail,'err');}
+      if (done===files.length){
+        await sbUpdate(p);
+        localStorage.setItem(CACHE_KEY,JSON.stringify(DB));
+        toast(files.length+t().photoAdded,'ok');
+        openModal(curId);
+      }
+    } catch(e) { toast(t().uploadFail,'err'); }
   });
 }
 
-function doSaveEdit() {
-  const list=getList(),p=list.find(x=>x.id===curId);
-  if(!p) return;
+async function doSaveEdit() {
+  const p=DB.find(x=>x.cloud_id===curId);
+  if (!p) return;
   p.propName=document.getElementById('e-name').value||p.propName;
   p.phone=document.getElementById('e-phone').value;
   const rawMap=document.getElementById('e-map').value.trim();
-  if(!rawMap){p.mapUrl='';p.address='';}
-  else if(rawMap.startsWith('http')){p.mapUrl=rawMap;p.address='';}
+  if (!rawMap){p.mapUrl='';p.address='';}
+  else if (rawMap.startsWith('http')){p.mapUrl=rawMap;p.address='';}
   else{p.address=rawMap;p.mapUrl='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(rawMap);}
   p.rent=document.getElementById('e-rent').value;
   p.deposit=document.getElementById('e-deposit').value;
   p.size=document.getElementById('e-size').value;
   p.cond=document.getElementById('e-cond').value;
   p.notes=document.getElementById('e-notes').value;
-  saveList(list);renderList();toast(t().saved,'ok');
-  openModal(curId);goMTab(0);
-  syncUp(p).catch(()=>{});
+  try {
+    await sbUpdate(p);
+    localStorage.setItem(CACHE_KEY,JSON.stringify(DB));
+    renderList();toast(t().saved,'ok');
+    openModal(curId);goMTab(0);
+  } catch(e) { toast(t().syncErr,'err'); }
 }
 
-function doDelete() {
-  if(!confirm(t().confirmDel)) return;
-  const p=getList().find(x=>x.id===curId);
-  saveList(getList().filter(x=>x.id!==curId));
-  updateCount();renderList();closeModal();toast(t().deleted,'ok');
-  if(p&&p.cloud_id) sbFetch('/rest/v1/properties?id=eq.'+p.cloud_id,{method:'DELETE'}).catch(()=>{});
+async function doDelete() {
+  if (!confirm(t().confirmDel)) return;
+  try {
+    await sbDelete(curId);
+    DB = DB.filter(x=>x.cloud_id!==curId);
+    localStorage.setItem(CACHE_KEY,JSON.stringify(DB));
+    updateCount();renderList();closeModal();toast(t().deleted,'ok');
+  } catch(e) { toast(t().syncErr,'err'); }
 }
 
 function closeModal(){document.getElementById('modal').classList.remove('open');curId=null;}
 function modalBg(e){if(e.target===document.getElementById('modal'))closeModal();}
 
+// ===== SHARE =====
 function openShare() {
-  const p=getList().find(x=>x.id===curId);
-  if(!p) return;
+  const p=DB.find(x=>x.cloud_id===curId);
+  if (!p) return;
   const l=t();
-  const typeLabel=p.type==='テナント'?'🏪 '+l.tenant:'🏠 '+l.res;
+  const tl=p.type==='テナント'?'🏪 '+l.tenant:'🏠 '+l.res;
   document.getElementById('share-fixed-preview').textContent=[
-    typeLabel,p.propName,
+    tl,p.propName,
     p.rent?l.sRent+'฿'+Number(p.rent).toLocaleString()+l.pm:null,
     p.mapUrl?l.sMap+p.mapUrl:null,
   ].filter(Boolean).join('\n');
@@ -714,7 +842,7 @@ function openShare() {
     {key:'cond',label:l.sOptCond,val:p.cond},
     {key:'notes',label:l.sOptNotes,val:p.notes},
   ].forEach(opt=>{
-    if(!opt.val) return;
+    if (!opt.val) return;
     const checked=sOpts[opt.key]!==false;
     const row=document.createElement('div');
     row.className='tog-row';
@@ -727,41 +855,39 @@ function openShare() {
     wrap.appendChild(row);
   });
 
-  const pgrid=document.getElementById('share-photo-grid');
-  pgrid.innerHTML='';
-  if(p.photos&&p.photos.length){
+  const pg=document.getElementById('share-photo-grid');
+  pg.innerHTML='';
+  if (p.photos&&p.photos.length) {
     p.photos.forEach((url,i)=>{
       const checked=sOpts['ph_'+i]!==false;
       const lbl=document.createElement('label');
       lbl.style.cssText='position:relative;cursor:pointer;display:inline-block';
       const img=document.createElement('img');
-      img.src=url;
-      img.id='sph-'+i;
+      img.src=url;img.id='sph-'+i;
       img.style.cssText='width:72px;height:72px;object-fit:cover;border-radius:8px;border:2px solid '+(checked?'var(--accent)':'var(--border)');
       const cb=document.createElement('input');
-      cb.type='checkbox';
-      cb.dataset.key='ph_'+i;
-      cb.checked=checked;
+      cb.type='checkbox';cb.dataset.key='ph_'+i;cb.checked=checked;
       cb.style.cssText='position:absolute;top:4px;right:4px;width:16px;height:16px;accent-color:var(--accent)';
       cb.onchange=function(){
         sOpts[this.dataset.key]=this.checked;
-        document.getElementById('sph-'+i).style.borderColor=this.checked?'var(--accent)':'var(--border)';
+        const el=document.getElementById('sph-'+i);
+        if(el) el.style.borderColor=this.checked?'var(--accent)':'var(--border)';
       };
       lbl.appendChild(img);lbl.appendChild(cb);
-      pgrid.appendChild(lbl);
+      pg.appendChild(lbl);
     });
   }
   document.getElementById('share-sheet').classList.add('open');
 }
 
 function doShare() {
-  const p=getList().find(x=>x.id===curId);
-  if(!p) return;
+  const p=DB.find(x=>x.cloud_id===curId);
+  if (!p) return;
   const l=t();
-  const typeLabel=p.type==='テナント'?'🏪 '+l.tenant:'🏠 '+l.res;
+  const tl=p.type==='テナント'?'🏪 '+l.tenant:'🏠 '+l.res;
   const selPhotos=p.photos?p.photos.filter((_,i)=>sOpts['ph_'+i]!==false):[];
   const lines=[
-    l.sep,typeLabel+' '+l.intro,l.sep,
+    l.sep,tl+' '+l.intro,l.sep,
     p.propName,
     p.rent?l.sRent+'฿'+Number(p.rent).toLocaleString()+l.pm:null,
     sOpts.size!==false&&p.size?l.sSize+p.size+l.sqm:null,
@@ -775,51 +901,47 @@ function doShare() {
     ...selPhotos.map((url,i)=>'写真'+(i+1)+'：'+url),
     l.sep,
   ].filter(Boolean).join('\n');
-
-  const copy=txt=>{
-    if(navigator.clipboard&&window.isSecureContext){
-      navigator.clipboard.writeText(txt)
-        .then(()=>{closeShare();toast(l.copied,'ok');})
-        .catch(()=>fallback(txt));
-    } else { fallback(txt); }
-  };
-  const fallback=txt=>{
-    const ta=document.createElement('textarea');
-    ta.value=txt;ta.style.cssText='position:fixed;top:-9999px;left:-9999px';
-    document.body.appendChild(ta);ta.focus();ta.select();
-    try{document.execCommand('copy');}catch(e){}
-    document.body.removeChild(ta);
-    closeShare();toast(l.copied,'ok');
-  };
-  copy(lines);
+  copyText(lines,()=>{closeShare();toast(l.copied,'ok');});
 }
 
 function closeShare(){document.getElementById('share-sheet').classList.remove('open');}
 function shareBg(e){if(e.target===document.getElementById('share-sheet'))closeShare();}
+
+function copyStaffUrl() {
+  const url=window.location.href.split('?')[0];
+  const l=t();
+  copyText(l.staffMsg+url+l.staffSub,()=>toast(l.staffCopied,'ok'));
+}
+
+function copyText(txt,cb) {
+  if (navigator.clipboard&&window.isSecureContext) {
+    navigator.clipboard.writeText(txt).then(cb).catch(()=>fallbackCopy(txt,cb));
+  } else { fallbackCopy(txt,cb); }
+}
+
+function fallbackCopy(txt,cb) {
+  const ta=document.createElement('textarea');
+  ta.value=txt;ta.style.cssText='position:fixed;top:-9999px;left:-9999px';
+  document.body.appendChild(ta);ta.focus();ta.select();
+  try{document.execCommand('copy');}catch(e){}
+  document.body.removeChild(ta);
+  if(cb) cb();
+}
 
 function openLB(src){
   document.getElementById('lb-img').src=src;
   document.getElementById('lightbox').style.display='flex';
 }
 
-function copyStaffUrl() {
-  const url=window.location.href.split('?')[0];
-  const l=t();
-  const msg=l.staffMsg+url+l.staffSub;
-  const copy=txt=>{
-    if(navigator.clipboard&&window.isSecureContext){
-      navigator.clipboard.writeText(txt).then(()=>toast(l.staffCopied,'ok')).catch(()=>fallback2(txt));
-    } else { fallback2(txt); }
-  };
-  const fallback2=txt=>{
-    const ta=document.createElement('textarea');
-    ta.value=txt;ta.style.cssText='position:fixed;top:-9999px;left:-9999px';
-    document.body.appendChild(ta);ta.focus();ta.select();
-    try{document.execCommand('copy');}catch(e){}
-    document.body.removeChild(ta);
-    toast(t().staffCopied,'ok');
-  };
-  copy(msg);
+// ===== SYNC =====
+async function doSync() {
+  toast(t().syncing,'');
+  try {
+    await syncDown();
+    updateCount();
+    renderList();
+    toast(t().syncOk,'ok');
+  } catch(e) { toast(t().syncErr,'err'); }
 }
 
 function resetForm() {
@@ -843,55 +965,31 @@ function toast(msg,type){
   clearTimeout(el._t);el._t=setTimeout(()=>{el.className='';},2800);
 }
 
-async function sbFetch(path,opts={}) {
-  const res=await fetch(SB_URL+path,{...opts,headers:{...SB_H,...(opts.headers||{})}});
-  if(!res.ok){const e=await res.text();throw new Error(e);}
-  return res.status===204?null:res.json();
-}
-
-async function syncUp(entry) {
-  const row={
-    type:entry.type,status:entry.status,prop_name:entry.propName,
-    phone:entry.phone,map_url:entry.mapUrl,address:entry.address||'',
-    lat:entry.lat||'',lng:entry.lng||'',rent:entry.rent,deposit:entry.deposit,
-    size:entry.size,cond:entry.cond,notes:entry.notes,
-    photos:entry.photos||[],appended_notes:entry.appendedNotes||[],
-    ts:entry.ts,local_id:String(entry.id)
-  };
-  if(entry.cloud_id){
-    await sbFetch('/rest/v1/properties?id=eq.'+entry.cloud_id,{method:'PATCH',body:JSON.stringify(row)});
-    return entry.cloud_id;
-  } else {
-    const result=await sbFetch('/rest/v1/properties?select=id',{method:'POST',headers:{'Prefer':'return=representation'},body:JSON.stringify(row)});
-    return result&&result[0]?result[0].id:null;
-  }
-}
-
-async function syncDown() {
-  const rows=await sbFetch('/rest/v1/properties?order=created_at.desc&select=*');
-  if(!rows||!rows.length) return;
-  const list=getList();
-  rows.forEach(row=>{
-    const existing=list.find(x=>x.cloud_id===row.id||String(x.id)===String(row.local_id));
-    const entry={
-      id:existing?existing.id:Date.now()+Math.random(),
-      cloud_id:row.id,ts:row.ts||row.created_at,
-      type:row.type,status:row.status||0,propName:row.prop_name,
-      phone:row.phone,mapUrl:row.map_url,address:row.address,
-      lat:row.lat,lng:row.lng,rent:row.rent,deposit:row.deposit,
-      size:row.size,cond:row.cond,notes:row.notes,
-      photos:row.photos||[],appendedNotes:row.appended_notes||[]
-    };
-    if(existing){Object.assign(existing,entry);}
-    else{list.push(entry);}
-  });
-  saveList(list);
-}
-
+// ===== INIT =====
 renderStGrid('st-grid-main',0,setStMain);
 applyLang();
-syncDown().then(()=>{renderList();updateCount();}).catch(()=>{});
-setInterval(()=>{syncDown().then(()=>{renderList();updateCount();}).catch(()=>{});},30000);
+
+// 起動時にSupabaseからデータを取得
+(async()=>{
+  try {
+    // まずキャッシュを表示
+    const cache=localStorage.getItem(CACHE_KEY);
+    if (cache) { DB=JSON.parse(cache); }
+    // Supabaseから最新を取得
+    await syncDown();
+    updateCount();
+    renderList();
+  } catch(e) {
+    // オフライン時はキャッシュを使用
+    const cache=localStorage.getItem(CACHE_KEY);
+    if (cache) { DB=JSON.parse(cache); updateCount(); renderList(); }
+  }
+  // ローディング非表示
+  document.getElementById('loading').style.display='none';
+  document.getElementById('app').style.display='flex';
+  // 30秒ごとに自動同期
+  setInterval(doSync,30000);
+})();
 </script>
 </body>
 </html>
