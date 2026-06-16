@@ -562,7 +562,7 @@ function renderStGrid(elId, cur, cb) {
 function setStMain(i) { state.status=i; renderStGrid('st-grid-main',i,setStMain); }
 
 function setStModal(i) {
-  const p=DB.find(x=>x.cloud_id===curId);
+  const p=DB.find(x=>Number(x.cloud_id)===Number(curId));
   if (!p) return;
   p.status=i;
   renderStGrid('st-grid-modal',i,setStModal);
@@ -688,25 +688,39 @@ function renderList() {
     wrap.innerHTML='<div class="empty-st"><div style="font-size:40px;margin-bottom:8px">🏠</div>'+l.emptyMsg.replace('\n','<br>')+'</div>';
     return;
   }
-  wrap.innerHTML=DB.map(p=>{
+  const html = DB.map(p=>{
     const si=typeof p.status==='number'?p.status:0;
-    return '<div class="prop-card" onclick="openModal(\''+p.cloud_id+'\')"><div class="prop-card-top">'
+    const meta = [
+      p.type,
+      p.rent ? '฿'+Number(p.rent).toLocaleString()+l.pm : '',
+      p.size ? p.size+l.sqm : '',
+      p.phone ? '📞'+p.phone : '',
+    ].filter(Boolean).join('　');
+    const mapLink = p.mapUrl ? '<a href="'+p.mapUrl+'" target="_blank" onclick="event.stopPropagation()">🗺</a>' : '';
+    return '<div class="prop-card" data-cid="'+p.cloud_id+'">'
+      +'<div class="prop-card-top">'
       +'<div class="prop-card-name">'+p.propName+'</div>'
-      +'<span class="badge b'+si+'">'+l.s[si]+'</span></div>'
-      +'<div class="prop-meta">'+p.type+'&nbsp;&nbsp;'
-      +(p.rent?'฿'+Number(p.rent).toLocaleString()+l.pm+'&nbsp;&nbsp;':'')
-      +(p.size?p.size+l.sqm+'&nbsp;&nbsp;':'')
-      +(p.phone?'📞'+p.phone+'&nbsp;&nbsp;':'')
-      +(p.mapUrl?'<a href="'+p.mapUrl+'" target="_blank" onclick="event.stopPropagation()">🗺</a>':'')
+      +'<span class="badge b'+si+'">'+l.s[si]+'</span>'
+      +'</div>'
+      +'<div class="prop-meta">'+meta+(mapLink?'　'+mapLink:'')
       +'<br><span style="font-size:11px">'+p.ts+'</span>'
       +'</div></div>';
   }).join('');
+  wrap.innerHTML = html;
+  // event delegation - attach click to wrapper
+  wrap.onclick = function(e) {
+    const card = e.target.closest('.prop-card');
+    if (card && card.dataset.cid) openModal(card.dataset.cid);
+  };
 }
 
 // ===== MODAL =====
 function openModal(cid) {
-  curId = cid;
-  const p=DB.find(x=>x.cloud_id===cid);
+  // cloud_id can be number or string, normalize
+  const numCid = Number(cid);
+  curId = numCid;
+  cid = numCid;
+  const p=DB.find(x=>Number(x.cloud_id)===Number(cid));
   if (!p) return;
   const l=t();
   document.getElementById('modal-title').textContent=p.propName;
@@ -752,7 +766,7 @@ function goMTab(idx) {
 async function doAppendNote() {
   const txt=document.getElementById('append-inp').value.trim();
   if (!txt){toast(t().noNote,'err');return;}
-  const p=DB.find(x=>x.cloud_id===curId);
+  const p=DB.find(x=>Number(x.cloud_id)===Number(curId));
   if (!p) return;
   if (!p.appendedNotes) p.appendedNotes=[];
   p.appendedNotes.push({text:txt,ts:new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'})});
@@ -767,7 +781,7 @@ async function doAppendNote() {
 function doAppendPhoto(input) {
   const files=Array.from(input.files).slice(0,10);
   if (!files.length) return;
-  const p=DB.find(x=>x.cloud_id===curId);
+  const p=DB.find(x=>Number(x.cloud_id)===Number(curId));
   if (!p) return;
   if (!p.photos) p.photos=[];
   toast(t().uploading,'');
@@ -787,7 +801,7 @@ function doAppendPhoto(input) {
 }
 
 async function doSaveEdit() {
-  const p=DB.find(x=>x.cloud_id===curId);
+  const p=DB.find(x=>Number(x.cloud_id)===Number(curId));
   if (!p) return;
   p.propName=document.getElementById('e-name').value||p.propName;
   p.phone=document.getElementById('e-phone').value;
@@ -823,7 +837,7 @@ function modalBg(e){if(e.target===document.getElementById('modal'))closeModal();
 
 // ===== SHARE =====
 function openShare() {
-  const p=DB.find(x=>x.cloud_id===curId);
+  const p=DB.find(x=>Number(x.cloud_id)===Number(curId));
   if (!p) return;
   const l=t();
   const tl=p.type==='テナント'?'🏪 '+l.tenant:'🏠 '+l.res;
@@ -881,7 +895,7 @@ function openShare() {
 }
 
 function doShare() {
-  const p=DB.find(x=>x.cloud_id===curId);
+  const p=DB.find(x=>Number(x.cloud_id)===Number(curId));
   if (!p) return;
   const l=t();
   const tl=p.type==='テナント'?'🏪 '+l.tenant:'🏠 '+l.res;
@@ -987,8 +1001,7 @@ applyLang();
   // ローディング非表示
   document.getElementById('loading').style.display='none';
   document.getElementById('app').style.display='flex';
-  // 30秒ごとに自動同期
-  setInterval(doSync,30000);
+  // 手動同期のみ（🔄ボタン）
 })();
 </script>
 </body>
