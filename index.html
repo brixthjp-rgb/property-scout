@@ -12,17 +12,16 @@
 :root{
   --bg:#0f0f1a;--surface:#1a1a2e;--surface2:#252540;--border:#2e2e50;
   --accent:#6c63ff;--accent2:#ff6584;--text:#f0f0ff;--muted:#8888aa;
-  --green:#22c55e;--amber:#f59e0b;--radius:14px;--radius-sm:8px;
+  --green:#22c55e;--amber:#f59e0b;--radius:14px;--rsm:8px;
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Noto Sans JP','Sarabun',sans-serif;font-size:16px;overflow:hidden}
 #app{display:flex;flex-direction:column;height:100vh;max-width:430px;margin:0 auto}
 header{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
 .logo{font-size:17px;font-weight:700;color:var(--text)}.logo span{color:var(--accent)}
-.header-right{display:flex;align-items:center;gap:8px}
-.count-badge{font-size:12px;color:var(--muted)}
-.lang-btn{padding:4px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;-webkit-appearance:none}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.hdr-btn{padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;-webkit-appearance:none;white-space:nowrap}
 .tabs{display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
-.tab{padding:10px 4px;text-align:center;font-size:11px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;user-select:none;-webkit-user-select:none}
+.tab{padding:10px 4px;text-align:center;font-size:11px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;user-select:none;-webkit-user-select:none}
 .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 .tab-icon{font-size:16px;margin-bottom:2px}
 .pages{flex:1;overflow:hidden;position:relative}
@@ -31,49 +30,48 @@ header{padding:12px 16px;display:flex;align-items:center;justify-content:space-b
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px}
 .card-title{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
 .type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.type-btn{padding:14px 8px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);text-align:center;cursor:pointer;transition:all .15s;user-select:none;-webkit-user-select:none}
-.type-btn .icon{font-size:26px;margin-bottom:5px}
-.type-btn .label{font-size:13px;font-weight:500}
+.type-btn{padding:14px 8px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);text-align:center;cursor:pointer;user-select:none;-webkit-user-select:none}
+.type-btn .ico{font-size:26px;margin-bottom:5px}
+.type-btn .lbl{font-size:13px;font-weight:500}
 .type-btn.active{border-color:var(--accent);background:rgba(108,99,255,.15);color:var(--text)}
 .field{margin-bottom:12px}
 .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:500}
-.inp{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:15px;padding:11px 13px;outline:none;font-family:inherit;-webkit-appearance:none}
+.inp{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rsm);color:var(--text);font-size:15px;padding:11px 13px;outline:none;font-family:inherit;-webkit-appearance:none}
 .inp:focus{border-color:var(--accent)}
 .inp::placeholder{color:var(--muted);opacity:.6}
 textarea.inp{resize:none;line-height:1.5}
-.photo-wrap{border:1.5px dashed var(--border);border-radius:var(--radius-sm);padding:20px;text-align:center;position:relative;overflow:hidden;cursor:pointer}
+.photo-wrap{border:1.5px dashed var(--border);border-radius:var(--rsm);padding:20px;text-align:center;position:relative;overflow:hidden;cursor:pointer}
 .photo-wrap input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .photo-hint{color:var(--muted);font-size:13px;pointer-events:none}
-.photo-hint .ph-icon{font-size:32px;margin-bottom:6px}
-.photo-thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.photo-thumbs img{width:72px;height:72px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
-.loc-btn{width:100%;padding:13px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;-webkit-appearance:none}
+.photo-hint .phi{font-size:32px;margin-bottom:6px}
+.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.thumbs img{width:72px;height:72px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
+.loc-btn{width:100%;padding:13px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;-webkit-appearance:none}
 .loc-btn.got{border-color:var(--green);color:var(--green)}
-.or-divider{display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--muted);font-size:12px}
-.or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.or-div{display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--muted);font-size:12px}
+.or-div::before,.or-div::after{content:'';flex:1;height:1px;background:var(--border)}
 .addr-row{display:flex;gap:8px}
-.addr-inp{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:14px;padding:11px 13px;outline:none;font-family:inherit;-webkit-appearance:none}
+.addr-inp{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rsm);color:var(--text);font-size:14px;padding:11px 13px;outline:none;font-family:inherit;-webkit-appearance:none}
 .addr-inp:focus{border-color:var(--accent)}
 .addr-inp::placeholder{color:var(--muted);opacity:.6}
-.addr-gen-btn{padding:11px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-size:13px;cursor:pointer;white-space:nowrap;-webkit-appearance:none}
-.map-result{display:none;margin-top:8px}
-.map-result a{font-size:12px;color:var(--accent);text-decoration:none}
-.status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.st-btn{padding:10px 4px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);text-align:center;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;user-select:none;-webkit-user-select:none}
-.st-btn.act0{border-color:#6c63ff;background:rgba(108,99,255,.15);color:#6c63ff}
-.st-btn.act1{border-color:#f59e0b;background:rgba(245,158,11,.15);color:#f59e0b}
-.st-btn.act2{border-color:#22c55e;background:rgba(34,197,94,.15);color:#22c55e}
-.st-btn.act3{border-color:#ff6584;background:rgba(255,101,132,.15);color:#ff6584}
-.st-btn.act4{border-color:#8888aa;background:rgba(136,136,170,.15);color:#8888aa}
+.addr-gen{padding:11px 14px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--surface2);color:var(--text);font-size:13px;cursor:pointer;white-space:nowrap;-webkit-appearance:none}
+.map-res{display:none;margin-top:8px}
+.map-res a{font-size:12px;color:var(--accent);text-decoration:none}
+.st-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.st-btn{padding:10px 4px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);text-align:center;font-size:12px;font-weight:500;cursor:pointer;user-select:none;-webkit-user-select:none}
+.st-btn.a0{border-color:#6c63ff;background:rgba(108,99,255,.15);color:#6c63ff}
+.st-btn.a1{border-color:#f59e0b;background:rgba(245,158,11,.15);color:#f59e0b}
+.st-btn.a2{border-color:#22c55e;background:rgba(34,197,94,.15);color:#22c55e}
+.st-btn.a3{border-color:#ff6584;background:rgba(255,101,132,.15);color:#ff6584}
+.st-btn.a4{border-color:#8888aa;background:rgba(136,136,170,.15);color:#8888aa}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.btn{width:100%;padding:15px;border-radius:var(--radius);border:none;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;font-family:inherit;-webkit-appearance:none}
-.btn-primary{background:var(--accent);color:#fff}
-.btn-primary:active{background:#5a52e0}
-.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
-.btn-danger{background:transparent;color:var(--accent2);border:1px solid var(--accent2)}
+.btn{width:100%;padding:15px;border-radius:var(--radius);border:none;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;font-family:inherit;-webkit-appearance:none;display:block}
+.btn-p{background:var(--accent);color:#fff}
+.btn-p:active{background:#5a52e0}
+.btn-s{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn-d{background:transparent;color:var(--accent2);border:1px solid var(--accent2)}
 .btn-share{background:#25D366;color:#fff}
-.empty-state{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;line-height:2}
-.empty-state .e-icon{font-size:40px;margin-bottom:8px}
+.empty-st{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;line-height:2}
 .prop-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;cursor:pointer}
 .prop-card:active{border-color:var(--accent)}
 .prop-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
@@ -86,24 +84,24 @@ textarea.inp{resize:none;line-height:1.5}
 .b4{background:rgba(136,136,170,.15);color:#8888aa}
 .prop-meta{font-size:12px;color:var(--muted);line-height:1.9}
 .prop-meta a{color:var(--accent);text-decoration:none}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;display:none;align-items:flex-end;justify-content:center;-webkit-overflow-scrolling:touch}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;display:none;align-items:flex-end;justify-content:center}
 .overlay.open{display:flex}
 .sheet{background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px 20px 40px}
 .sheet-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .sheet-title{font-size:17px;font-weight:700;color:var(--text)}
-.sheet-close{font-size:24px;cursor:pointer;color:var(--muted);line-height:1;padding:4px}
-.modal-tabs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:16px}
+.sheet-x{font-size:24px;cursor:pointer;color:var(--muted);line-height:1;padding:4px}
+.m-tabs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:var(--rsm);overflow:hidden;margin-bottom:16px}
 .m-tab{padding:10px;text-align:center;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;background:var(--surface2)}
 .m-tab.active{background:var(--accent);color:#fff}
-.detail-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;gap:12px}
-.detail-row:last-child{border-bottom:none}
-.detail-label{color:var(--muted);white-space:nowrap}
-.detail-val{color:var(--text);text-align:right;word-break:break-all}
-.detail-val a{color:var(--accent);text-decoration:none}
-.section-lbl{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;margin-bottom:8px;margin-top:14px}
-.toggle-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border)}
-.toggle-row:last-child{border-bottom:none}
-.toggle-val{font-size:12px;color:var(--muted);margin-right:10px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.d-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;gap:12px}
+.d-row:last-child{border-bottom:none}
+.d-lbl{color:var(--muted);white-space:nowrap}
+.d-val{color:var(--text);text-align:right;word-break:break-all}
+.d-val a{color:var(--accent);text-decoration:none}
+.sec-lbl{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;margin:14px 0 8px}
+.tog-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border)}
+.tog-row:last-child{border-bottom:none}
+.tog-val{font-size:12px;color:var(--muted);margin-right:8px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:10px 20px;font-size:13px;opacity:0;transition:all .25s;pointer-events:none;z-index:600;white-space:nowrap;max-width:90vw;text-align:center}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #toast.ok{border-color:var(--green);color:var(--green)}
@@ -114,10 +112,10 @@ textarea.inp{resize:none;line-height:1.5}
 <div id="app">
   <header>
     <div class="logo" id="el-logo">物件<span>スカウト</span></div>
-    <div class="header-right">
-      <span class="count-badge" id="el-count">0件</span>
-      <button class="lang-btn" onclick="copyStaffUrl()" title="スタッフに共有">👥</button>
-      <button class="lang-btn" id="el-langbtn" onclick="toggleLang()">🇹🇭 TH</button>
+    <div class="hdr-right">
+      <span style="font-size:12px;color:var(--muted)" id="el-count">0件</span>
+      <button class="hdr-btn" onclick="copyStaffUrl()">👥</button>
+      <button class="hdr-btn" id="el-langbtn" onclick="toggleLang()">🇹🇭 TH</button>
     </div>
   </header>
   <div class="tabs">
@@ -127,26 +125,22 @@ textarea.inp{resize:none;line-height:1.5}
   </div>
   <div class="pages">
 
-    <!-- PAGE 1 現地入力 -->
+    <!-- PAGE 1 -->
     <div class="page" id="page0">
       <div class="card">
         <div class="card-title" id="lbl-typeTitle">物件の種類</div>
         <div class="type-grid">
-          <div class="type-btn active" id="btn-tenant" onclick="setType('テナント')">
-            <div class="icon">🏪</div><div class="label" id="lbl-tenant">テナント</div>
-          </div>
-          <div class="type-btn" id="btn-residence" onclick="setType('住居')">
-            <div class="icon">🏠</div><div class="label" id="lbl-residence">住居</div>
-          </div>
+          <div class="type-btn active" id="btn-tenant" onclick="setType('テナント')"><div class="ico">🏪</div><div class="lbl" id="lbl-tenant">テナント</div></div>
+          <div class="type-btn" id="btn-res" onclick="setType('住居')"><div class="ico">🏠</div><div class="lbl" id="lbl-res">住居</div></div>
         </div>
       </div>
       <div class="card">
         <div class="card-title" id="lbl-photoTitle">写真</div>
         <div class="photo-wrap">
           <input type="file" accept="image/*" multiple onchange="addPhotos(this,'thumbs0')">
-          <div class="photo-hint"><div class="ph-icon">📷</div><span id="lbl-photoHint">タップして撮影 または ライブラリから選択</span></div>
+          <div class="photo-hint"><div class="phi">📷</div><span id="lbl-photoHint">タップして撮影 または ライブラリから選択</span></div>
         </div>
-        <div class="photo-thumbs" id="thumbs0"></div>
+        <div class="thumbs" id="thumbs0"></div>
       </div>
       <div class="card">
         <div class="card-title" id="lbl-phoneTitle">電話番号</div>
@@ -154,23 +148,19 @@ textarea.inp{resize:none;line-height:1.5}
       </div>
       <div class="card">
         <div class="card-title" id="lbl-locTitle">場所</div>
-        <button class="loc-btn" id="loc-btn" onclick="getGPS()">
-          <span id="loc-icon">📍</span> <span id="loc-txt">現在地を自動取得</span>
-        </button>
-        <div class="or-divider"><span id="lbl-or">または住所を手入力</span></div>
+        <button class="loc-btn" id="loc-btn" onclick="getGPS()"><span id="loc-icon">📍</span> <span id="loc-txt">現在地を自動取得</span></button>
+        <div class="or-div"><span id="lbl-or">または住所を手入力</span></div>
         <div class="addr-row">
           <input class="addr-inp" id="f-addr" placeholder="Sukhumvit Soi 11, Bangkok">
-          <button class="addr-gen-btn" id="lbl-gen" onclick="genMapFromAddr()">🗺 生成</button>
+          <button class="addr-gen" id="lbl-gen" onclick="genMap()">🗺 生成</button>
         </div>
-        <div class="map-result" id="map-result">
-          <a id="map-link-a" href="#" target="_blank">🗺 Googleマップで確認 →</a>
-        </div>
+        <div class="map-res" id="map-res"><a id="map-a" href="#" target="_blank">🗺 Googleマップで確認 →</a></div>
       </div>
-      <button class="btn btn-primary" id="lbl-btnNext" onclick="goToDetail()">保存して詳細へ →</button>
-      <button class="btn btn-secondary" id="lbl-btnFieldOnly" onclick="saveEntry()">現地情報だけ保存</button>
+      <button class="btn btn-p" id="lbl-btnNext" onclick="goToDetail()">保存して詳細へ →</button>
+      <button class="btn btn-s" id="lbl-btnFieldOnly" onclick="saveEntry()">現地情報だけ保存</button>
     </div>
 
-    <!-- PAGE 2 物件詳細 -->
+    <!-- PAGE 2 -->
     <div class="page hidden" id="page1">
       <div class="card">
         <div class="card-title" id="lbl-propNameTitle">物件名 / 識別メモ</div>
@@ -178,7 +168,7 @@ textarea.inp{resize:none;line-height:1.5}
       </div>
       <div class="card">
         <div class="card-title" id="lbl-statusTitle">ステータス</div>
-        <div class="status-grid" id="status-grid-main"></div>
+        <div class="st-grid" id="st-grid-main"></div>
       </div>
       <div class="card">
         <div class="card-title" id="lbl-rentTitle">家賃 / 費用</div>
@@ -193,11 +183,11 @@ textarea.inp{resize:none;line-height:1.5}
         <div class="field"><label id="lbl-cond">契約条件</label><input class="inp" type="text" id="f-cond" placeholder="最低1年、ペット不可"></div>
         <div class="field" style="margin-bottom:0"><label id="lbl-notes">その他メモ</label><textarea class="inp" id="f-notes" rows="4" placeholder="駐車場あり、改装交渉可"></textarea></div>
       </div>
-      <button class="btn btn-primary" id="lbl-btnSave" onclick="saveEntry()">💾 保存する</button>
-      <button class="btn btn-secondary" id="lbl-btnBack" onclick="goTab(0)">← 現地入力に戻る</button>
+      <button class="btn btn-p" id="lbl-btnSave" onclick="saveEntry()">💾 保存する</button>
+      <button class="btn btn-s" id="lbl-btnBack" onclick="goTab(0)">← 現地入力に戻る</button>
     </div>
 
-    <!-- PAGE 3 保存リスト -->
+    <!-- PAGE 3 -->
     <div class="page hidden" id="page2">
       <div id="list-wrap"></div>
     </div>
@@ -205,38 +195,34 @@ textarea.inp{resize:none;line-height:1.5}
   </div>
 </div>
 
-<!-- MODAL (物件詳細) -->
-<div class="overlay" id="modal" onclick="modalBgClick(event)">
+<!-- MODAL -->
+<div class="overlay" id="modal" onclick="modalBg(event)">
   <div class="sheet">
     <div class="sheet-hdr">
       <div class="sheet-title" id="modal-title"></div>
-      <div class="sheet-close" onclick="closeModal()">✕</div>
+      <div class="sheet-x" onclick="closeModal()">✕</div>
     </div>
-    <div class="modal-tabs">
-      <div class="m-tab active" id="mtab0" onclick="goModalTab(0)">📋 <span id="lbl-mDetail">詳細</span></div>
-      <div class="m-tab" id="mtab1" onclick="goModalTab(1)">✏️ <span id="lbl-mEdit">編集</span></div>
+    <div class="m-tabs">
+      <div class="m-tab active" id="mtab0" onclick="goMTab(0)">📋 <span id="lbl-mDetail">詳細</span></div>
+      <div class="m-tab" id="mtab1" onclick="goMTab(1)">✏️ <span id="lbl-mEdit">編集</span></div>
     </div>
-
-    <!-- DETAIL VIEW -->
     <div id="modal-view">
-      <div class="section-lbl" id="lbl-statusChange">ステータス変更</div>
-      <div class="status-grid" id="status-grid-modal"></div>
+      <div class="sec-lbl" id="lbl-stChange">ステータス変更</div>
+      <div class="st-grid" id="st-grid-modal"></div>
       <div id="modal-rows" style="margin-top:12px"></div>
-      <div id="modal-photo-area" style="margin-top:10px"></div>
-      <div class="section-lbl" style="margin-top:16px" id="lbl-appendNote">メモを追記</div>
+      <div id="modal-photos" style="margin-top:10px"></div>
+      <div class="sec-lbl" style="margin-top:16px" id="lbl-appendNote">メモを追記</div>
       <textarea class="inp" id="append-inp" rows="3" placeholder="追記メモを入力..."></textarea>
-      <button class="btn btn-secondary" id="lbl-btnAppend" onclick="doAppendNote()" style="margin-top:8px">📝 追記する</button>
+      <button class="btn btn-s" id="lbl-btnAppend" onclick="doAppendNote()" style="margin-top:8px">📝 追記する</button>
       <div style="margin-top:10px;position:relative">
-        <label style="display:block;width:100%;padding:13px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:14px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit" id="lbl-btnAddPhoto">
+        <label style="display:block;width:100%;padding:13px;border-radius:var(--rsm);border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:14px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit" id="lbl-btnAddPhoto">
           📷 写真を追加
           <input type="file" accept="image/*" multiple onchange="doAppendPhoto(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
         </label>
       </div>
-      <button class="btn btn-share" id="lbl-btnShareOpen" onclick="openShare()" style="margin-top:8px">📤 顧客に共有</button>
-      <button class="btn btn-danger" id="lbl-btnDelete" onclick="doDelete()" style="margin-top:8px">🗑 この物件を削除</button>
+      <button class="btn btn-share" onclick="openShare()" style="margin-top:8px" id="lbl-btnShareOpen">📤 顧客に共有</button>
+      <button class="btn btn-d" onclick="doDelete()" style="margin-top:8px" id="lbl-btnDelete">🗑 この物件を削除</button>
     </div>
-
-    <!-- EDIT VIEW -->
     <div id="modal-edit" style="display:none">
       <div class="field"><label id="lbl-eName">物件名</label><input class="inp" id="e-name"></div>
       <div class="field"><label id="lbl-ePhone">電話番号</label><input class="inp" type="tel" id="e-phone"></div>
@@ -248,99 +234,50 @@ textarea.inp{resize:none;line-height:1.5}
       <div class="field"><label id="lbl-eSize">広さ（㎡）</label><input class="inp" type="number" id="e-size"></div>
       <div class="field"><label id="lbl-eCond">契約条件</label><input class="inp" id="e-cond"></div>
       <div class="field"><label id="lbl-eNotes">メモ</label><textarea class="inp" id="e-notes" rows="4"></textarea></div>
-      <button class="btn btn-primary" id="lbl-btnSaveEdit" onclick="doSaveEdit()">💾 上書き保存</button>
+      <button class="btn btn-p" onclick="doSaveEdit()" id="lbl-btnSaveEdit">💾 上書き保存</button>
     </div>
   </div>
 </div>
 
 <!-- SHARE SHEET -->
-<div class="overlay" id="share-sheet" style="z-index:400" onclick="shareBgClick(event)">
+<div class="overlay" id="share-sheet" style="z-index:400" onclick="shareBg(event)">
   <div class="sheet">
     <div class="sheet-hdr">
       <div class="sheet-title" id="share-title">共有設定</div>
-      <div class="sheet-close" onclick="closeShare()">✕</div>
+      <div class="sheet-x" onclick="closeShare()">✕</div>
     </div>
-    <div class="section-lbl" id="lbl-shareFixed">✅ 必ず含まれる項目</div>
-    <div id="share-fixed-preview" style="background:var(--surface2);border-radius:var(--radius-sm);padding:12px;font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.8;white-space:pre-wrap"></div>
-    <div class="section-lbl" id="lbl-shareOpt">⚙️ 含めるか選べる項目</div>
+    <div class="sec-lbl" id="lbl-shareFixed">✅ 必ず含まれる項目</div>
+    <div id="share-fixed-preview" style="background:var(--surface2);border-radius:var(--rsm);padding:12px;font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.8;white-space:pre-wrap"></div>
+    <div class="sec-lbl" id="lbl-shareOpt">⚙️ 含めるか選べる項目</div>
     <div id="share-toggles"></div>
-    <button class="btn btn-share" id="lbl-btnShare" onclick="doShare()" style="margin-top:16px">📋 コピーしてLINEに貼る</button>
+    <div class="sec-lbl" id="lbl-sharePhoto" style="margin-top:14px">📷 送る写真を選ぶ</div>
+    <div id="share-photo-grid" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px"></div>
+    <button class="btn btn-share" onclick="doShare()" id="lbl-btnShare" style="margin-top:8px">📋 コピーしてLINEに貼る</button>
   </div>
 </div>
 
 <!-- LIGHTBOX -->
 <div id="lightbox" onclick="this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:700;align-items:center;justify-content:center;cursor:zoom-out">
-  <img id="lightbox-img" style="max-width:96vw;max-height:96vh;object-fit:contain;border-radius:8px">
+  <img id="lb-img" style="max-width:96vw;max-height:96vh;object-fit:contain;border-radius:8px">
 </div>
 
 <div id="toast"></div>
 
 <script>
-const CLOUDINARY_CLOUD = 'dnsp5zgoy';
-const CLOUDINARY_PRESET = 'property-scout';
-const STORAGE_KEY = 'prop_scout_v3';
+const CLOUD_NAME = 'dnsp5zgoy';
+const CLOUD_PRESET = 'property-scout';
+const STORE_KEY = 'prop_scout_v3';
 const SB_URL = 'https://byikapxfaqfxglphoapg.supabase.co';
 const SB_KEY = 'sb_publishable_MAHYtSIOOIwIkoAikBT8fQ_Iv-xxrPg';
-const SB_HEADERS = { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
-
-async function sbFetch(path, opts={}) {
-  const res = await fetch(SB_URL + path, { ...opts, headers: { ...SB_HEADERS, ...(opts.headers||{}) } });
-  if (!res.ok) { const e = await res.text(); throw new Error(e); }
-  return res.status === 204 ? null : res.json();
-}
-
-async function syncToCloud(entry) {
-  const row = {
-    type: entry.type, status: entry.status, prop_name: entry.propName,
-    phone: entry.phone, map_url: entry.mapUrl, address: entry.address||'',
-    lat: entry.lat||'', lng: entry.lng||'', rent: entry.rent, deposit: entry.deposit,
-    size: entry.size, cond: entry.cond, notes: entry.notes,
-    photos: entry.photos||[], appended_notes: entry.appendedNotes||[], ts: entry.ts,
-    local_id: String(entry.id)
-  };
-  if (entry.cloud_id) {
-    await sbFetch('/rest/v1/properties?id=eq.'+entry.cloud_id, { method:'PATCH', body: JSON.stringify(row) });
-  } else {
-    const result = await sbFetch('/rest/v1/properties?select=id', { method:'POST', headers:{'Prefer':'return=representation'}, body: JSON.stringify(row) });
-    return result && result[0] ? result[0].id : null;
-  }
-  return entry.cloud_id;
-}
-
-async function loadFromCloud() {
-  const rows = await sbFetch('/rest/v1/properties?order=created_at.desc&select=*');
-  if (!rows || !rows.length) return;
-  const list = getList();
-  rows.forEach(row => {
-    const existing = list.find(x => x.cloud_id === row.id || String(x.id) === String(row.local_id));
-    const entry = {
-      id: existing ? existing.id : Date.now() + Math.random(),
-      cloud_id: row.id,
-      ts: row.ts || row.created_at,
-      type: row.type, status: row.status||0, propName: row.prop_name,
-      phone: row.phone, mapUrl: row.map_url, address: row.address,
-      lat: row.lat, lng: row.lng, rent: row.rent, deposit: row.deposit,
-      size: row.size, cond: row.cond, notes: row.notes,
-      photos: row.photos||[], appendedNotes: row.appended_notes||[]
-    };
-    if (existing) { Object.assign(existing, entry); }
-    else { list.push(entry); }
-  });
-  saveList(list);
-}
-
-async function deleteFromCloud(cloud_id) {
-  if (!cloud_id) return;
-  await sbFetch('/rest/v1/properties?id=eq.'+cloud_id, { method:'DELETE' });
-}
-const STATUS_CLS = ['act0','act1','act2','act3','act4'];
+const SB_H = {'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
+const ST_CLS = ['a0','a1','a2','a3','a4'];
 
 const L = {
   ja:{
     logo:'物件<span style="color:var(--accent)">スカウト</span>',
-    langBtn:'🇹🇭 TH',countSfx:'件',
+    langBtn:'🇹🇭 TH',sfx:'件',
     tab0:'現地入力',tab1:'物件詳細',tab2:'保存リスト',
-    typeTitle:'物件の種類',tenant:'テナント',residence:'住居',
+    typeTitle:'物件の種類',tenant:'テナント',res:'住居',
     photoTitle:'写真',photoHint:'タップして撮影 または ライブラリから選択',
     phoneTitle:'電話番号',locTitle:'場所',
     locBtn:'現在地を自動取得',locGetting:'取得中...',locDone:'取得完了',locFail:'取得できませんでした',
@@ -354,34 +291,36 @@ const L = {
     btnSave:'💾 保存する',btnBack:'← 現地入力に戻る',
     emptyMsg:'まだ物件が保存されていません\n現地入力から追加してください',
     mDetail:'詳細',mEdit:'編集',
-    statusChange:'ステータス変更',appendNote:'メモを追記',appendPh:'追記メモを入力...',
+    stChange:'ステータス変更',appendNote:'メモを追記',appendPh:'追記メモを入力...',
     btnAppend:'📝 追記する',btnAddPhoto:'📷 写真を追加',
     btnShareOpen:'📤 顧客に共有',btnDelete:'🗑 この物件を削除',
     eName:'物件名',ePhone:'電話番号',eMap:'住所 / マップURL',
     eRent:'月額家賃（฿）',eDeposit:'敷金 / 保証金',eSize:'広さ（㎡）',eCond:'契約条件',eNotes:'メモ',
     btnSaveEdit:'💾 上書き保存',
     rows:['種類','日時','電話','場所','家賃','敷金','広さ','条件','メモ'],
-    ni:'未入力',perMonth:'/月',sqm:'㎡',openMap:'🗺 地図を開く',
-    processing:'アップロード中...',photoAdded:'枚追加しました',
+    ni:'未入力',pm:'/月',sqm:'㎡',openMap:'🗺 地図を開く',
+    uploading:'アップロード中...',photoAdded:'枚追加しました',
     fieldSaved:'現地情報を記録しました',saved:'保存しました！',deleted:'削除しました',
-    appended:'追記しました',statusChanged:'ステータスを変更しました',
+    appended:'追記しました',stChanged:'ステータスを変更しました',
     confirmDel:'この物件を削除しますか？',noNote:'メモを入力してください',
-    noAddr:'住所を入力してください',mapGenOk:'マップリンクを生成しました',
-    propDefault:'物件',locGot:'現在地を取得しました',uploadFail:'アップロード失敗',
+    noAddr:'住所を入力してください',mapOk:'マップリンクを生成しました',
+    propDef:'物件',locGot:'現在地を取得しました',uploadFail:'アップロード失敗',
     shareTitle:'共有設定',shareFixed:'✅ 必ず含まれる項目',shareOpt:'⚙️ 含めるか選べる項目',
-    btnShare:'📋 コピーしてLINEに貼る',copiedMsg:'コピーしました！LINEに貼り付けてください',
+    sharePhoto:'📷 送る写真を選ぶ',btnShare:'📋 コピーしてLINEに貼る',
+    copied:'コピーしました！LINEに貼り付けてください',
     sOptPhone:'📞 電話番号',sOptDeposit:'💰 敷金/保証金',sOptSize:'📐 広さ',
     sOptCond:'📋 契約条件',sOptNotes:'📝 メモ',
-    shareHeader:'━━━━━━━━━━━━━━━',shareFooter:'━━━━━━━━━━━━━━━',
-    shareIntro:'物件のご案内',
-    sRent:'💰 家賃：',sSizeL:'📐 広さ：',sDeposit:'💳 敷金：',sCond:'📋 条件：',
-    sPhone:'📞 電話：',sMap:'🗺 地図：',sPhoto:'📷 写真：',sNotes:'📝 備考：',sPhotoSfx:'枚あり',
+    sep:'━━━━━━━━━━━━━━━',intro:'物件のご案内',
+    sRent:'💰 家賃：',sSize:'📐 広さ：',sDep:'💳 敷金：',sCond:'📋 条件：',
+    sPhone:'📞 電話：',sMap:'🗺 地図：',sNotes:'📝 備考：',
+    staffMsg:'スタッフ共有URL:\n',staffSub:'\n\nこのURLを開くとリアルタイムで物件データを共有・編集できます。',
+    staffCopied:'スタッフ共有URLをコピーしました！LINEで送ってください',
   },
   th:{
     logo:'สำรวจ<span style="color:var(--accent)">อสังหาฯ</span>',
-    langBtn:'🇯🇵 JA',countSfx:'รายการ',
+    langBtn:'🇯🇵 JA',sfx:'รายการ',
     tab0:'บันทึกหน้างาน',tab1:'รายละเอียด',tab2:'รายการที่บันทึก',
-    typeTitle:'ประเภทอสังหาฯ',tenant:'พื้นที่เช่า',residence:'ที่พักอาศัย',
+    typeTitle:'ประเภทอสังหาฯ',tenant:'พื้นที่เช่า',res:'ที่พักอาศัย',
     photoTitle:'รูปภาพ',photoHint:'แตะเพื่อถ่ายภาพ หรือเลือกจากคลัง',
     phoneTitle:'เบอร์โทรศัพท์',locTitle:'สถานที่',
     locBtn:'รับตำแหน่งปัจจุบัน',locGetting:'กำลังรับตำแหน่ง...',locDone:'รับตำแหน่งสำเร็จ',locFail:'รับตำแหน่งไม่ได้',
@@ -395,36 +334,38 @@ const L = {
     btnSave:'💾 บันทึก',btnBack:'← กลับหน้าบันทึก',
     emptyMsg:'ยังไม่มีอสังหาฯ ที่บันทึกไว้\nเพิ่มจากหน้าบันทึกหน้างาน',
     mDetail:'รายละเอียด',mEdit:'แก้ไข',
-    statusChange:'เปลี่ยนสถานะ',appendNote:'เพิ่มบันทึก',appendPh:'พิมพ์บันทึกเพิ่มเติม...',
+    stChange:'เปลี่ยนสถานะ',appendNote:'เพิ่มบันทึก',appendPh:'พิมพ์บันทึกเพิ่มเติม...',
     btnAppend:'📝 เพิ่มบันทึก',btnAddPhoto:'📷 เพิ่มรูปภาพ',
     btnShareOpen:'📤 แชร์ให้ลูกค้า',btnDelete:'🗑 ลบอสังหาฯ นี้',
     eName:'ชื่ออสังหาฯ',ePhone:'เบอร์โทร',eMap:'ที่อยู่ / ลิงก์แผนที่',
     eRent:'ค่าเช่า/เดือน（฿）',eDeposit:'เงินประกัน',eSize:'ขนาด（ตร.ม.）',eCond:'เงื่อนไขสัญญา',eNotes:'บันทึก',
     btnSaveEdit:'💾 บันทึกทับ',
     rows:['ประเภท','วันที่','โทร','สถานที่','ค่าเช่า','ประกัน','ขนาด','เงื่อนไข','บันทึก'],
-    ni:'ไม่ได้ระบุ',perMonth:'/เดือน',sqm:'ตร.ม.',openMap:'🗺 เปิดแผนที่',
-    processing:'กำลังอัปโหลด...',photoAdded:'ภาพที่เพิ่ม',
+    ni:'ไม่ได้ระบุ',pm:'/เดือน',sqm:'ตร.ม.',openMap:'🗺 เปิดแผนที่',
+    uploading:'กำลังอัปโหลด...',photoAdded:'ภาพที่เพิ่ม',
     fieldSaved:'บันทึกข้อมูลหน้างานแล้ว',saved:'บันทึกแล้ว！',deleted:'ลบแล้ว',
-    appended:'เพิ่มบันทึกแล้ว',statusChanged:'เปลี่ยนสถานะแล้ว',
+    appended:'เพิ่มบันทึกแล้ว',stChanged:'เปลี่ยนสถานะแล้ว',
     confirmDel:'ต้องการลบอสังหาฯ นี้ใช่ไหม？',noNote:'กรุณาพิมพ์บันทึก',
-    noAddr:'กรุณาพิมพ์ที่อยู่',mapGenOk:'สร้างลิงก์แผนที่แล้ว',
-    propDefault:'อสังหาฯ',locGot:'รับตำแหน่งสำเร็จ',uploadFail:'อัปโหลดไม่สำเร็จ',
+    noAddr:'กรุณาพิมพ์ที่อยู่',mapOk:'สร้างลิงก์แผนที่แล้ว',
+    propDef:'อสังหาฯ',locGot:'รับตำแหน่งสำเร็จ',uploadFail:'อัปโหลดไม่สำเร็จ',
     shareTitle:'ตั้งค่าการแชร์',shareFixed:'✅ รายการที่จะแสดงเสมอ',shareOpt:'⚙️ เลือกว่าจะแสดงหรือไม่',
-    btnShare:'📋 คัดลอกเพื่อส่ง LINE',copiedMsg:'คัดลอกแล้ว！วางใน LINE ได้เลย',
+    sharePhoto:'📷 เลือกรูปที่จะส่ง',btnShare:'📋 คัดลอกเพื่อส่ง LINE',
+    copied:'คัดลอกแล้ว！วางใน LINE ได้เลย',
     sOptPhone:'📞 เบอร์โทร',sOptDeposit:'💰 เงินประกัน',sOptSize:'📐 ขนาด',
     sOptCond:'📋 เงื่อนไข',sOptNotes:'📝 บันทึก',
-    shareHeader:'━━━━━━━━━━━━━━━',shareFooter:'━━━━━━━━━━━━━━━',
-    shareIntro:'แนะนำอสังหาฯ',
-    sRent:'💰 ค่าเช่า：',sSizeL:'📐 ขนาด：',sDeposit:'💳 ประกัน：',sCond:'📋 เงื่อนไข：',
-    sPhone:'📞 โทร：',sMap:'🗺 แผนที่：',sPhoto:'📷 รูปภาพ：',sNotes:'📝 หมายเหตุ：',sPhotoSfx:'ภาพ',
+    sep:'━━━━━━━━━━━━━━━',intro:'แนะนำอสังหาฯ',
+    sRent:'💰 ค่าเช่า：',sSize:'📐 ขนาด：',sDep:'💳 ประกัน：',sCond:'📋 เงื่อนไข：',
+    sPhone:'📞 โทร：',sMap:'🗺 แผนที่：',sNotes:'📝 หมายเหตุ：',
+    staffMsg:'URL สำหรับทีมงาน:\n',staffSub:'\n\nเปิด URL นี้เพื่อดูและแก้ไขข้อมูลอสังหาฯ แบบ real-time',
+    staffCopied:'คัดลอก URL แล้ว！ส่งให้ทีมงานได้เลย',
   }
 };
 let lang = localStorage.getItem('scout_lang') || 'ja';
 const t = () => L[lang];
 
 let state = freshState();
-let currentId = null;
-let shareOpts = {};
+let curId = null;
+let sOpts = {};
 
 function freshState() {
   return {type:'テナント',status:0,photos:[],phone:'',mapUrl:'',address:'',lat:null,lng:null,rent:'',deposit:'',size:'',cond:'',notes:'',propName:'',ts:''};
@@ -439,7 +380,7 @@ function applyLang() {
   document.getElementById('tl2').textContent = l.tab2;
   document.getElementById('lbl-typeTitle').textContent = l.typeTitle;
   document.getElementById('lbl-tenant').textContent = l.tenant;
-  document.getElementById('lbl-residence').textContent = l.residence;
+  document.getElementById('lbl-res').textContent = l.res;
   document.getElementById('lbl-photoTitle').textContent = l.photoTitle;
   document.getElementById('lbl-photoHint').textContent = l.photoHint;
   document.getElementById('lbl-phoneTitle').textContent = l.phoneTitle;
@@ -447,7 +388,7 @@ function applyLang() {
   document.getElementById('loc-txt').textContent = l.locBtn;
   document.getElementById('lbl-or').textContent = l.or;
   document.getElementById('lbl-gen').textContent = l.gen;
-  document.getElementById('map-link-a').textContent = l.mapLink;
+  document.getElementById('map-a').textContent = l.mapLink;
   document.getElementById('lbl-btnNext').textContent = l.btnNext;
   document.getElementById('lbl-btnFieldOnly').textContent = l.btnFieldOnly;
   document.getElementById('lbl-propNameTitle').textContent = l.propNameTitle;
@@ -462,11 +403,11 @@ function applyLang() {
   document.getElementById('lbl-notes').textContent = l.notes;
   document.getElementById('lbl-btnSave').textContent = l.btnSave;
   document.getElementById('lbl-btnBack').textContent = l.btnBack;
-  document.getElementById('lbl-statusChange').textContent = l.statusChange;
+  document.getElementById('lbl-stChange').textContent = l.stChange;
   document.getElementById('lbl-appendNote').textContent = l.appendNote;
   document.getElementById('append-inp').placeholder = l.appendPh;
   document.getElementById('lbl-btnAppend').textContent = l.btnAppend;
-  document.getElementById('lbl-btnAddPhoto').childNodes[0].textContent = l.btnAddPhoto+' ';
+  document.getElementById('lbl-btnAddPhoto').childNodes[0].textContent = l.btnAddPhoto + ' ';
   document.getElementById('lbl-btnShareOpen').textContent = l.btnShareOpen;
   document.getElementById('lbl-btnDelete').textContent = l.btnDelete;
   document.getElementById('lbl-eName').textContent = l.eName;
@@ -483,14 +424,15 @@ function applyLang() {
   document.getElementById('share-title').textContent = l.shareTitle;
   document.getElementById('lbl-shareFixed').textContent = l.shareFixed;
   document.getElementById('lbl-shareOpt').textContent = l.shareOpt;
+  document.getElementById('lbl-sharePhoto').textContent = l.sharePhoto;
   document.getElementById('lbl-btnShare').textContent = l.btnShare;
-  renderStatusGrid('status-grid-main', state.status, setStatusMain);
+  renderStGrid('st-grid-main', state.status, setStMain);
   updateCount();
   if (!document.getElementById('page2').classList.contains('hidden')) renderList();
 }
 
 function toggleLang() {
-  lang = lang==='ja'?'th':'ja';
+  lang = lang === 'ja' ? 'th' : 'ja';
   localStorage.setItem('scout_lang', lang);
   applyLang();
 }
@@ -506,49 +448,51 @@ function goTab(idx) {
 function setType(v) {
   state.type = v;
   document.getElementById('btn-tenant').classList.toggle('active', v==='テナント');
-  document.getElementById('btn-residence').classList.toggle('active', v==='住居');
+  document.getElementById('btn-res').classList.toggle('active', v==='住居');
 }
 
-function renderStatusGrid(elId, current, cb) {
+function renderStGrid(elId, cur, cb) {
   document.getElementById(elId).innerHTML = t().s.map((s,i) =>
-    `<div class="st-btn${current===i?' '+STATUS_CLS[i]:''}" onclick="${cb.name}(${i})">${s}</div>`
+    '<div class="st-btn'+(cur===i?' '+ST_CLS[i]:'')+'" onclick="'+cb.name+'('+i+')">'+s+'</div>'
   ).join('');
 }
 
-function setStatusMain(i) { state.status=i; renderStatusGrid('status-grid-main',i,setStatusMain); }
+function setStMain(i) { state.status=i; renderStGrid('st-grid-main',i,setStMain); }
 
-function setStatusModal(i) {
-  const list=getList(), p=list.find(x=>x.id===currentId);
-  if(!p) return;
+function setStModal(i) {
+  const list=getList(), p=list.find(x=>x.id===curId);
+  if (!p) return;
   p.status=i; saveList(list);
-  renderStatusGrid('status-grid-modal',i,setStatusModal);
+  renderStGrid('st-grid-modal',i,setStModal);
   renderList();
-  toast(t().statusChanged,'ok');
-  syncToCloud(p).catch(()=>{});
+  toast(t().stChanged,'ok');
+  syncUp(p).catch(()=>{});
 }
 
-async function uploadToCloudinary(file) {
+async function uploadPhoto(file) {
   const fd = new FormData();
   fd.append('file', file);
-  fd.append('upload_preset', CLOUDINARY_PRESET);
-  const res = await fetch('https://api.cloudinary.com/v1_1/'+CLOUDINARY_CLOUD+'/image/upload',{method:'POST',body:fd});
+  fd.append('upload_preset', CLOUD_PRESET);
+  const res = await fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/image/upload',{method:'POST',body:fd});
   const data = await res.json();
+  if (!data.secure_url) throw new Error('Upload failed');
   return data.secure_url;
 }
 
 function addPhotos(input, thumbId) {
   const files = Array.from(input.files).slice(0,10);
   if (!files.length) return;
-  toast(t().processing,'');
+  toast(t().uploading,'');
   const thumbs = document.getElementById(thumbId);
   let done=0;
   files.forEach(async file => {
     try {
-      const url = await uploadToCloudinary(file);
+      const url = await uploadPhoto(file);
       state.photos.push(url);
       const img = document.createElement('img');
       img.src = url;
-      thumbs.appendChild(img); thumbs.style.display='flex';
+      thumbs.appendChild(img);
+      thumbs.style.display='flex';
       done++;
       if (done===files.length) toast(files.length+t().photoAdded,'ok');
     } catch(e) { toast(t().uploadFail,'err'); }
@@ -559,27 +503,27 @@ function getGPS() {
   const icon=document.getElementById('loc-icon'), txt=document.getElementById('loc-txt');
   txt.textContent=t().locGetting; icon.textContent='⏳';
   if (!navigator.geolocation){toast(t().locFail,'err');return;}
-  navigator.geolocation.getCurrentPosition(pos => {
+  navigator.geolocation.getCurrentPosition(pos=>{
     state.lat=pos.coords.latitude.toFixed(6);
     state.lng=pos.coords.longitude.toFixed(6);
     state.mapUrl='https://www.google.com/maps?q='+state.lat+','+state.lng;
     icon.textContent='✅'; txt.textContent=t().locDone+' ('+state.lat+', '+state.lng+')';
     document.getElementById('loc-btn').classList.add('got');
-    document.getElementById('map-result').style.display='block';
-    document.getElementById('map-link-a').href=state.mapUrl;
+    document.getElementById('map-res').style.display='block';
+    document.getElementById('map-a').href=state.mapUrl;
     toast(t().locGot,'ok');
-  }, ()=>{ icon.textContent='❌'; txt.textContent=t().locFail; toast(t().locFail,'err'); },{enableHighAccuracy:true,timeout:10000});
+  },()=>{icon.textContent='❌';txt.textContent=t().locFail;toast(t().locFail,'err');},{enableHighAccuracy:true,timeout:10000});
 }
 
-function genMapFromAddr() {
+function genMap() {
   const addr=document.getElementById('f-addr').value.trim();
   if (!addr){toast(t().noAddr,'err');return;}
   state.address=addr;
   state.mapUrl='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr);
-  state.lat=null; state.lng=null;
-  document.getElementById('map-result').style.display='block';
-  document.getElementById('map-link-a').href=state.mapUrl;
-  toast(t().mapGenOk,'ok');
+  state.lat=null;state.lng=null;
+  document.getElementById('map-res').style.display='block';
+  document.getElementById('map-a').href=state.mapUrl;
+  toast(t().mapOk,'ok');
 }
 
 function goToDetail() {
@@ -607,73 +551,71 @@ function saveEntry() {
   const entry={
     id:Date.now(),
     ts:state.ts||new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'}),
-    type:state.type, status:state.status,
-    propName:state.propName||t().propDefault+' '+(list.length+1),
-    phone:state.phone, mapUrl:state.mapUrl, address:state.address,
-    lat:state.lat, lng:state.lng,
-    rent:state.rent, deposit:state.deposit, size:state.size,
-    cond:state.cond, notes:state.notes,
-    photos:state.photos, appendedNotes:[]
+    type:state.type,status:state.status,
+    propName:state.propName||t().propDef+' '+(list.length+1),
+    phone:state.phone,mapUrl:state.mapUrl,address:state.address,
+    lat:state.lat,lng:state.lng,rent:state.rent,deposit:state.deposit,
+    size:state.size,cond:state.cond,notes:state.notes,
+    photos:state.photos,appendedNotes:[]
   };
-  list.push(entry); saveList(list); updateCount();
+  list.push(entry);saveList(list);updateCount();
   toast(t().saved,'ok');
   resetForm();
   setTimeout(()=>goTab(2),800);
-  syncToCloud(entry).then(cloud_id => {
-    if (cloud_id) {
-      const l = getList();
-      const p = l.find(x => x.id === entry.id);
-      if (p) { p.cloud_id = cloud_id; saveList(l); }
-    }
+  syncUp(entry).then(cid=>{
+    if(cid){const l=getList();const p=l.find(x=>x.id===entry.id);if(p){p.cloud_id=cid;saveList(l);}}
   }).catch(()=>{});
 }
 
-function getList(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||[];}catch(e){return[];}}
-function saveList(list){localStorage.setItem(STORAGE_KEY,JSON.stringify(list));}
-function updateCount(){document.getElementById('el-count').textContent=getList().length+t().countSfx;}
+function getList(){try{return JSON.parse(localStorage.getItem(STORE_KEY))||[];}catch(e){return[];}}
+function saveList(list){localStorage.setItem(STORE_KEY,JSON.stringify(list));}
+function updateCount(){document.getElementById('el-count').textContent=getList().length+t().sfx;}
 
 function renderList() {
-  const list=getList(), wrap=document.getElementById('list-wrap'), l=t();
-  if (!list.length){
-    wrap.innerHTML='<div class="empty-state"><div class="e-icon">🏠</div>'+l.emptyMsg.replace('\n','<br>')+'</div>';
+  const list=getList(),wrap=document.getElementById('list-wrap'),l=t();
+  if(!list.length){
+    wrap.innerHTML='<div class="empty-st"><div style="font-size:40px;margin-bottom:8px">🏠</div>'+l.emptyMsg.replace('\n','<br>')+'</div>';
     return;
   }
   wrap.innerHTML=list.slice().reverse().map(p=>{
     const si=typeof p.status==='number'?p.status:0;
-    return `<div class="prop-card" onclick="openModal(${p.id})">
-      <div class="prop-card-top"><div class="prop-card-name">${p.propName}</div><span class="badge b${si}">${l.s[si]}</span></div>
-      <div class="prop-meta">
-        ${p.type}　${p.rent?'฿'+Number(p.rent).toLocaleString()+l.perMonth+'　':''}${p.size?p.size+l.sqm+'　':''}${p.phone?'📞'+p.phone+'　':''}${p.mapUrl?'<a href="'+p.mapUrl+'" target="_blank" onclick="event.stopPropagation()">🗺</a>':''}
-        <br><span style="font-size:11px">${p.ts}</span>
-      </div>
-    </div>`;
+    return '<div class="prop-card" onclick="openModal('+p.id+')">'
+      +'<div class="prop-card-top"><div class="prop-card-name">'+p.propName+'</div>'
+      +'<span class="badge b'+si+'">'+l.s[si]+'</span></div>'
+      +'<div class="prop-meta">'+p.type+'&nbsp;&nbsp;'
+      +(p.rent?'฿'+Number(p.rent).toLocaleString()+l.pm+'&nbsp;&nbsp;':'')
+      +(p.size?p.size+l.sqm+'&nbsp;&nbsp;':'')
+      +(p.phone?'📞'+p.phone+'&nbsp;&nbsp;':'')
+      +(p.mapUrl?'<a href="'+p.mapUrl+'" target="_blank" onclick="event.stopPropagation()">🗺</a>':'')
+      +'<br><span style="font-size:11px">'+p.ts+'</span></div></div>';
   }).join('');
 }
 
 function openModal(id) {
-  currentId=id;
+  curId=id;
   const p=getList().find(x=>x.id===id);
-  if (!p) return;
+  if(!p) return;
   const l=t();
   document.getElementById('modal-title').textContent=p.propName;
-  renderStatusGrid('status-grid-modal',typeof p.status==='number'?p.status:0,setStatusModal);
+  renderStGrid('st-grid-modal',typeof p.status==='number'?p.status:0,setStModal);
   const ni=l.ni;
   const rows=[
     [l.rows[0],p.type],[l.rows[1],p.ts],[l.rows[2],p.phone||ni],
     [l.rows[3],p.mapUrl?'<a href="'+p.mapUrl+'" target="_blank">'+l.openMap+'</a>':ni],
-    [l.rows[4],p.rent?'฿'+Number(p.rent).toLocaleString()+l.perMonth:ni],
+    [l.rows[4],p.rent?'฿'+Number(p.rent).toLocaleString()+l.pm:ni],
     [l.rows[5],p.deposit||ni],[l.rows[6],p.size?p.size+l.sqm:ni],
     [l.rows[7],p.cond||ni],[l.rows[8],p.notes||ni],
   ];
-  if (p.appendedNotes&&p.appendedNotes.length)
+  if(p.appendedNotes&&p.appendedNotes.length)
     p.appendedNotes.forEach((n,i)=>rows.push(['+ '+(i+1),n.text+' ('+n.ts+')']));
   document.getElementById('modal-rows').innerHTML=rows.map(([lb,v])=>
-    '<div class="detail-row"><span class="detail-label">'+lb+'</span><span class="detail-val">'+v+'</span></div>'
+    '<div class="d-row"><span class="d-lbl">'+lb+'</span><span class="d-val">'+v+'</span></div>'
   ).join('');
-  const mp=document.getElementById('modal-photo-area');
+  const mp=document.getElementById('modal-photos');
   mp.innerHTML=p.photos&&p.photos.length
-    ?'<div style="display:flex;flex-wrap:wrap;gap:8px">'+p.photos.map(src=>'<img src="'+src+'" onclick="openLightbox(this.src)" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);cursor:zoom-in">').join('')+'</div>'
-    :'';
+    ?'<div style="display:flex;flex-wrap:wrap;gap:8px">'+p.photos.map(src=>
+      '<img src="'+src+'" onclick="openLB(this.src)" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);cursor:zoom-in">'
+    ).join('')+'</div>':'';
   document.getElementById('e-name').value=p.propName||'';
   document.getElementById('e-phone').value=p.phone||'';
   document.getElementById('e-map').value=p.address||p.mapUrl||'';
@@ -683,11 +625,11 @@ function openModal(id) {
   document.getElementById('e-cond').value=p.cond||'';
   document.getElementById('e-notes').value=p.notes||'';
   document.getElementById('append-inp').value='';
-  goModalTab(0);
+  goMTab(0);
   document.getElementById('modal').classList.add('open');
 }
 
-function goModalTab(idx) {
+function goMTab(idx) {
   document.getElementById('mtab0').classList.toggle('active',idx===0);
   document.getElementById('mtab1').classList.toggle('active',idx===1);
   document.getElementById('modal-view').style.display=idx===0?'block':'none';
@@ -696,171 +638,188 @@ function goModalTab(idx) {
 
 function doAppendNote() {
   const txt=document.getElementById('append-inp').value.trim();
-  if (!txt){toast(t().noNote,'err');return;}
-  const list=getList(), p=list.find(x=>x.id===currentId);
-  if (!p) return;
-  if (!p.appendedNotes) p.appendedNotes=[];
+  if(!txt){toast(t().noNote,'err');return;}
+  const list=getList(),p=list.find(x=>x.id===curId);
+  if(!p) return;
+  if(!p.appendedNotes) p.appendedNotes=[];
   p.appendedNotes.push({text:txt,ts:new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'})});
-  saveList(list); toast(t().appended,'ok'); openModal(currentId);
-  syncToCloud(p).catch(()=>{});
+  saveList(list);toast(t().appended,'ok');openModal(curId);
+  syncUp(p).catch(()=>{});
 }
 
 function doAppendPhoto(input) {
   const files=Array.from(input.files).slice(0,10);
-  if (!files.length) return;
-  const list=getList(), p=list.find(x=>x.id===currentId);
-  if (!p) return;
-  if (!p.photos) p.photos=[];
-  toast(t().processing,'');
+  if(!files.length) return;
+  const list=getList(),p=list.find(x=>x.id===curId);
+  if(!p) return;
+  if(!p.photos) p.photos=[];
+  toast(t().uploading,'');
   let done=0;
   files.forEach(async file=>{
-    try {
-      const url=await uploadToCloudinary(file);
-      p.photos.push(url); done++;
-      if (done===files.length){saveList(list);toast(files.length+t().photoAdded,'ok');openModal(currentId);syncToCloud(p).catch(()=>{});}
-    } catch(e){toast(t().uploadFail,'err');}
+    try{
+      const url=await uploadPhoto(file);
+      p.photos.push(url);done++;
+      if(done===files.length){saveList(list);toast(files.length+t().photoAdded,'ok');openModal(curId);syncUp(p).catch(()=>{});}
+    }catch(e){toast(t().uploadFail,'err');}
   });
 }
 
 function doSaveEdit() {
-  const list=getList(), p=list.find(x=>x.id===currentId);
-  if (!p) return;
+  const list=getList(),p=list.find(x=>x.id===curId);
+  if(!p) return;
   p.propName=document.getElementById('e-name').value||p.propName;
   p.phone=document.getElementById('e-phone').value;
   const rawMap=document.getElementById('e-map').value.trim();
-  if (!rawMap){p.mapUrl='';p.address='';}
-  else if (rawMap.startsWith('http')){p.mapUrl=rawMap;p.address='';}
-  else {p.address=rawMap;p.mapUrl='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(rawMap);}
+  if(!rawMap){p.mapUrl='';p.address='';}
+  else if(rawMap.startsWith('http')){p.mapUrl=rawMap;p.address='';}
+  else{p.address=rawMap;p.mapUrl='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(rawMap);}
   p.rent=document.getElementById('e-rent').value;
   p.deposit=document.getElementById('e-deposit').value;
   p.size=document.getElementById('e-size').value;
   p.cond=document.getElementById('e-cond').value;
   p.notes=document.getElementById('e-notes').value;
-  saveList(list); renderList(); toast(t().saved,'ok');
-  openModal(currentId); goModalTab(0);
-  syncToCloud(p).catch(()=>{});
+  saveList(list);renderList();toast(t().saved,'ok');
+  openModal(curId);goMTab(0);
+  syncUp(p).catch(()=>{});
 }
 
 function doDelete() {
-  if (!confirm(t().confirmDel)) return;
-  const delEntry = getList().find(x=>x.id===currentId);
-  saveList(getList().filter(x=>x.id!==currentId));
-  updateCount(); renderList(); closeModal(); toast(t().deleted,'ok');
-  if (delEntry && delEntry.cloud_id) deleteFromCloud(delEntry.cloud_id).catch(()=>{});
+  if(!confirm(t().confirmDel)) return;
+  const p=getList().find(x=>x.id===curId);
+  saveList(getList().filter(x=>x.id!==curId));
+  updateCount();renderList();closeModal();toast(t().deleted,'ok');
+  if(p&&p.cloud_id) sbFetch('/rest/v1/properties?id=eq.'+p.cloud_id,{method:'DELETE'}).catch(()=>{});
 }
 
-function closeModal(){document.getElementById('modal').classList.remove('open');currentId=null;}
-function modalBgClick(e){if(e.target===document.getElementById('modal'))closeModal();}
+function closeModal(){document.getElementById('modal').classList.remove('open');curId=null;}
+function modalBg(e){if(e.target===document.getElementById('modal'))closeModal();}
 
-// SHARE
 function openShare() {
-  const p=getList().find(x=>x.id===currentId);
-  if (!p) return;
+  const p=getList().find(x=>x.id===curId);
+  if(!p) return;
   const l=t();
-  const typeLabel=p.type==='テナント'?'🏪 '+l.tenant:'🏠 '+l.residence;
-  const fixed=[
-    typeLabel, p.propName,
-    p.rent?l.sRent+'฿'+Number(p.rent).toLocaleString()+l.perMonth:null,
+  const typeLabel=p.type==='テナント'?'🏪 '+l.tenant:'🏠 '+l.res;
+  document.getElementById('share-fixed-preview').textContent=[
+    typeLabel,p.propName,
+    p.rent?l.sRent+'฿'+Number(p.rent).toLocaleString()+l.pm:null,
     p.mapUrl?l.sMap+p.mapUrl:null,
   ].filter(Boolean).join('\n');
-  document.getElementById('share-fixed-preview').textContent=fixed;
 
   const wrap=document.getElementById('share-toggles');
   wrap.innerHTML='';
-
-  // テキスト項目
-  const opts=[
+  [
     {key:'phone',label:l.sOptPhone,val:p.phone},
     {key:'deposit',label:l.sOptDeposit,val:p.deposit},
     {key:'size',label:l.sOptSize,val:p.size?p.size+l.sqm:null},
     {key:'cond',label:l.sOptCond,val:p.cond},
     {key:'notes',label:l.sOptNotes,val:p.notes},
-  ];
-  opts.forEach(opt=>{
-    if (!opt.val) return;
-    const checked=shareOpts[opt.key]!==false;
+  ].forEach(opt=>{
+    if(!opt.val) return;
+    const checked=sOpts[opt.key]!==false;
     const row=document.createElement('div');
-    row.className='toggle-row';
-    row.innerHTML=`<span style="font-size:14px;color:var(--text)">${opt.label}</span>
-      <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
-        <span class="toggle-val">${opt.val}</span>
-        <input type="checkbox" data-key="${opt.key}" ${checked?'checked':''} onchange="shareOpts[this.dataset.key]=this.checked" style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent)">
-      </label>`;
+    row.className='tog-row';
+    row.innerHTML='<span style="font-size:14px;color:var(--text)">'+opt.label+'</span>'
+      +'<label style="display:flex;align-items:center;gap:6px;cursor:pointer">'
+      +'<span class="tog-val">'+opt.val+'</span>'
+      +'<input type="checkbox" data-key="'+opt.key+'" '+(checked?'checked':'')
+      +' onchange="sOpts[this.dataset.key]=this.checked" style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent)">'
+      +'</label>';
     wrap.appendChild(row);
   });
 
-  // 写真を1枚ずつ選択
-  if (p.photos && p.photos.length) {
-    const photoHdr = document.createElement('div');
-    photoHdr.style.cssText='font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;margin:14px 0 8px';
-    photoHdr.textContent = l.photoTitle;
-    wrap.appendChild(photoHdr);
-    const grid = document.createElement('div');
-    grid.style.cssText='display:flex;flex-wrap:wrap;gap:8px';
+  const pgrid=document.getElementById('share-photo-grid');
+  pgrid.innerHTML='';
+  if(p.photos&&p.photos.length){
     p.photos.forEach((url,i)=>{
-      const checked = shareOpts['photo_'+i] !== false;
-      const box = document.createElement('label');
-      box.style.cssText='position:relative;cursor:pointer;display:block';
-      box.innerHTML=`<img src="${url}" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:2px solid ${checked?'var(--accent)':'var(--border)'};" id="photo-thumb-${i}">
-        <input type="checkbox" data-key="photo_${i}" ${checked?'checked':''} onchange="shareOpts[this.dataset.key]=this.checked;document.getElementById('photo-thumb-${i}').style.borderColor=this.checked?'var(--accent)':'var(--border)'" style="position:absolute;top:4px;right:4px;width:16px;height:16px;accent-color:var(--accent)">`;
-      grid.appendChild(box);
+      const checked=sOpts['ph_'+i]!==false;
+      const lbl=document.createElement('label');
+      lbl.style.cssText='position:relative;cursor:pointer;display:inline-block';
+      const img=document.createElement('img');
+      img.src=url;
+      img.id='sph-'+i;
+      img.style.cssText='width:72px;height:72px;object-fit:cover;border-radius:8px;border:2px solid '+(checked?'var(--accent)':'var(--border)');
+      const cb=document.createElement('input');
+      cb.type='checkbox';
+      cb.dataset.key='ph_'+i;
+      cb.checked=checked;
+      cb.style.cssText='position:absolute;top:4px;right:4px;width:16px;height:16px;accent-color:var(--accent)';
+      cb.onchange=function(){
+        sOpts[this.dataset.key]=this.checked;
+        document.getElementById('sph-'+i).style.borderColor=this.checked?'var(--accent)':'var(--border)';
+      };
+      lbl.appendChild(img);lbl.appendChild(cb);
+      pgrid.appendChild(lbl);
     });
-    wrap.appendChild(grid);
   }
-
   document.getElementById('share-sheet').classList.add('open');
 }
 
 function doShare() {
-  const p=getList().find(x=>x.id===currentId);
-  if (!p) return;
+  const p=getList().find(x=>x.id===curId);
+  if(!p) return;
   const l=t();
-  const typeLabel=p.type==='テナント'?'🏪 '+l.tenant:'🏠 '+l.residence;
-  // 選択された写真URLを収集
-  const selectedPhotos = p.photos ? p.photos.filter((_,i)=>shareOpts['photo_'+i]!==false) : [];
-
+  const typeLabel=p.type==='テナント'?'🏪 '+l.tenant:'🏠 '+l.res;
+  const selPhotos=p.photos?p.photos.filter((_,i)=>sOpts['ph_'+i]!==false):[];
   const lines=[
-    l.shareHeader,
-    typeLabel+' '+l.shareIntro,
-    l.shareHeader,
+    l.sep,typeLabel+' '+l.intro,l.sep,
     p.propName,
-    p.rent?l.sRent+'฿'+Number(p.rent).toLocaleString()+l.perMonth:null,
-    shareOpts.size!==false&&p.size?l.sSizeL+p.size+l.sqm:null,
-    shareOpts.deposit!==false&&p.deposit?l.sDeposit+p.deposit:null,
-    shareOpts.cond!==false&&p.cond?l.sCond+p.cond:null,
-    shareOpts.phone!==false&&p.phone?l.sPhone+p.phone:null,
+    p.rent?l.sRent+'฿'+Number(p.rent).toLocaleString()+l.pm:null,
+    sOpts.size!==false&&p.size?l.sSize+p.size+l.sqm:null,
+    sOpts.deposit!==false&&p.deposit?l.sDep+p.deposit:null,
+    sOpts.cond!==false&&p.cond?l.sCond+p.cond:null,
+    sOpts.phone!==false&&p.phone?l.sPhone+p.phone:null,
     p.mapUrl?l.sMap+p.mapUrl:null,
-    shareOpts.notes!==false&&p.notes?l.sNotes+p.notes:null,
-    selectedPhotos.length ? l.shareFooter+'
-📷 写真リンク：' : null,
-    ...selectedPhotos.map((url,i)=>'写真'+(i+1)+'：'+url),
-    l.shareFooter,
+    sOpts.notes!==false&&p.notes?l.sNotes+p.notes:null,
+    selPhotos.length?l.sep:null,
+    selPhotos.length?'📷 写真リンク：':null,
+    ...selPhotos.map((url,i)=>'写真'+(i+1)+'：'+url),
+    l.sep,
   ].filter(Boolean).join('\n');
-  const fallbackCopy = txt => {
-    const ta = document.createElement('textarea');
-    ta.value = txt;
-    ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px';
-    document.body.appendChild(ta);
-    ta.focus(); ta.select();
-    try { document.execCommand('copy'); } catch(e) {}
-    document.body.removeChild(ta);
-    closeShare(); toast(l.copiedMsg,'ok');
+
+  const copy=txt=>{
+    if(navigator.clipboard&&window.isSecureContext){
+      navigator.clipboard.writeText(txt)
+        .then(()=>{closeShare();toast(l.copied,'ok');})
+        .catch(()=>fallback(txt));
+    } else { fallback(txt); }
   };
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(lines)
-      .then(()=>{ closeShare(); toast(l.copiedMsg,'ok'); })
-      .catch(()=>fallbackCopy(lines));
-  } else {
-    fallbackCopy(lines);
-  }
+  const fallback=txt=>{
+    const ta=document.createElement('textarea');
+    ta.value=txt;ta.style.cssText='position:fixed;top:-9999px;left:-9999px';
+    document.body.appendChild(ta);ta.focus();ta.select();
+    try{document.execCommand('copy');}catch(e){}
+    document.body.removeChild(ta);
+    closeShare();toast(l.copied,'ok');
+  };
+  copy(lines);
 }
 
 function closeShare(){document.getElementById('share-sheet').classList.remove('open');}
-function shareBgClick(e){if(e.target===document.getElementById('share-sheet'))closeShare();}
+function shareBg(e){if(e.target===document.getElementById('share-sheet'))closeShare();}
 
-function openLightbox(src){
-  document.getElementById('lightbox-img').src=src;
+function openLB(src){
+  document.getElementById('lb-img').src=src;
   document.getElementById('lightbox').style.display='flex';
+}
+
+function copyStaffUrl() {
+  const url=window.location.href.split('?')[0];
+  const l=t();
+  const msg=l.staffMsg+url+l.staffSub;
+  const copy=txt=>{
+    if(navigator.clipboard&&window.isSecureContext){
+      navigator.clipboard.writeText(txt).then(()=>toast(l.staffCopied,'ok')).catch(()=>fallback2(txt));
+    } else { fallback2(txt); }
+  };
+  const fallback2=txt=>{
+    const ta=document.createElement('textarea');
+    ta.value=txt;ta.style.cssText='position:fixed;top:-9999px;left:-9999px';
+    document.body.appendChild(ta);ta.focus();ta.select();
+    try{document.execCommand('copy');}catch(e){}
+    document.body.removeChild(ta);
+    toast(t().staffCopied,'ok');
+  };
+  copy(msg);
 }
 
 function resetForm() {
@@ -873,8 +832,8 @@ function resetForm() {
   document.getElementById('loc-btn').classList.remove('got');
   document.getElementById('loc-icon').textContent='📍';
   document.getElementById('loc-txt').textContent=t().locBtn;
-  document.getElementById('map-result').style.display='none';
-  renderStatusGrid('status-grid-main',0,setStatusMain);
+  document.getElementById('map-res').style.display='none';
+  renderStGrid('st-grid-main',0,setStMain);
   setType('テナント');
 }
 
@@ -884,38 +843,55 @@ function toast(msg,type){
   clearTimeout(el._t);el._t=setTimeout(()=>{el.className='';},2800);
 }
 
-renderStatusGrid('status-grid-main',0,setStatusMain);
-applyLang();
+async function sbFetch(path,opts={}) {
+  const res=await fetch(SB_URL+path,{...opts,headers:{...SB_H,...(opts.headers||{})}});
+  if(!res.ok){const e=await res.text();throw new Error(e);}
+  return res.status===204?null:res.json();
+}
 
-function copyStaffUrl() {
-  const url = window.location.href.split('?')[0];
-  const msg = lang==='ja'
-    ? 'スタッフ共有URL:
-'+url+'
-
-このURLを開くとリアルタイムで物件データを共有・編集できます。'
-    : 'URL สำหรับทีมงาน:
-'+url+'
-
-เปิด URL นี้เพื่อดูและแก้ไขข้อมูลอสังหาฯ แบบ real-time';
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(msg).then(()=>toast(lang==='ja'?'スタッフ共有URLをコピーしました！LINEで送ってください':'คัดลอก URL แล้ว！ส่งให้ทีมงานได้เลย','ok'));
+async function syncUp(entry) {
+  const row={
+    type:entry.type,status:entry.status,prop_name:entry.propName,
+    phone:entry.phone,map_url:entry.mapUrl,address:entry.address||'',
+    lat:entry.lat||'',lng:entry.lng||'',rent:entry.rent,deposit:entry.deposit,
+    size:entry.size,cond:entry.cond,notes:entry.notes,
+    photos:entry.photos||[],appended_notes:entry.appendedNotes||[],
+    ts:entry.ts,local_id:String(entry.id)
+  };
+  if(entry.cloud_id){
+    await sbFetch('/rest/v1/properties?id=eq.'+entry.cloud_id,{method:'PATCH',body:JSON.stringify(row)});
+    return entry.cloud_id;
   } else {
-    const ta=document.createElement('textarea');
-    ta.value=msg;ta.style.cssText='position:fixed;top:-9999px';
-    document.body.appendChild(ta);ta.select();
-    document.execCommand('copy');document.body.removeChild(ta);
-    toast(lang==='ja'?'スタッフ共有URLをコピーしました！':'คัดลอก URL แล้ว！','ok');
+    const result=await sbFetch('/rest/v1/properties?select=id',{method:'POST',headers:{'Prefer':'return=representation'},body:JSON.stringify(row)});
+    return result&&result[0]?result[0].id:null;
   }
 }
 
-// 起動時にクラウドからデータを読み込む
-loadFromCloud().then(()=>{ renderList(); updateCount(); }).catch(()=>{});
+async function syncDown() {
+  const rows=await sbFetch('/rest/v1/properties?order=created_at.desc&select=*');
+  if(!rows||!rows.length) return;
+  const list=getList();
+  rows.forEach(row=>{
+    const existing=list.find(x=>x.cloud_id===row.id||String(x.id)===String(row.local_id));
+    const entry={
+      id:existing?existing.id:Date.now()+Math.random(),
+      cloud_id:row.id,ts:row.ts||row.created_at,
+      type:row.type,status:row.status||0,propName:row.prop_name,
+      phone:row.phone,mapUrl:row.map_url,address:row.address,
+      lat:row.lat,lng:row.lng,rent:row.rent,deposit:row.deposit,
+      size:row.size,cond:row.cond,notes:row.notes,
+      photos:row.photos||[],appendedNotes:row.appended_notes||[]
+    };
+    if(existing){Object.assign(existing,entry);}
+    else{list.push(entry);}
+  });
+  saveList(list);
+}
 
-// 30秒ごとに自動同期
-setInterval(()=>{
-  loadFromCloud().then(()=>{ renderList(); updateCount(); }).catch(()=>{});
-}, 30000);
+renderStGrid('st-grid-main',0,setStMain);
+applyLang();
+syncDown().then(()=>{renderList();updateCount();}).catch(()=>{});
+setInterval(()=>{syncDown().then(()=>{renderList();updateCount();}).catch(()=>{});},30000);
 </script>
 </body>
 </html>
