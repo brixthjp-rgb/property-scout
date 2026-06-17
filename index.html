@@ -795,6 +795,15 @@ function renderList() {
     ].filter(Boolean).join('　');
     const mapLink = p.mapUrl ? '<a href="'+p.mapUrl+'" target="_blank" onclick="event.stopPropagation()">🗺</a>' : '';
     const folderTag = p.folder ? '<span style="font-size:11px;color:var(--accent);background:rgba(108,99,255,.12);padding:1px 8px;border-radius:10px;margin-left:6px">📁'+p.folder+'</span>' : '';
+    // 写真サムネイル（最大2枚）
+    let photoThumbs = '';
+    if (p.photos && p.photos.length) {
+      const thumbs = p.photos.slice(0,2).map(src=>
+        '<img src="'+src+'" style="width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--border)">'
+      ).join('');
+      const more = p.photos.length>2 ? '<div style="width:64px;height:64px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted)">+'+(p.photos.length-2)+'</div>' : '';
+      photoThumbs = '<div style="display:flex;gap:6px;margin-top:8px">'+thumbs+more+'</div>';
+    }
     return '<div class="prop-card" data-cid="'+p.cloud_id+'" style="display:flex;align-items:flex-start;gap:10px">'
       +'<div class="drag-handle" data-handle="'+p.cloud_id+'" style="flex-shrink:0;padding:4px 2px;cursor:grab;color:var(--muted);font-size:18px;touch-action:none;user-select:none;-webkit-user-select:none">⋮⋮</div>'
       +'<div style="flex:1;min-width:0">'
@@ -804,7 +813,9 @@ function renderList() {
       +'</div>'
       +'<div class="prop-meta">'+meta+(mapLink?'　'+mapLink:'')
       +'<br><span style="font-size:11px">'+p.ts+'</span>'
-      +'</div></div></div>';
+      +'</div>'
+      +photoThumbs
+      +'</div></div>';
   }).join('');
   wrap.innerHTML = html;
   wrap.onclick = function(e) {
