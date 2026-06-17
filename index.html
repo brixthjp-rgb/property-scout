@@ -200,9 +200,11 @@ textarea.inp{resize:none;line-height:1.5}
 
     <!-- PAGE 3 -->
     <div class="page hidden" id="page2">
-      <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
-        <button onclick="exportCSV()" style="padding:8px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:12px;font-weight:500;cursor:pointer;-webkit-appearance:none">📥 CSVエクスポート</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px">
+        <button onclick="openFolderMgr()" style="padding:8px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:12px;font-weight:500;cursor:pointer;-webkit-appearance:none;white-space:nowrap" id="lbl-folderMgr">📁 フォルダ管理</button>
+        <button onclick="exportCSV()" style="padding:8px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:12px;font-weight:500;cursor:pointer;-webkit-appearance:none;white-space:nowrap">📥 CSV</button>
       </div>
+      <div id="folder-bar" style="display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:4px;-webkit-overflow-scrolling:touch"></div>
       <div id="list-wrap"></div>
     </div>
   </div>
@@ -247,6 +249,7 @@ textarea.inp{resize:none;line-height:1.5}
       <div class="field"><label id="lbl-eSize">広さ（㎡）</label><input class="inp" type="number" id="e-size"></div>
       <div class="field"><label id="lbl-eCond">契約条件</label><input class="inp" id="e-cond"></div>
       <div class="field"><label id="lbl-eNotes">メモ</label><textarea class="inp" id="e-notes" rows="4"></textarea></div>
+      <div class="field"><label id="lbl-eFolder">フォルダ</label><select class="inp" id="e-folder"></select></div>
       <button class="btn btn-p" onclick="doSaveEdit()" id="lbl-btnSaveEdit">💾 上書き保存</button>
     </div>
   </div>
@@ -266,6 +269,21 @@ textarea.inp{resize:none;line-height:1.5}
     <div class="sec-lbl" style="margin-top:14px" id="lbl-sharePhoto">📷 送る写真を選ぶ</div>
     <div id="share-photo-grid" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px"></div>
     <button class="btn btn-share" onclick="doShare()" id="lbl-btnShare" style="margin-top:8px">📋 コピーしてLINEに貼る</button>
+  </div>
+</div>
+
+<!-- FOLDER MANAGER -->
+<div class="overlay" id="folder-mgr" style="z-index:450" onclick="folderBg(event)">
+  <div class="sheet">
+    <div class="sheet-hdr">
+      <div class="sheet-title" id="lbl-folderTitle">フォルダ管理</div>
+      <div class="sheet-x" onclick="closeFolderMgr()">✕</div>
+    </div>
+    <div class="addr-row" style="margin-bottom:16px">
+      <input class="addr-inp" id="new-folder-name" placeholder="新しいフォルダ名">
+      <button class="addr-gen" onclick="addFolder()" id="lbl-addFolder">＋ 追加</button>
+    </div>
+    <div id="folder-list"></div>
   </div>
 </div>
 
@@ -371,6 +389,12 @@ const L = {
     sPhone:'📞 電話：',sMap:'🗺 地図：',sNotes:'📝 備考：',
     staffMsg:'スタッフ共有URL:\n',staffSub:'\n\nこのURLを開くと全員が同じデータをリアルタイムで共有・編集できます。',
     staffCopied:'URLをコピーしました！LINEでスタッフに送ってください',
+    allFolders:'すべて',noFolder:'フォルダなし',folderMgr:'📁 フォルダ管理',
+    folderTitle:'フォルダ管理',addFolderBtn:'＋ 追加',noFolderYet:'フォルダがありません',
+    noFolderName:'フォルダ名を入力してください',folderExists:'同じ名前のフォルダがあります',
+    folderAdded:'フォルダを追加しました',renamePrompt:'新しいフォルダ名:',
+    confirmDelFolder:'フォルダ「{}」を削除しますか？（中の物件はフォルダなしになります）',
+    eFolder:'フォルダ',reordered:'並び順を保存しました',
   },
   th:{
     logo:'สำรวจ<span style="color:var(--accent)">อสังหาฯ</span>',
@@ -415,6 +439,12 @@ const L = {
     sPhone:'📞 โทร：',sMap:'🗺 แผนที่：',sNotes:'📝 หมายเหตุ：',
     staffMsg:'URL สำหรับทีมงาน:\n',staffSub:'\n\nเปิด URL นี้เพื่อดูและแก้ไขข้อมูลอสังหาฯ แบบ real-time พร้อมกันทุกคน',
     staffCopied:'คัดลอก URL แล้ว！ส่งให้ทีมงานได้เลย',
+    allFolders:'ทั้งหมด',noFolder:'ไม่มีโฟลเดอร์',folderMgr:'📁 จัดการโฟลเดอร์',
+    folderTitle:'จัดการโฟลเดอร์',addFolderBtn:'＋ เพิ่ม',noFolderYet:'ยังไม่มีโฟลเดอร์',
+    noFolderName:'กรุณาใส่ชื่อโฟลเดอร์',folderExists:'มีโฟลเดอร์ชื่อนี้แล้ว',
+    folderAdded:'เพิ่มโฟลเดอร์แล้ว',renamePrompt:'ชื่อโฟลเดอร์ใหม่:',
+    confirmDelFolder:'ต้องการลบโฟลเดอร์ "{}" ใช่ไหม？（อสังหาฯ ข้างในจะไม่มีโฟลเดอร์）',
+    eFolder:'โฟลเดอร์',reordered:'บันทึกลำดับแล้ว',
   }
 };
 
@@ -444,8 +474,18 @@ async function sbReq(path, opts={}) {
 async function syncDown() {
   const rows = await sbReq('/rest/v1/properties?order=created_at.desc&select=*');
   DB = (rows||[]).map(rowToEntry);
+  sortDB();
   localStorage.setItem(CACHE_KEY, JSON.stringify(DB));
   return DB;
+}
+
+// sort_orderの大きい順（手動並び替え優先）、未設定は新しい順
+function sortDB() {
+  DB.sort((a,b)=>{
+    const ao = a.sortOrder||0, bo = b.sortOrder||0;
+    if (ao !== bo) return bo - ao;
+    return 0;
+  });
 }
 
 // Supabaseに新規保存
@@ -489,7 +529,9 @@ function rowToEntry(row) {
     cond: row.cond || '',
     notes: row.notes || '',
     photos: row.photos || [],
-    appendedNotes: row.appended_notes || []
+    appendedNotes: row.appended_notes || [],
+    folder: row.folder || '',
+    sortOrder: typeof row.sort_order === 'number' ? row.sort_order : 0
   };
 }
 
@@ -510,7 +552,9 @@ function entryToRow(entry) {
     notes: entry.notes,
     photos: entry.photos || [],
     appended_notes: entry.appendedNotes || [],
-    ts: entry.ts
+    ts: entry.ts,
+    folder: entry.folder || '',
+    sort_order: typeof entry.sortOrder === 'number' ? entry.sortOrder : 0
   };
 }
 
@@ -570,8 +614,14 @@ function applyLang() {
   document.getElementById('lbl-shareOpt').textContent = l.shareOpt;
   document.getElementById('lbl-sharePhoto').textContent = l.sharePhoto;
   document.getElementById('lbl-btnShare').textContent = l.btnShare;
+  document.getElementById('lbl-folderMgr').textContent = l.folderMgr;
+  document.getElementById('lbl-folderTitle').textContent = l.folderTitle;
+  document.getElementById('lbl-addFolder').textContent = l.addFolderBtn;
+  document.getElementById('lbl-eFolder').textContent = l.eFolder;
+  document.getElementById('new-folder-name').placeholder = l.folderTitle;
   renderStGrid('st-grid-main', state.status, setStMain);
   updateCount();
+  renderFolderBar();
   if (!document.getElementById('page2').classList.contains('hidden')) renderList();
 }
 
@@ -702,6 +752,8 @@ async function saveEntry() {
     rent: state.rent, deposit: state.deposit, size: state.size,
     cond: state.cond, notes: state.notes,
     photos: state.photos, appendedNotes: [],
+    folder: currentFolder && currentFolder!=='__all__' ? currentFolder : '',
+    sortOrder: Date.now(),
     ts: state.ts || new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'})
   };
 
@@ -727,11 +779,13 @@ function updateCount() {
 // ===== LIST =====
 function renderList() {
   const wrap=document.getElementById('list-wrap'),l=t();
-  if (!DB.length){
+  const list = filteredDB();
+  if (!list.length){
     wrap.innerHTML='<div class="empty-st"><div style="font-size:40px;margin-bottom:8px">🏠</div>'+l.emptyMsg.replace('\n','<br>')+'</div>';
+    wrap.onclick=null;
     return;
   }
-  const html = DB.map(p=>{
+  const html = list.map((p)=>{
     const si=typeof p.status==='number'?p.status:0;
     const meta = [
       p.type,
@@ -740,21 +794,25 @@ function renderList() {
       p.phone ? '📞'+p.phone : '',
     ].filter(Boolean).join('　');
     const mapLink = p.mapUrl ? '<a href="'+p.mapUrl+'" target="_blank" onclick="event.stopPropagation()">🗺</a>' : '';
-    return '<div class="prop-card" data-cid="'+p.cloud_id+'">'
+    const folderTag = p.folder ? '<span style="font-size:11px;color:var(--accent);background:rgba(108,99,255,.12);padding:1px 8px;border-radius:10px;margin-left:6px">📁'+p.folder+'</span>' : '';
+    return '<div class="prop-card" data-cid="'+p.cloud_id+'" style="display:flex;align-items:flex-start;gap:10px">'
+      +'<div class="drag-handle" data-handle="'+p.cloud_id+'" style="flex-shrink:0;padding:4px 2px;cursor:grab;color:var(--muted);font-size:18px;touch-action:none;user-select:none;-webkit-user-select:none">⋮⋮</div>'
+      +'<div style="flex:1;min-width:0">'
       +'<div class="prop-card-top">'
-      +'<div class="prop-card-name">'+p.propName+'</div>'
+      +'<div class="prop-card-name">'+p.propName+folderTag+'</div>'
       +'<span class="badge b'+si+'">'+l.s[si]+'</span>'
       +'</div>'
       +'<div class="prop-meta">'+meta+(mapLink?'　'+mapLink:'')
       +'<br><span style="font-size:11px">'+p.ts+'</span>'
-      +'</div></div>';
+      +'</div></div></div>';
   }).join('');
   wrap.innerHTML = html;
-  // event delegation - attach click to wrapper
   wrap.onclick = function(e) {
+    if (e.target.closest('.drag-handle')) return;
     const card = e.target.closest('.prop-card');
-    if (card && card.dataset.cid) openModal(card.dataset.cid);
+    if (card && card.dataset.cid && !card.dataset.dragging) openModal(card.dataset.cid);
   };
+  setupDragSort(wrap);
 }
 
 // ===== MODAL =====
@@ -794,6 +852,11 @@ function openModal(cid) {
   document.getElementById('e-size').value=p.size||'';
   document.getElementById('e-cond').value=p.cond||'';
   document.getElementById('e-notes').value=p.notes||'';
+  // フォルダ選択肢を生成
+  const fsel = document.getElementById('e-folder');
+  const l2 = t();
+  fsel.innerHTML = '<option value="">'+l2.noFolder+'</option>' + folders.map(f=>'<option value="'+f+'">'+f+'</option>').join('');
+  fsel.value = p.folder || '';
   document.getElementById('append-inp').value='';
   goMTab(0);
   document.getElementById('modal').classList.add('open');
@@ -857,10 +920,11 @@ async function doSaveEdit() {
   p.size=document.getElementById('e-size').value;
   p.cond=document.getElementById('e-cond').value;
   p.notes=document.getElementById('e-notes').value;
+  p.folder=document.getElementById('e-folder').value;
   try {
     await sbUpdate(p);
     localStorage.setItem(CACHE_KEY,JSON.stringify(DB));
-    renderList();toast(t().saved,'ok');
+    renderList();renderFolderBar();toast(t().saved,'ok');
     openModal(curId);goMTab(0);
   } catch(e) { toast(t().syncErr,'err'); }
 }
@@ -1022,7 +1086,222 @@ function toast(msg,type){
   clearTimeout(el._t);el._t=setTimeout(()=>{el.className='';},2800);
 }
 
+// ===== FOLDER =====
+const FOLDER_KEY = 'prop_folders_v1';
+let folders = [];
+let currentFolder = '__all__';
+
+function getFolders() {
+  try { folders = JSON.parse(localStorage.getItem(FOLDER_KEY)) || []; }
+  catch(e) { folders = []; }
+  return folders;
+}
+function saveFolders() { localStorage.setItem(FOLDER_KEY, JSON.stringify(folders)); }
+
+function renderFolderBar() {
+  const bar = document.getElementById('folder-bar');
+  const l = t();
+  const mkChip = (key,label) => {
+    const active = currentFolder===key;
+    return '<button onclick="selectFolder(\''+key.replace(/'/g,"")+'\')" style="padding:6px 14px;border-radius:20px;border:1.5px solid '+(active?'var(--accent)':'var(--border)')+';background:'+(active?'rgba(108,99,255,.15)':'var(--surface2)')+';color:'+(active?'var(--accent)':'var(--muted)')+';font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;-webkit-appearance:none">'+label+'</button>';
+  };
+  let html = mkChip('__all__', l.allFolders);
+  html += mkChip('', l.noFolder);
+  folders.forEach(f=>{ html += mkChip(f, '📁 '+f); });
+  bar.innerHTML = html;
+}
+
+function selectFolder(key) {
+  currentFolder = key;
+  renderFolderBar();
+  renderList();
+}
+
+function openFolderMgr() {
+  renderFolderList();
+  document.getElementById('folder-mgr').classList.add('open');
+}
+function closeFolderMgr() { document.getElementById('folder-mgr').classList.remove('open'); }
+function folderBg(e) { if (e.target===document.getElementById('folder-mgr')) closeFolderMgr(); }
+
+function renderFolderList() {
+  const wrap = document.getElementById('folder-list');
+  const l = t();
+  if (!folders.length) {
+    wrap.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:13px;padding:20px">'+l.noFolderYet+'</div>';
+    return;
+  }
+  wrap.innerHTML = folders.map((f,i)=>{
+    const count = DB.filter(p=>p.folder===f).length;
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)">'
+      +'<span style="font-size:14px;color:var(--text)">📁 '+f+' <span style="color:var(--muted);font-size:12px">('+count+')</span></span>'
+      +'<span style="display:flex;gap:8px">'
+      +'<span onclick="renameFolder('+i+')" style="cursor:pointer;color:var(--accent);font-size:13px">✏️</span>'
+      +'<span onclick="deleteFolder('+i+')" style="cursor:pointer;color:var(--accent2);font-size:13px">🗑</span>'
+      +'</span></div>';
+  }).join('');
+}
+
+function addFolder() {
+  const name = document.getElementById('new-folder-name').value.trim();
+  if (!name) { toast(t().noFolderName,'err'); return; }
+  if (folders.includes(name)) { toast(t().folderExists,'err'); return; }
+  folders.push(name);
+  saveFolders();
+  document.getElementById('new-folder-name').value='';
+  renderFolderList();
+  renderFolderBar();
+  toast(t().folderAdded,'ok');
+}
+
+function renameFolder(i) {
+  const oldName = folders[i];
+  const newName = prompt(t().renamePrompt, oldName);
+  if (!newName || !newName.trim() || newName===oldName) return;
+  const trimmed = newName.trim();
+  if (folders.includes(trimmed)) { toast(t().folderExists,'err'); return; }
+  folders[i] = trimmed;
+  saveFolders();
+  // 該当物件のフォルダ名も更新
+  DB.filter(p=>p.folder===oldName).forEach(p=>{
+    p.folder = trimmed;
+    sbUpdate(p).catch(()=>{});
+  });
+  localStorage.setItem(CACHE_KEY, JSON.stringify(DB));
+  renderFolderList(); renderFolderBar(); renderList();
+  toast(t().saved,'ok');
+}
+
+function deleteFolder(i) {
+  const name = folders[i];
+  if (!confirm(t().confirmDelFolder.replace('{}',name))) return;
+  // 該当物件はフォルダなしに
+  DB.filter(p=>p.folder===name).forEach(p=>{
+    p.folder = '';
+    sbUpdate(p).catch(()=>{});
+  });
+  localStorage.setItem(CACHE_KEY, JSON.stringify(DB));
+  folders.splice(i,1);
+  saveFolders();
+  if (currentFolder===name) currentFolder='__all__';
+  renderFolderList(); renderFolderBar(); renderList();
+  toast(t().deleted,'ok');
+}
+
+// ===== 並び替え（ドラッグ） =====
+let dragState = null;
+
+function setupDragSort(wrap) {
+  const handles = wrap.querySelectorAll('.drag-handle');
+  handles.forEach(handle => {
+    handle.addEventListener('touchstart', onDragStart, {passive:false});
+    handle.addEventListener('mousedown', onDragStart);
+  });
+}
+
+function getY(e) {
+  return e.touches ? e.touches[0].clientY : e.clientY;
+}
+
+function onDragStart(e) {
+  e.preventDefault();
+  const handle = e.currentTarget;
+  const cid = handle.dataset.handle;
+  const card = handle.closest('.prop-card');
+  const wrap = document.getElementById('list-wrap');
+  if (!card) return;
+
+  card.dataset.dragging = '1';
+  card.style.opacity = '0.6';
+  card.style.background = 'var(--surface2)';
+  handle.style.cursor = 'grabbing';
+
+  dragState = { cid, card, wrap, startY: getY(e) };
+
+  document.addEventListener('touchmove', onDragMove, {passive:false});
+  document.addEventListener('mousemove', onDragMove);
+  document.addEventListener('touchend', onDragEnd);
+  document.addEventListener('mouseend', onDragEnd);
+  document.addEventListener('mouseup', onDragEnd);
+}
+
+function onDragMove(e) {
+  if (!dragState) return;
+  e.preventDefault();
+  const y = getY(e);
+  const cards = Array.from(dragState.wrap.querySelectorAll('.prop-card'));
+  const dragCard = dragState.card;
+
+  // ドラッグ中のカードの中心位置
+  for (const other of cards) {
+    if (other === dragCard) continue;
+    const rect = other.getBoundingClientRect();
+    const mid = rect.top + rect.height/2;
+    const dragRect = dragCard.getBoundingClientRect();
+    const dragMid = dragRect.top + dragRect.height/2;
+    // 下方向に動かして次のカードの中心を超えたら入れ替え
+    if (dragMid > mid && dragCard.compareDocumentPosition(other) & Node.DOCUMENT_POSITION_PRECEDING) {
+      // otherがdragCardより前にある → dragCardをotherの前に
+      dragState.wrap.insertBefore(dragCard, other);
+      break;
+    }
+    if (dragMid < mid && dragCard.compareDocumentPosition(other) & Node.DOCUMENT_POSITION_FOLLOWING) {
+      // otherがdragCardより後にある → dragCardをotherの後に
+      dragState.wrap.insertBefore(dragCard, other.nextSibling);
+      break;
+    }
+  }
+}
+
+function onDragEnd() {
+  if (!dragState) return;
+  const { card, wrap } = dragState;
+  card.style.opacity = '';
+  card.style.background = '';
+  const handle = card.querySelector('.drag-handle');
+  if (handle) handle.style.cursor = 'grab';
+
+  document.removeEventListener('touchmove', onDragMove);
+  document.removeEventListener('mousemove', onDragMove);
+  document.removeEventListener('touchend', onDragEnd);
+  document.removeEventListener('mouseend', onDragEnd);
+  document.removeEventListener('mouseup', onDragEnd);
+
+  // 新しい並び順を取得してsortOrderを再採番
+  const orderedCids = Array.from(wrap.querySelectorAll('.prop-card')).map(c=>c.dataset.cid);
+  const base = Date.now();
+  const changed = [];
+  orderedCids.forEach((cid, i)=>{
+    const p = DB.find(x=>String(x.cloud_id)===String(cid));
+    if (p) {
+      const newOrder = base - i; // 上ほど大きい値
+      if (p.sortOrder !== newOrder) { p.sortOrder = newOrder; changed.push(p); }
+    }
+  });
+  sortDB();
+  localStorage.setItem(CACHE_KEY, JSON.stringify(DB));
+
+  setTimeout(()=>{ if(card) delete card.dataset.dragging; }, 50);
+  dragState = null;
+
+  // Supabaseに保存
+  changed.forEach(p=>sbUpdate(p).catch(()=>{}));
+  if (changed.length) toast(t().reordered,'ok');
+  renderList();
+}
+
+function filteredDB() {
+  if (currentFolder==='__all__') return DB;
+  return DB.filter(p=>(p.folder||'')===currentFolder);
+}
+
+function filteredDB() {
+  if (currentFolder==='__all__') return DB;
+  return DB.filter(p=>(p.folder||'')===currentFolder);
+}
+
 // ===== INIT =====
+getFolders();
 renderStGrid('st-grid-main',0,setStMain);
 applyLang();
 
@@ -1041,6 +1320,11 @@ applyLang();
     const cache=localStorage.getItem(CACHE_KEY);
     if (cache) { DB=JSON.parse(cache); updateCount(); renderList(); }
   }
+  // DBから既存フォルダを収集してローカルにマージ
+  const dbFolders = [...new Set(DB.map(p=>p.folder).filter(f=>f))];
+  dbFolders.forEach(f=>{ if(!folders.includes(f)) folders.push(f); });
+  saveFolders();
+  renderFolderBar();
   // ローディング非表示
   document.getElementById('loading').style.display='none';
   document.getElementById('app').style.display='flex';
