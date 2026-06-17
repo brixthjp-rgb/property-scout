@@ -200,6 +200,9 @@ textarea.inp{resize:none;line-height:1.5}
 
     <!-- PAGE 3 -->
     <div class="page hidden" id="page2">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+        <button onclick="exportCSV()" style="padding:8px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:12px;font-weight:500;cursor:pointer;-webkit-appearance:none">📥 CSVエクスポート</button>
+      </div>
       <div id="list-wrap"></div>
     </div>
   </div>
@@ -279,6 +282,45 @@ const CLOUD_PRESET = 'property-scout';
 const SB_URL = 'https://byikapxfaqfxglphoapg.supabase.co';
 const SB_KEY = 'sb_publishable_MAHYtSIOOIwIkoAikBT8fQ_Iv-xxrPg';
 const SB_H = {'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
+const GAS_BACKUP_URL = 'https://script.google.com/macros/s/AKfycbxft3R1Vea7nIFFKl0BoaGb4YQkdWeHg__Z5Qx4ykHrjmiP9Re2pklQwgE0M4EDvdvF/exec';
+
+async function backupToSheet(entry) {
+  try {
+    await fetch(GAS_BACKUP_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        ts: entry.ts, type: entry.type, propName: entry.propName,
+        phone: entry.phone, mapUrl: entry.mapUrl, rent: entry.rent,
+        deposit: entry.deposit, size: entry.size, cond: entry.cond,
+        notes: entry.notes, status: entry.status, photos: entry.photos||[]
+      })
+    });
+  } catch(e) {}
+}
+
+function exportCSV() {
+  const st = ['未交渉','交渉中','契約済み','NG','保留'];
+  const headers = ['保存日時','種類','物件名','電話','マップURL','家賃','敷金','広さ','条件','メモ','ステータス','写真枚数'];
+  const esc = v => '"' + String(v||'').split('"').join('""') + '"';
+  const rows = DB.map(p => [
+    p.ts, p.type, p.propName, p.phone, p.mapUrl,
+    p.rent, p.deposit, p.size, p.cond, p.notes,
+    st[p.status]||'未交渉', (p.photos||[]).length
+  ].map(esc).join(','));
+  const csv = '\uFEFF' + [headers.map(esc).join(','), ...rows].join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '物件スカウト_' + new Date().toLocaleDateString('ja-JP').split('/').join('-') + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('CSVをダウンロードしました','ok');
+}
 const ST_CLS = ['a0','a1','a2','a3','a4'];
 
 // Supabaseをメインのデータストアとして使用
@@ -670,6 +712,7 @@ async function saveEntry() {
     localStorage.setItem(CACHE_KEY, JSON.stringify(DB));
     updateCount();
     toast(t().saved,'ok');
+    backupToSheet(entry);
     resetForm();
     setTimeout(()=>goTab(2),800);
   } catch(e) {
