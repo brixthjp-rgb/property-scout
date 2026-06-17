@@ -1188,103 +1188,150 @@ function deleteFolder(i) {
   toast(t().deleted,'ok');
 }
 
-// ===== 並び替え（ドラッグ） =====
+// ===== 並び替え（ドラッグ・スムーズ版） =====
 let dragState = null;
 
 function setupDragSort(wrap) {
-  const handles = wrap.querySelectorAll('.drag-handle');
-  handles.forEach(handle => {
+  wrap.querySelectorAll('.drag-handle').forEach(handle => {
     handle.addEventListener('touchstart', onDragStart, {passive:false});
     handle.addEventListener('mousedown', onDragStart);
   });
 }
 
-function getY(e) {
-  return e.touches ? e.touches[0].clientY : e.clientY;
-}
+function getY(e) { return e.touches ? e.touches[0].clientY : e.clientY; }
 
 function onDragStart(e) {
   e.preventDefault();
   const handle = e.currentTarget;
-  const cid = handle.dataset.handle;
   const card = handle.closest('.prop-card');
   const wrap = document.getElementById('list-wrap');
   if (!card) return;
 
-  card.dataset.dragging = '1';
-  card.style.opacity = '0.6';
-  card.style.background = 'var(--surface2)';
-  handle.style.cursor = 'grabbing';
+  const cards = Array.from(wrap.querySelectorAll('.prop-card'));
+  const rect = card.getBoundingClientRect();
 
-  dragState = { cid, card, wrap, startY: getY(e) };
+  // プレースホルダ（移動先を示す空白）
+  const placeholder = document.createElement('div');
+  placeholder.style.height = rect.height + 'px';
+  placeholder.style.margin = '0 0 12px 0';
+  placeholder.style.borderRadius = 'var(--radius)';
+  placeholder.style.border = '2px dashed var(--accent)';
+  placeholder.style.background = 'rgba(108,99,255,.06)';
+  placeholder.className = 'drag-placeholder';
+
+  // ドラッグ中カードを浮かせる（fixed配置で指に追従）
+  card.dataset.dragging = '1';
+  card.style.position = 'fixed';
+  card.style.zIndex = '800';
+  card.style.width = rect.width + 'px';
+  card.style.left = rect.left + 'px';
+  card.style.top = rect.top + 'px';
+  card.style.pointerEvents = 'none';
+  card.style.boxShadow = '0 8px 24px rgba(0,0,0,.4)';
+  card.style.opacity = '0.95';
+  card.style.transition = 'none';
+
+  wrap.insertBefore(placeholder, card);
+
+  dragState = {
+    card, wrap, placeholder,
+    startY: getY(e),
+    cardTop: rect.top,
+    cardHeight: rect.height,
+    rafPending: false,
+    lastY: getY(e)
+  };
 
   document.addEventListener('touchmove', onDragMove, {passive:false});
   document.addEventListener('mousemove', onDragMove);
   document.addEventListener('touchend', onDragEnd);
-  document.addEventListener('mouseend', onDragEnd);
   document.addEventListener('mouseup', onDragEnd);
 }
 
 function onDragMove(e) {
   if (!dragState) return;
   e.preventDefault();
-  const y = getY(e);
-  const cards = Array.from(dragState.wrap.querySelectorAll('.prop-card'));
-  const dragCard = dragState.card;
+  dragState.lastY = getY(e);
+  // requestAnimationFrameで1フレーム1回だけ処理（震え防止）
+  if (!dragState.rafPending) {
+    dragState.rafPending = true;
+    requestAnimationFrame(processDragMove);
+  }
+}
 
-  // ドラッグ中のカードの中心位置
-  for (const other of cards) {
-    if (other === dragCard) continue;
-    const rect = other.getBoundingClientRect();
-    const mid = rect.top + rect.height/2;
-    const dragRect = dragCard.getBoundingClientRect();
-    const dragMid = dragRect.top + dragRect.height/2;
-    // 下方向に動かして次のカードの中心を超えたら入れ替え
-    if (dragMid > mid && dragCard.compareDocumentPosition(other) & Node.DOCUMENT_POSITION_PRECEDING) {
-      // otherがdragCardより前にある → dragCardをotherの前に
-      dragState.wrap.insertBefore(dragCard, other);
+function processDragMove() {
+  if (!dragState) return;
+  dragState.rafPending = false;
+  const { card, wrap, placeholder, startY, cardTop, lastY } = dragState;
+
+  // カードを指に追従
+  const dy = lastY - startY;
+  card.style.top = (cardTop + dy) + 'px';
+
+  // 現在のドラッグカードの中心Y
+  const dragMid = cardTop + dy + dragState.cardHeight/2;
+
+  // プレースホルダの移動先を決定（他のカードと比較）
+  const others = Array.from(wrap.querySelectorAll('.prop-card:not([data-dragging]), .drag-placeholder'));
+  let inserted = false;
+  for (const el of others) {
+    if (el === placeholder) continue;
+    const r = el.getBoundingClientRect();
+    const mid = r.top + r.height/2;
+    if (dragMid < mid) {
+      if (placeholder.nextSibling !== el) wrap.insertBefore(placeholder, el);
+      inserted = true;
       break;
     }
-    if (dragMid < mid && dragCard.compareDocumentPosition(other) & Node.DOCUMENT_POSITION_FOLLOWING) {
-      // otherがdragCardより後にある → dragCardをotherの後に
-      dragState.wrap.insertBefore(dragCard, other.nextSibling);
-      break;
-    }
+  }
+  if (!inserted) {
+    // 一番下へ
+    if (wrap.lastElementChild !== placeholder) wrap.appendChild(placeholder);
   }
 }
 
 function onDragEnd() {
   if (!dragState) return;
-  const { card, wrap } = dragState;
-  card.style.opacity = '';
-  card.style.background = '';
-  const handle = card.querySelector('.drag-handle');
-  if (handle) handle.style.cursor = 'grab';
+  const { card, wrap, placeholder } = dragState;
 
   document.removeEventListener('touchmove', onDragMove);
   document.removeEventListener('mousemove', onDragMove);
   document.removeEventListener('touchend', onDragEnd);
-  document.removeEventListener('mouseend', onDragEnd);
   document.removeEventListener('mouseup', onDragEnd);
 
-  // 新しい並び順を取得してsortOrderを再採番
+  // カードのスタイルをリセット
+  card.style.position = '';
+  card.style.zIndex = '';
+  card.style.width = '';
+  card.style.left = '';
+  card.style.top = '';
+  card.style.pointerEvents = '';
+  card.style.boxShadow = '';
+  card.style.opacity = '';
+  card.style.transition = '';
+
+  // プレースホルダの位置にカードを移動
+  wrap.insertBefore(card, placeholder);
+  placeholder.remove();
+
+  // 新しい並び順でsortOrderを再採番
   const orderedCids = Array.from(wrap.querySelectorAll('.prop-card')).map(c=>c.dataset.cid);
   const base = Date.now();
   const changed = [];
   orderedCids.forEach((cid, i)=>{
     const p = DB.find(x=>String(x.cloud_id)===String(cid));
     if (p) {
-      const newOrder = base - i; // 上ほど大きい値
+      const newOrder = base - i;
       if (p.sortOrder !== newOrder) { p.sortOrder = newOrder; changed.push(p); }
     }
   });
   sortDB();
   localStorage.setItem(CACHE_KEY, JSON.stringify(DB));
 
-  setTimeout(()=>{ if(card) delete card.dataset.dragging; }, 50);
+  const dragged = card;
+  setTimeout(()=>{ if(dragged) delete dragged.dataset.dragging; }, 50);
   dragState = null;
 
-  // Supabaseに保存
   changed.forEach(p=>sbUpdate(p).catch(()=>{}));
   if (changed.length) toast(t().reordered,'ok');
   renderList();
