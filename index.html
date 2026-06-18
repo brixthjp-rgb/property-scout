@@ -987,7 +987,6 @@ function openShare() {
   const wrap=document.getElementById('share-toggles');
   wrap.innerHTML='';
   [
-    {key:'phone',label:l.sOptPhone,val:p.phone},
     {key:'deposit',label:l.sOptDeposit,val:p.deposit},
     {key:'size',label:l.sOptSize,val:p.size?p.size+l.sqm:null},
     {key:'cond',label:l.sOptCond,val:p.cond},
@@ -1044,7 +1043,7 @@ function doShare() {
     sOpts.size!==false&&p.size?l.sSize+p.size+l.sqm:null,
     sOpts.deposit!==false&&p.deposit?l.sDep+p.deposit:null,
     sOpts.cond!==false&&p.cond?l.sCond+p.cond:null,
-    sOpts.phone!==false&&p.phone?l.sPhone+p.phone:null,
+    // 電話番号は顧客共有から除外（直接連絡防止）
     p.mapUrl?l.sMap+p.mapUrl:null,
     sOpts.notes!==false&&p.notes?l.sNotes+p.notes:null,
     selPhotos.length?l.sep:null,
