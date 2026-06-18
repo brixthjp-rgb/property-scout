@@ -147,11 +147,24 @@ textarea.inp{resize:none;line-height:1.5}
       </div>
       <div class="card">
         <div class="card-title" id="lbl-photoTitle">写真</div>
-        <div class="photo-wrap">
-          <input type="file" accept="image/*" multiple onchange="addPhotos(this,'thumbs0')">
-          <div class="photo-hint"><div class="phi">📷</div><span id="lbl-photoHint">タップして撮影 または ライブラリから選択</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+          <div style="position:relative">
+            <label style="display:block;padding:12px 8px;border-radius:var(--rsm);border:1.5px dashed var(--border);background:var(--surface2);color:var(--muted);text-align:center;cursor:pointer;font-size:13px">
+              <div style="font-size:22px;margin-bottom:4px">🏠</div>
+              <span id="lbl-exteriorPhoto">外観写真</span>
+              <input type="file" accept="image/*" multiple onchange="addPhotos(this,'thumbs-ext','exterior')" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
+            </label>
+          </div>
+          <div style="position:relative">
+            <label style="display:block;padding:12px 8px;border-radius:var(--rsm);border:1.5px dashed var(--border);background:var(--surface2);color:var(--muted);text-align:center;cursor:pointer;font-size:13px">
+              <div style="font-size:22px;margin-bottom:4px">🛋</div>
+              <span id="lbl-interiorPhoto">内装写真</span>
+              <input type="file" accept="image/*" multiple onchange="addPhotos(this,'thumbs-int','interior')" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
+            </label>
+          </div>
         </div>
-        <div class="thumbs" id="thumbs0"></div>
+        <div class="thumbs" id="thumbs-ext" style="margin-bottom:6px"></div>
+        <div class="thumbs" id="thumbs-int"></div>
       </div>
       <div class="card">
         <div class="card-title" id="lbl-phoneTitle">電話番号</div>
@@ -233,11 +246,19 @@ textarea.inp{resize:none;line-height:1.5}
       <div class="sec-lbl" style="margin-top:16px" id="lbl-appendNote">メモを追記</div>
       <textarea class="inp" id="append-inp" rows="3" placeholder="追記メモを入力..."></textarea>
       <button class="btn btn-s" id="lbl-btnAppend" onclick="doAppendNote()" style="margin-top:8px">📝 追記する</button>
-      <div style="margin-top:10px;position:relative">
-        <label style="display:block;width:100%;padding:13px;border-radius:var(--rsm);border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:14px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit" id="lbl-btnAddPhoto">
-          📷 写真を追加
-          <input type="file" accept="image/*" multiple onchange="doAppendPhoto(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
-        </label>
+      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="position:relative">
+          <label style="display:block;width:100%;padding:12px 8px;border-radius:var(--rsm);border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit" id="lbl-btnAddExt">
+            🏠 外観追加
+            <input type="file" accept="image/*" multiple onchange="doAppendPhoto(this,'exterior')" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
+          </label>
+        </div>
+        <div style="position:relative">
+          <label style="display:block;width:100%;padding:12px 8px;border-radius:var(--rsm);border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit" id="lbl-btnAddInt">
+            🛋 内装追加
+            <input type="file" accept="image/*" multiple onchange="doAppendPhoto(this,'interior')" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
+          </label>
+        </div>
       </div>
       <button class="btn btn-share" onclick="openShare()" style="margin-top:8px" id="lbl-btnShareOpen">📤 顧客に共有</button>
       <button class="btn btn-d" onclick="doDelete()" style="margin-top:8px" id="lbl-btnDelete">🗑 この物件を削除</button>
@@ -577,7 +598,6 @@ function applyLang() {
   document.getElementById('lbl-tenant').textContent = l.tenant;
   document.getElementById('lbl-res').textContent = l.res;
   document.getElementById('lbl-photoTitle').textContent = l.photoTitle;
-  document.getElementById('lbl-photoHint').textContent = l.photoHint;
   document.getElementById('lbl-phoneTitle').textContent = l.phoneTitle;
   document.getElementById('lbl-locTitle').textContent = l.locTitle;
   document.getElementById('loc-txt').textContent = l.locBtn;
@@ -602,7 +622,6 @@ function applyLang() {
   document.getElementById('lbl-appendNote').textContent = l.appendNote;
   document.getElementById('append-inp').placeholder = l.appendPh;
   document.getElementById('lbl-btnAppend').textContent = l.btnAppend;
-  document.getElementById('lbl-btnAddPhoto').childNodes[0].textContent = l.btnAddPhoto+' ';
   document.getElementById('lbl-btnShareOpen').textContent = l.btnShareOpen;
   document.getElementById('lbl-btnDelete').textContent = l.btnDelete;
   document.getElementById('lbl-eName').textContent = l.eName;
@@ -622,6 +641,10 @@ function applyLang() {
   document.getElementById('lbl-sharePhoto').textContent = l.sharePhoto;
   document.getElementById('lbl-btnShare').textContent = l.btnShare;
   document.getElementById('lbl-driveTitle').textContent = l.driveTitle;
+  document.getElementById('lbl-exteriorPhoto').textContent = l.exteriorPhoto;
+  document.getElementById('lbl-interiorPhoto').textContent = l.interiorPhoto;
+  document.getElementById('lbl-btnAddExt').childNodes[0].textContent = l.btnAddExt+' ';
+  document.getElementById('lbl-btnAddInt').childNodes[0].textContent = l.btnAddInt+' ';
   document.getElementById('lbl-driveUrl').textContent = l.driveUrl;
   document.getElementById('lbl-eDriveUrl').textContent = l.eDriveUrl;
   document.getElementById('lbl-folderMgr').textContent = l.folderMgr;
@@ -684,16 +707,17 @@ async function uploadPhoto(file) {
   return data.secure_url;
 }
 
-function addPhotos(input,thumbId) {
+function addPhotos(input,thumbId,tag) {
   const files=Array.from(input.files).slice(0,10);
   if (!files.length) return;
+  const photoTag=tag||'exterior';
   toast(t().uploading,'');
   const thumbs=document.getElementById(thumbId);
   let done=0;
   files.forEach(async file=>{
     try {
       const url=await uploadPhoto(file);
-      state.photos.push(url);
+      state.photos.push({url:url,tag:photoTag});
       const img=document.createElement('img');
       img.src=url;
       thumbs.appendChild(img);thumbs.style.display='flex';
@@ -809,11 +833,14 @@ function renderList() {
     // 写真サムネイル（最大2枚）
     let photoThumbs = '';
     if (p.photos && p.photos.length) {
-      const thumbs = p.photos.slice(0,2).map(src=>
-        '<img src="'+src+'" style="width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--border)">'
+      const extPhotos = p.photos.filter(ph=>photoTag(ph)==='exterior');
+      const thumbs = extPhotos.slice(0,2).map(ph=>
+        '<img src="'+photoUrl(ph)+'" style="width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--border)">'
       ).join('');
-      const more = p.photos.length>2 ? '<div style="width:64px;height:64px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted)">+'+(p.photos.length-2)+'</div>' : '';
-      photoThumbs = '<div style="display:flex;gap:6px;margin-top:8px">'+thumbs+more+'</div>';
+      const intCount = p.photos.filter(ph=>photoTag(ph)==='interior').length;
+      const more = extPhotos.length>2 ? '<div style="width:64px;height:64px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted)">+'+(extPhotos.length-2)+'</div>' : '';
+      const intBadge = intCount>0 ? '<div style="font-size:11px;color:var(--muted);margin-top:4px">🛋 内装 '+intCount+'枚</div>' : '';
+      photoThumbs = '<div style="margin-top:8px"><div style="display:flex;gap:6px">'+thumbs+more+'</div>'+intBadge+'</div>';
     }
     return '<div class="prop-card" data-cid="'+p.cloud_id+'" style="display:flex;align-items:flex-start;gap:10px">'
       +'<div class="drag-handle" data-handle="'+p.cloud_id+'" style="flex-shrink:0;padding:4px 2px;cursor:grab;color:var(--muted);font-size:18px;touch-action:none;user-select:none;-webkit-user-select:none">⋮⋮</div>'
@@ -863,15 +890,7 @@ function openModal(cid) {
     '<div class="d-row"><span class="d-lbl">'+lb+'</span><span class="d-val">'+v+'</span></div>'
   ).join('');
   const mp=document.getElementById('modal-photos');
-  if (p.photos&&p.photos.length) {
-    mp.innerHTML='<div style="display:flex;flex-wrap:wrap;gap:10px">'
-      +p.photos.map((src,i)=>
-        '<div style="position:relative;display:inline-block">'
-        +'<img src="'+src+'" onclick="openLB(this.src)" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);cursor:zoom-in;display:block">'
-        +'<button onclick="deletePhoto('+i+')" style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;border:none;background:var(--accent2);color:#fff;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0">✕</button>'
-        +'</div>'
-      ).join('')+'</div>';
-  } else { mp.innerHTML=''; }
+  renderPhotoTabs(p, mp, 'exterior');
   document.getElementById('e-name').value=p.propName||'';
   document.getElementById('e-phone').value=p.phone||'';
   document.getElementById('e-map').value=p.address||p.mapUrl||'';
@@ -897,6 +916,57 @@ function goMTab(idx) {
   document.getElementById('modal-view').style.display=idx===0?'block':'none';
   document.getElementById('modal-edit').style.display=idx===1?'block':'none';
 }
+
+// 写真タブ切替レンダリング
+function renderPhotoTabs(p, container, activeTab) {
+  const photos = p ? (p.photos||[]) : [];
+  if (!photos.length) { container.innerHTML=''; return; }
+  const exterior = photos.filter(ph=>photoTag(ph)==='exterior');
+  const interior = photos.filter(ph=>photoTag(ph)==='interior');
+  const l = t();
+  const mkThumb = (ph) => {
+    const url = photoUrl(ph);
+    const globalIdx = photos.indexOf(ph);
+    const div = document.createElement('div');
+    div.style.cssText = 'position:relative;display:inline-block';
+    const img = document.createElement('img');
+    img.src = url;
+    img.style.cssText = 'width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);cursor:zoom-in;display:block';
+    img.onclick = () => openLB(url);
+    const btn = document.createElement('button');
+    btn.textContent = '✕';
+    btn.style.cssText = 'position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;border:none;background:var(--accent2);color:#fff;font-size:11px;font-weight:700;cursor:pointer;line-height:20px;padding:0';
+    btn.onclick = () => deletePhoto(globalIdx);
+    div.appendChild(img);
+    div.appendChild(btn);
+    return div;
+  };
+  container.innerHTML = '';
+  // タブバー
+  const tabBar = document.createElement('div');
+  tabBar.style.cssText = 'display:flex;border-bottom:1px solid var(--border);margin-bottom:10px';
+  const mkTab = (label, tag) => {
+    const btn = document.createElement('button');
+    const isActive = activeTab === tag;
+    btn.style.cssText = 'padding:8px 16px;border:none;font-size:13px;font-weight:600;cursor:pointer;border-bottom:2px solid '+(isActive?'var(--accent)':'transparent')+';background:transparent;color:'+(isActive?'var(--accent)':'var(--muted)')+';font-family:inherit';
+    btn.textContent = label;
+    btn.onclick = () => renderPhotoTabs(p, container, tag);
+    return btn;
+  };
+  tabBar.appendChild(mkTab('🏠 '+(l.exteriorPhoto||'外観')+' ('+exterior.length+')', 'exterior'));
+  tabBar.appendChild(mkTab('🛋 '+(l.interiorPhoto||'内装')+' ('+interior.length+')', 'interior'));
+  container.appendChild(tabBar);
+  // 写真グリッド
+  const grid = document.createElement('div');
+  grid.style.cssText = 'display:flex;flex-wrap:wrap;gap:10px';
+  const list = activeTab === 'exterior' ? exterior : interior;
+  list.forEach(ph => grid.appendChild(mkThumb(ph)));
+  container.appendChild(grid);
+}
+
+// 写真データから安全にURLを取得（旧string形式と新{url,tag}形式の両対応）
+function photoUrl(p) { return typeof p === 'string' ? p : (p&&p.url ? p.url : ''); }
+function photoTag(p) { return typeof p === 'string' ? 'exterior' : (p&&p.tag ? p.tag : 'exterior'); }
 
 async function deletePhoto(idx) {
   const p = DB.find(x=>Number(x.cloud_id)===Number(curId));
@@ -927,7 +997,8 @@ async function doAppendNote() {
   } catch(e) { toast(t().syncErr,'err'); }
 }
 
-function doAppendPhoto(input) {
+function doAppendPhoto(input,tag) {
+  const photoTag=tag||'exterior';
   const files=Array.from(input.files).slice(0,10);
   if (!files.length) return;
   const p=DB.find(x=>Number(x.cloud_id)===Number(curId));
@@ -938,7 +1009,7 @@ function doAppendPhoto(input) {
   files.forEach(async file=>{
     try {
       const url=await uploadPhoto(file);
-      p.photos.push(url);done++;
+      p.photos.push({url:url,tag:photoTag});done++;
       if (done===files.length){
         await sbUpdate(p);
         localStorage.setItem(CACHE_KEY,JSON.stringify(DB));
@@ -1022,24 +1093,41 @@ function openShare() {
   const pg=document.getElementById('share-photo-grid');
   pg.innerHTML='';
   if (p.photos&&p.photos.length) {
-    p.photos.forEach((url,i)=>{
-      const checked=sOpts['ph_'+i]!==false;
-      const lbl=document.createElement('label');
-      lbl.style.cssText='position:relative;cursor:pointer;display:inline-block';
-      const img=document.createElement('img');
-      img.src=url;img.id='sph-'+i;
-      img.style.cssText='width:72px;height:72px;object-fit:cover;border-radius:8px;border:2px solid '+(checked?'var(--accent)':'var(--border)');
-      const cb=document.createElement('input');
-      cb.type='checkbox';cb.dataset.key='ph_'+i;cb.checked=checked;
-      cb.style.cssText='position:absolute;top:4px;right:4px;width:16px;height:16px;accent-color:var(--accent)';
-      cb.onchange=function(){
-        sOpts[this.dataset.key]=this.checked;
-        const el=document.getElementById('sph-'+i);
-        if(el) el.style.borderColor=this.checked?'var(--accent)':'var(--border)';
-      };
-      lbl.appendChild(img);lbl.appendChild(cb);
-      pg.appendChild(lbl);
-    });
+    const l2=t();
+    const extPhotos=p.photos.filter(ph=>photoTag(ph)==='exterior');
+    const intPhotos=p.photos.filter(ph=>photoTag(ph)==='interior');
+    const mkSection=(photos,label)=>{
+      if(!photos.length) return;
+      const hdr=document.createElement('div');
+      hdr.style.cssText='width:100%;font-size:11px;color:var(--muted);margin:8px 0 6px;font-weight:600';
+      hdr.textContent=label;
+      pg.appendChild(hdr);
+      const row=document.createElement('div');
+      row.style.cssText='display:flex;flex-wrap:wrap;gap:8px;width:100%';
+      photos.forEach((ph)=>{
+        const url=photoUrl(ph);
+        const globalIdx=p.photos.indexOf(ph);
+        const checked=sOpts['ph_'+globalIdx]!==false;
+        const lbl=document.createElement('label');
+        lbl.style.cssText='position:relative;cursor:pointer;display:inline-block';
+        const img=document.createElement('img');
+        img.src=url;img.id='sph-'+globalIdx;
+        img.style.cssText='width:72px;height:72px;object-fit:cover;border-radius:8px;border:2px solid '+(checked?'var(--accent)':'var(--border)');
+        const cb=document.createElement('input');
+        cb.type='checkbox';cb.dataset.key='ph_'+globalIdx;cb.checked=checked;
+        cb.style.cssText='position:absolute;top:4px;right:4px;width:16px;height:16px;accent-color:var(--accent)';
+        cb.onchange=function(){
+          sOpts[this.dataset.key]=this.checked;
+          const el=document.getElementById('sph-'+globalIdx);
+          if(el) el.style.borderColor=this.checked?'var(--accent)':'var(--border)';
+        };
+        lbl.appendChild(img);lbl.appendChild(cb);
+        row.appendChild(lbl);
+      });
+      pg.appendChild(row);
+    };
+    mkSection(extPhotos,'🏠 '+(l2.exteriorPhoto||'外観'));
+    mkSection(intPhotos,'🛋 '+(l2.interiorPhoto||'内装'));
   }
   document.getElementById('share-sheet').classList.add('open');
 }
@@ -1049,7 +1137,7 @@ function doShare() {
   if (!p) return;
   const l=t();
   const tl=p.type==='テナント'?'🏪 '+l.tenant:'🏠 '+l.res;
-  const selPhotos=p.photos?p.photos.filter((_,i)=>sOpts['ph_'+i]!==false):[];
+  const selPhotos=p.photos?p.photos.filter((ph,i)=>sOpts['ph_'+i]!==false).map(ph=>photoUrl(ph)):[];
   const lines=[
     l.sep,tl+' '+l.intro,l.sep,
     p.propName,
@@ -1113,8 +1201,9 @@ function resetForm() {
   ['f-phone','f-rent','f-deposit','f-size','f-cond','f-notes','f-propname','f-addr','f-driveurl'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.value='';
   });
-  document.getElementById('thumbs0').innerHTML='';
-  document.getElementById('thumbs0').style.display='none';
+  ['thumbs-ext','thumbs-int'].forEach(id=>{
+    const el=document.getElementById(id);if(el){el.innerHTML='';el.style.display='none';}
+  });
   document.getElementById('loc-btn').classList.remove('got');
   document.getElementById('loc-icon').textContent='📍';
   document.getElementById('loc-txt').textContent=t().locBtn;
