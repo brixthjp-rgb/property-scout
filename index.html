@@ -194,6 +194,10 @@ textarea.inp{resize:none;line-height:1.5}
         <div class="field"><label id="lbl-cond">契約条件</label><input class="inp" type="text" id="f-cond" placeholder="最低1年、ペット不可"></div>
         <div class="field" style="margin-bottom:0"><label id="lbl-notes">その他メモ</label><textarea class="inp" id="f-notes" rows="4" placeholder="駐車場あり、改装交渉可"></textarea></div>
       </div>
+      <div class="card">
+        <div class="card-title" id="lbl-driveTitle">📁 内装写真（Googleドライブ）</div>
+        <div class="field" style="margin-bottom:0"><label id="lbl-driveUrl">ドライブ共有リンク</label><input class="inp" type="url" id="f-driveurl" placeholder="https://drive.google.com/..."></div>
+      </div>
       <button class="btn btn-p" id="lbl-btnSave" onclick="saveEntry()">💾 保存する</button>
       <button class="btn btn-s" id="lbl-btnBack" onclick="goTab(0)">← 現地入力に戻る</button>
     </div>
@@ -249,6 +253,7 @@ textarea.inp{resize:none;line-height:1.5}
       <div class="field"><label id="lbl-eSize">広さ（㎡）</label><input class="inp" type="number" id="e-size"></div>
       <div class="field"><label id="lbl-eCond">契約条件</label><input class="inp" id="e-cond"></div>
       <div class="field"><label id="lbl-eNotes">メモ</label><textarea class="inp" id="e-notes" rows="4"></textarea></div>
+      <div class="field"><label id="lbl-eDriveUrl">ドライブリンク</label><input class="inp" type="url" id="e-driveurl" placeholder="https://drive.google.com/..."></div>
       <div class="field"><label id="lbl-eFolder">フォルダ</label><select class="inp" id="e-folder"></select></div>
       <button class="btn btn-p" onclick="doSaveEdit()" id="lbl-btnSaveEdit">💾 上書き保存</button>
     </div>
@@ -370,7 +375,7 @@ const L = {
     eName:'物件名',ePhone:'電話番号',eMap:'住所 / マップURL',
     eRent:'月額家賃（฿）',eDeposit:'敷金 / 保証金',eSize:'広さ（㎡）',eCond:'契約条件',eNotes:'メモ',
     btnSaveEdit:'💾 上書き保存',
-    rows:['種類','日時','電話','場所','家賃','敷金','広さ','条件','メモ'],
+    rows:['種類','日時','電話','場所','家賃','敷金','広さ','条件','メモ','ドライブ'],
     ni:'未入力',pm:'/月',sqm:'㎡',openMap:'🗺 地図を開く',
     uploading:'アップロード中...',photoAdded:'枚追加しました',
     fieldSaved:'現地情報を記録しました',saved:'クラウドに保存しました！',deleted:'削除しました',
@@ -420,7 +425,7 @@ const L = {
     eName:'ชื่ออสังหาฯ',ePhone:'เบอร์โทร',eMap:'ที่อยู่ / ลิงก์แผนที่',
     eRent:'ค่าเช่า/เดือน（฿）',eDeposit:'เงินประกัน',eSize:'ขนาด（ตร.ม.）',eCond:'เงื่อนไขสัญญา',eNotes:'บันทึก',
     btnSaveEdit:'💾 บันทึกทับ',
-    rows:['ประเภท','วันที่','โทร','สถานที่','ค่าเช่า','ประกัน','ขนาด','เงื่อนไข','บันทึก'],
+    rows:['ประเภท','วันที่','โทร','สถานที่','ค่าเช่า','ประกัน','ขนาด','เงื่อนไข','บันทึก','ไดรฟ์'],
     ni:'ไม่ได้ระบุ',pm:'/เดือน',sqm:'ตร.ม.',openMap:'🗺 เปิดแผนที่',
     uploading:'กำลังอัปโหลด...',photoAdded:'ภาพที่เพิ่ม',
     fieldSaved:'บันทึกข้อมูลหน้างานแล้ว',saved:'บันทึกลงคลาวด์แล้ว！',deleted:'ลบแล้ว',
@@ -457,7 +462,7 @@ let sOpts = {};
 let DB = [];
 
 function freshState() {
-  return {type:'テナント',status:0,photos:[],phone:'',mapUrl:'',address:'',lat:null,lng:null,rent:'',deposit:'',size:'',cond:'',notes:'',propName:'',ts:''};
+  return {type:'テナント',status:0,photos:[],phone:'',mapUrl:'',address:'',lat:null,lng:null,rent:'',deposit:'',size:'',cond:'',notes:'',propName:'',ts:'',driveUrl:''};
 }
 
 // ===== Supabase =====
@@ -531,7 +536,8 @@ function rowToEntry(row) {
     photos: row.photos || [],
     appendedNotes: row.appended_notes || [],
     folder: row.folder || '',
-    sortOrder: typeof row.sort_order === 'number' ? row.sort_order : 0
+    sortOrder: typeof row.sort_order === 'number' ? row.sort_order : 0,
+    driveUrl: row.drive_url || ''
   };
 }
 
@@ -554,7 +560,8 @@ function entryToRow(entry) {
     appended_notes: entry.appendedNotes || [],
     ts: entry.ts,
     folder: entry.folder || '',
-    sort_order: typeof entry.sortOrder === 'number' ? entry.sortOrder : 0
+    sort_order: typeof entry.sortOrder === 'number' ? entry.sortOrder : 0,
+    drive_url: entry.driveUrl || ''
   };
 }
 
@@ -614,6 +621,9 @@ function applyLang() {
   document.getElementById('lbl-shareOpt').textContent = l.shareOpt;
   document.getElementById('lbl-sharePhoto').textContent = l.sharePhoto;
   document.getElementById('lbl-btnShare').textContent = l.btnShare;
+  document.getElementById('lbl-driveTitle').textContent = l.driveTitle;
+  document.getElementById('lbl-driveUrl').textContent = l.driveUrl;
+  document.getElementById('lbl-eDriveUrl').textContent = l.eDriveUrl;
   document.getElementById('lbl-folderMgr').textContent = l.folderMgr;
   document.getElementById('lbl-folderTitle').textContent = l.folderTitle;
   document.getElementById('lbl-addFolder').textContent = l.addFolderBtn;
@@ -752,6 +762,7 @@ async function saveEntry() {
     rent: state.rent, deposit: state.deposit, size: state.size,
     cond: state.cond, notes: state.notes,
     photos: state.photos, appendedNotes: [],
+    driveUrl: state.driveUrl || '',
     folder: currentFolder && currentFolder!=='__all__' ? currentFolder : '',
     sortOrder: Date.now(),
     ts: state.ts || new Date().toLocaleString('ja-JP',{timeZone:'Asia/Bangkok'})
@@ -844,6 +855,7 @@ function openModal(cid) {
     [l.rows[4],p.rent?'฿'+Number(p.rent).toLocaleString()+l.pm:ni],
     [l.rows[5],p.deposit||ni],[l.rows[6],p.size?p.size+l.sqm:ni],
     [l.rows[7],p.cond||ni],[l.rows[8],p.notes||ni],
+    [l.rows[9],p.driveUrl?'<a href="'+p.driveUrl+'" target="_blank" style="color:var(--accent)">📁 ドライブを開く →</a>':ni],
   ];
   if (p.appendedNotes&&p.appendedNotes.length)
     p.appendedNotes.forEach((n,i)=>rows.push(['+ '+(i+1),n.text+' ('+n.ts+')']));
@@ -868,6 +880,7 @@ function openModal(cid) {
   document.getElementById('e-size').value=p.size||'';
   document.getElementById('e-cond').value=p.cond||'';
   document.getElementById('e-notes').value=p.notes||'';
+  document.getElementById('e-driveurl').value=p.driveUrl||'';
   // フォルダ選択肢を生成
   const fsel = document.getElementById('e-folder');
   const l2 = t();
@@ -950,6 +963,7 @@ async function doSaveEdit() {
   p.size=document.getElementById('e-size').value;
   p.cond=document.getElementById('e-cond').value;
   p.notes=document.getElementById('e-notes').value;
+  p.driveUrl=document.getElementById('e-driveurl').value;
   p.folder=document.getElementById('e-folder').value;
   try {
     await sbUpdate(p);
@@ -1096,7 +1110,7 @@ async function doSync() {
 
 function resetForm() {
   state=freshState();
-  ['f-phone','f-rent','f-deposit','f-size','f-cond','f-notes','f-propname','f-addr'].forEach(id=>{
+  ['f-phone','f-rent','f-deposit','f-size','f-cond','f-notes','f-propname','f-addr','f-driveurl'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.value='';
   });
   document.getElementById('thumbs0').innerHTML='';
