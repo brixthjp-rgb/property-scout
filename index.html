@@ -500,6 +500,14 @@ async function sbReq(path, opts={}) {
 async function syncDown() {
   const rows = await sbReq('/rest/v1/properties?order=created_at.desc&select=*');
   DB = (rows||[]).map(rowToEntry);
+  // 古いstring形式の写真を{url,tag}形式に変換
+  DB.forEach(p=>{
+    if (p.photos && p.photos.length) {
+      p.photos = p.photos.map(ph=>
+        typeof ph === 'string' ? {url:ph, tag:'exterior'} : ph
+      );
+    }
+  });
   sortDB();
   localStorage.setItem(CACHE_KEY, JSON.stringify(DB));
   return DB;
@@ -1489,7 +1497,17 @@ applyLang();
   try {
     // まずキャッシュを表示
     const cache=localStorage.getItem(CACHE_KEY);
-    if (cache) { DB=JSON.parse(cache); }
+    if (cache) {
+      DB=JSON.parse(cache);
+      // キャッシュの古いstring形式も変換
+      DB.forEach(p=>{
+        if (p.photos && p.photos.length) {
+          p.photos = p.photos.map(ph=>
+            typeof ph === 'string' ? {url:ph, tag:'exterior'} : ph
+          );
+        }
+      });
+    }
     // Supabaseから最新を取得
     await syncDown();
     updateCount();
