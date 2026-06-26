@@ -59,11 +59,11 @@ textarea.inp{resize:none;line-height:1.5}
 .map-res a{font-size:12px;color:var(--accent);text-decoration:none}
 .st-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .st-btn{padding:10px 4px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);text-align:center;font-size:12px;font-weight:500;cursor:pointer;user-select:none;-webkit-user-select:none}
-.st-btn.a0{border-color:#6c63ff;background:rgba(108,99,255,.15);color:#6c63ff}
-.st-btn.a1{border-color:#f59e0b;background:rgba(245,158,11,.15);color:#f59e0b}
-.st-btn.a2{border-color:#22c55e;background:rgba(34,197,94,.15);color:#22c55e}
-.st-btn.a3{border-color:#ff6584;background:rgba(255,101,132,.15);color:#ff6584}
-.st-btn.a4{border-color:#8888aa;background:rgba(136,136,170,.15);color:#8888aa}
+.st-btn.a0{border-color:#5F5E5A;background:#F1EFE8;color:#5F5E5A}
+.st-btn.a1{border-color:#854F0B;background:#FAEEDA;color:#854F0B}
+.st-btn.a2{border-color:#185FA5;background:#E6F1FB;color:#185FA5}
+.st-btn.a3{border-color:#3B6D11;background:#EAF3DE;color:#3B6D11}
+.st-btn.a4{border-color:#A32D2D;background:#FCEBEB;color:#A32D2D}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .btn{width:100%;padding:15px;border-radius:var(--radius);border:none;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;font-family:inherit;-webkit-appearance:none;display:block;text-align:center}
 .btn-p{background:var(--accent);color:#fff}
@@ -77,11 +77,11 @@ textarea.inp{resize:none;line-height:1.5}
 .prop-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
 .prop-card-name{font-size:15px;font-weight:600;color:var(--text);flex:1}
 .badge{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600;white-space:nowrap}
-.b0{background:rgba(108,99,255,.15);color:#6c63ff}
-.b1{background:rgba(245,158,11,.15);color:#f59e0b}
-.b2{background:rgba(34,197,94,.15);color:#22c55e}
-.b3{background:rgba(255,101,132,.15);color:#ff6584}
-.b4{background:rgba(136,136,170,.15);color:#8888aa}
+.b0{background:#F1EFE8;color:#5F5E5A}
+.b1{background:#FAEEDA;color:#854F0B}
+.b2{background:#E6F1FB;color:#185FA5}
+.b3{background:#EAF3DE;color:#3B6D11}
+.b4{background:#FCEBEB;color:#A32D2D}
 .prop-meta{font-size:12px;color:var(--muted);line-height:1.9}
 .prop-meta a{color:var(--accent);text-decoration:none}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;display:none;align-items:flex-end;justify-content:center}
@@ -109,6 +109,8 @@ textarea.inp{resize:none;line-height:1.5}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #toast.ok{border-color:var(--green);color:var(--green)}
 #toast.err{border-color:var(--accent2);color:var(--accent2)}
+.trans-btn{font-size:11px;color:var(--accent);cursor:pointer;display:inline-block;margin-top:4px;padding:2px 8px;border-radius:10px;background:rgba(108,99,255,.1);border:0.5px solid var(--accent)}
+.trans-result{font-size:13px;color:var(--muted);margin-top:6px;padding:8px;background:var(--surface2);border-radius:var(--rsm);line-height:1.6;border-left:2px solid var(--accent)}
 </style>
 </head>
 <body>
@@ -384,7 +386,7 @@ const L = {
     btnNext:'保存して詳細へ →',btnFieldOnly:'現地情報だけ保存',
     propNameTitle:'物件名 / 識別メモ',propNamePh:'例：Soi 11 角地テナント',
     statusTitle:'ステータス',
-    s:['🔵 未交渉','🟡 交渉中','🟢 契約済み','🔴 NG','⚪ 保留'],
+    s:['⬜ 未確認','🟡 確認中','🔵 完了','🟢 契約済み','🔴 見送り'],
     rentTitle:'家賃 / 費用',rent:'月額家賃（฿）',deposit:'敷金 / 保証金',size:'広さ（㎡）',
     condTitle:'賃貸条件・メモ',cond:'契約条件',notes:'その他メモ',
     btnSave:'💾 保存する',btnBack:'← 現地入力に戻る',
@@ -434,7 +436,7 @@ const L = {
     btnNext:'บันทึกและไปรายละเอียด →',btnFieldOnly:'บันทึกเฉพาะข้อมูลหน้างาน',
     propNameTitle:'ชื่อ / บันทึกระบุตัวตน',propNamePh:'เช่น ตึกแถวมุม Soi 11',
     statusTitle:'สถานะ',
-    s:['🔵 ยังไม่เจรจา','🟡 กำลังเจรจา','🟢 ทำสัญญาแล้ว','🔴 ไม่ผ่าน','⚪ รอดู'],
+    s:['⬜ ยังไม่ตรวจสอบ','🟡 กำลังดำเนินการ','🔵 เสร็จสิ้น','🟢 ทำสัญญาแล้ว','🔴 ไม่ผ่าน'],
     rentTitle:'ค่าเช่า / ค่าใช้จ่าย',rent:'ค่าเช่า/เดือน（฿）',deposit:'เงินประกัน',size:'ขนาด（ตร.ม.）',
     condTitle:'เงื่อนไข / บันทึก',cond:'เงื่อนไขสัญญา',notes:'บันทึกอื่นๆ',
     btnSave:'💾 บันทึก',btnBack:'← กลับหน้าบันทึก',
@@ -894,9 +896,14 @@ function openModal(cid) {
   ];
   if (p.appendedNotes&&p.appendedNotes.length)
     p.appendedNotes.forEach((n,i)=>rows.push(['+ '+(i+1),n.text+' ('+n.ts+')']));
-  document.getElementById('modal-rows').innerHTML=rows.map(([lb,v])=>
-    '<div class="d-row"><span class="d-lbl">'+lb+'</span><span class="d-val">'+v+'</span></div>'
-  ).join('');
+  document.getElementById('modal-rows').innerHTML=rows.map(([lb,v],i)=>{
+    const isTranslatable = i >= 7;
+    const cleanV = v.replace(/<[^>]+>/g,'').trim();
+    const transBtn = (isTranslatable && cleanV && cleanV !== t().ni)
+      ? '<br><span class="trans-btn" data-txt="'+encodeURIComponent(cleanV)+'" onclick="handleTransBtn(this)">🌐 翻訳を見る</span>'
+      : '';
+    return '<div class="d-row"><span class="d-lbl">'+lb+'</span><span class="d-val">'+v+transBtn+'</span></div>';
+  }).join('');
   const mp=document.getElementById('modal-photos');
   renderPhotoTabs(p, mp, 'exterior');
   document.getElementById('e-name').value=p.propName||'';
@@ -1202,6 +1209,48 @@ async function doSync() {
     renderList();
     toast(t().syncOk,'ok');
   } catch(e) { toast(t().syncErr,'err'); }
+}
+
+// ===== 翻訳 =====
+function handleTransBtn(btn) {
+  const text = decodeURIComponent(btn.dataset.txt || '');
+  translateText(btn, text);
+}
+
+async function translateText(btn, text) {
+  const target = lang === 'ja' ? 'ja' : 'th';
+  btn.textContent = '翻訳中...';
+  btn.style.pointerEvents = 'none';
+  try {
+    const url = GAS_BACKUP_URL + '?text=' + encodeURIComponent(text) + '&target=' + target;
+    const res = await fetch(url);
+    const json = await res.json();
+    const translated = json.result || '';
+    if (translated) {
+      const parent = btn.closest('.d-val');
+      // 既存の翻訳結果があれば削除
+      const existing = parent.querySelector('.trans-result');
+      if (existing) existing.remove();
+      const div = document.createElement('div');
+      div.className = 'trans-result';
+      div.textContent = translated;
+      parent.appendChild(div);
+      btn.textContent = '🌐 翻訳を隠す';
+      btn.style.pointerEvents = '';
+      btn.onclick = function() {
+        const r = parent.querySelector('.trans-result');
+        if (r) { r.remove(); btn.textContent = '🌐 翻訳を見る'; btn.onclick = ()=>translateText(btn,text); }
+      };
+    } else {
+      btn.textContent = '🌐 翻訳を見る';
+      btn.style.pointerEvents = '';
+      toast('翻訳に失敗しました','err');
+    }
+  } catch(e) {
+    btn.textContent = '🌐 翻訳を見る';
+    btn.style.pointerEvents = '';
+    toast('翻訳に失敗しました','err');
+  }
 }
 
 function resetForm() {
