@@ -410,7 +410,7 @@ const L = {
     shareTitle:'共有設定',shareFixed:'✅ 必ず含まれる項目',shareOpt:'⚙️ 含めるか選べる項目',
     sharePhoto:'📷 送る写真を選ぶ',btnShare:'📋 コピーしてLINEに貼る',
     copied:'コピーしました！LINEに貼り付けてください',
-    sOptPhone:'📞 電話番号',sOptDeposit:'💰 敷金/保証金',sOptSize:'📐 広さ',
+    sOptPhone:'📞 電話番号',sOptRent:'💰 家賃',sOptDeposit:'💰 敷金/保証金',sOptSize:'📐 広さ',
     sOptCond:'📋 契約条件',sOptNotes:'📝 メモ',
     sep:'━━━━━━━━━━━━━━━',intro:'物件のご案内',
     sRent:'💰 家賃：',sSize:'📐 広さ：',sDep:'💳 敷金：',sCond:'📋 条件：',
@@ -460,7 +460,7 @@ const L = {
     shareTitle:'ตั้งค่าการแชร์',shareFixed:'✅ รายการที่จะแสดงเสมอ',shareOpt:'⚙️ เลือกว่าจะแสดงหรือไม่',
     sharePhoto:'📷 เลือกรูปที่จะส่ง',btnShare:'📋 คัดลอกเพื่อส่ง LINE',
     copied:'คัดลอกแล้ว！วางใน LINE ได้เลย',
-    sOptPhone:'📞 เบอร์โทร',sOptDeposit:'💰 เงินประกัน',sOptSize:'📐 ขนาด',
+    sOptPhone:'📞 เบอร์โทร',sOptRent:'💰 ค่าเช่า',sOptDeposit:'💰 เงินประกัน',sOptSize:'📐 ขนาด',
     sOptCond:'📋 เงื่อนไข',sOptNotes:'📝 บันทึก',
     sep:'━━━━━━━━━━━━━━━',intro:'แนะนำอสังหาฯ',
     sRent:'💰 ค่าเช่า：',sSize:'📐 ขนาด：',sDep:'💳 ประกัน：',sCond:'📋 เงื่อนไข：',
@@ -672,6 +672,10 @@ function toggleLang() {
   lang = lang==='ja'?'th':'ja';
   localStorage.setItem('scout_lang', lang);
   applyLang();
+  // モーダルが開いていたら再描画（翻訳ボタンのラベル更新のため）
+  if (curId!==null && document.getElementById('modal').classList.contains('open')) {
+    openModal(curId);
+  }
 }
 
 function goTab(idx) {
@@ -900,7 +904,7 @@ function openModal(cid) {
     const isTranslatable = i >= 7;
     const cleanV = v.replace(/<[^>]+>/g,'').trim();
     const transBtn = (isTranslatable && cleanV && cleanV !== t().ni)
-      ? '<br><span class="trans-btn" data-txt="'+encodeURIComponent(cleanV)+'" onclick="handleTransBtn(this)">🌐 翻訳を見る</span>'
+      ? '<br><span class="trans-btn" data-txt="'+encodeURIComponent(cleanV)+'" onclick="handleTransBtn(this)">'+t().showTrans+'</span>'
       : '';
     return '<div class="d-row"><span class="d-lbl">'+lb+'</span><span class="d-val">'+v+transBtn+'</span></div>';
   }).join('');
@@ -1080,13 +1084,13 @@ function openShare() {
   const tl=p.type==='テナント'?'🏪 '+l.tenant:'🏠 '+l.res;
   document.getElementById('share-fixed-preview').textContent=[
     tl,p.propName,
-    p.rent?l.sRent+'฿'+Number(p.rent).toLocaleString()+l.pm:null,
     p.mapUrl?l.sMap+p.mapUrl:null,
   ].filter(Boolean).join('\n');
 
   const wrap=document.getElementById('share-toggles');
   wrap.innerHTML='';
   [
+    {key:'rent',label:l.sOptRent,val:p.rent?'฿'+Number(p.rent).toLocaleString()+l.pm:null},
     {key:'deposit',label:l.sOptDeposit,val:p.deposit},
     {key:'size',label:l.sOptSize,val:p.size?p.size+l.sqm:null},
     {key:'cond',label:l.sOptCond,val:p.cond},
@@ -1156,7 +1160,7 @@ function doShare() {
   const lines=[
     l.sep,tl+' '+l.intro,l.sep,
     p.propName,
-    p.rent?l.sRent+'฿'+Number(p.rent).toLocaleString()+l.pm:null,
+    sOpts.rent!==false&&p.rent?l.sRent+'฿'+Number(p.rent).toLocaleString()+l.pm:null,
     sOpts.size!==false&&p.size?l.sSize+p.size+l.sqm:null,
     sOpts.deposit!==false&&p.deposit?l.sDep+p.deposit:null,
     sOpts.cond!==false&&p.cond?l.sCond+p.cond:null,
@@ -1217,41 +1221,59 @@ function handleTransBtn(btn) {
   translateText(btn, text);
 }
 
+function detectLang(text) {
+  // タイ文字が含まれていればタイ語、日本語文字(ひらがな/カタカナ/漢字)があれば日本語
+  const hasThai = /[\u0E00-\u0E7F]/.test(text);
+  const hasJa = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(text);
+  if (hasThai && !hasJa) return 'th';
+  if (hasJa && !hasThai) return 'ja';
+  if (hasThai && hasJa) return 'mixed';
+  return 'other';
+}
+
 async function translateText(btn, text) {
-  const target = lang === 'ja' ? 'ja' : 'th';
-  btn.textContent = '翻訳中...';
+  const l = t();
+  // テキストの言語を判定し、反対の言語に翻訳
+  const src = detectLang(text);
+  let target;
+  if (src === 'th') target = 'ja';
+  else if (src === 'ja') target = 'th';
+  else if (src === 'mixed') target = (lang === 'ja') ? 'ja' : 'th';
+  else target = (lang === 'ja') ? 'ja' : 'th';
+
+  btn.textContent = l.translating;
   btn.style.pointerEvents = 'none';
   try {
     const url = GAS_BACKUP_URL + '?text=' + encodeURIComponent(text) + '&target=' + target;
     const res = await fetch(url);
     const json = await res.json();
     const translated = json.result || '';
-    if (translated) {
+    if (translated && translated.trim()) {
       const parent = btn.closest('.d-val');
-      // 既存の翻訳結果があれば削除
       const existing = parent.querySelector('.trans-result');
       if (existing) existing.remove();
       const div = document.createElement('div');
       div.className = 'trans-result';
       div.textContent = translated;
       parent.appendChild(div);
-      btn.textContent = '🌐 翻訳を隠す';
+      btn.textContent = l.hideTrans;
       btn.style.pointerEvents = '';
       btn.onclick = function() {
         const r = parent.querySelector('.trans-result');
-        if (r) { r.remove(); btn.textContent = '🌐 翻訳を見る'; btn.onclick = ()=>translateText(btn,text); }
+        if (r) { r.remove(); btn.textContent = l.showTrans; btn.onclick = ()=>translateText(btn, text); }
       };
     } else {
-      btn.textContent = '🌐 翻訳を見る';
+      btn.textContent = l.showTrans;
       btn.style.pointerEvents = '';
-      toast('翻訳に失敗しました','err');
+      toast(l.transFail, 'err');
     }
   } catch(e) {
-    btn.textContent = '🌐 翻訳を見る';
+    btn.textContent = l.showTrans;
     btn.style.pointerEvents = '';
-    toast('翻訳に失敗しました','err');
+    toast(l.transFail, 'err');
   }
 }
+
 
 function resetForm() {
   state=freshState();
